@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 
 import Home from './src/screens/Home';
-import QCoffee from './src/screens/qCoffee';
+import QCoffee from './src/screens/QCoffee';
 import Qmilk from './src/screens/Qmilk';
 const Stack = createNativeStackNavigator();
 

@@ -1,22 +1,46 @@
-import {StyleSheet, Image, View, Text} from 'react-native';
+import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
 import CustomModal from './../components/CustomModal';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const HomeGrayColor = () => {
   return (
-    <View style={{top: '5%', backgroundColor: 'white'}}>
+    <SafeAreaView
+      style={{
+        backgroundColor: 'white',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        position: 'relative',
+      }}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.header}>
         <Image
           style={{width: 100, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
         />
       </View>
-      <View style={styles.grayDiv}>
-        <CustomModal>
-          <Text>hello</Text>
-        </CustomModal>
+      <View style={styles.div}></View>
+      <View style={styles.grayDiv}></View>
+      <View
+        style={{
+          position: 'absolute',
+          top: '50%',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <CustomModal
+          style={{width: '80%', height: '90%'}}
+          title="주문정보 확인"
+          width="80%"
+          height="90%"
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -28,6 +52,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F7FB',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+  },
+  div: {
+    flex: 9,
   },
   grayDiv: {
     width: '100%',

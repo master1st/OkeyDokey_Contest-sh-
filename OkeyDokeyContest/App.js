@@ -7,16 +7,17 @@ import Home from './src/screens/Home';
 import QCoffee from './src/screens/QCoffee';
 import Qmilk from './src/screens/Qmilk';
 import HomeGrayColor from './src/screens/HomeGrayColor';
+import EasyMenu from './src/screens/EasyMenu';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QCoffee" component={QCoffee} />
-        <Stack.Screen name="Qmilk" component={Qmilk} /> */}
-        <Stack.Screen name="HomeGrayColor" component={HomeGrayColor} />
+        <Stack.Screen name="Qmilk" component={Qmilk} />
+        <Stack.Screen name="EasyMenu" component={EasyMenu} />
       </Stack.Navigator>
     </NavigationContainer>
   );

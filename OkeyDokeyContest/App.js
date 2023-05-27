@@ -6,7 +6,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import Home from './src/screens/Home';
 import QCoffee from './src/screens/QCoffee';
 import Qmilk from './src/screens/Qmilk';
+<<<<<<< HEAD
 import HomeGrayColor from './src/screens/HomeGrayColor';
+=======
+>>>>>>> parent of 7d1e455 (custom button styled component error)
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -15,8 +18,12 @@ const App = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {/* <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QCoffee" component={QCoffee} />
+<<<<<<< HEAD
         <Stack.Screen name="Qmilk" component={Qmilk} /> */}
         <Stack.Screen name="HomeGrayColor" component={HomeGrayColor} />
+=======
+        <Stack.Screen name="Qmilk" component={Qmilk} />
+>>>>>>> parent of 7d1e455 (custom button styled component error)
       </Stack.Navigator>
     </NavigationContainer>
   );

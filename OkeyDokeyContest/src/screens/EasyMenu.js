@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const QCoffee = () => {
+const EasyMenu = () => {
   return (
     <View>
-      <Text>QCoffee</Text>
+      <Text>EasyMenu</Text>
     </View>
   )
 }
 
-export default QCoffee
+export default EasyMenu
 
 const styles = StyleSheet.create({})

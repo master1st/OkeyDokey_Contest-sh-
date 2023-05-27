@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const Quiz = ({ title, onPress, width, height, backgroundColor, textColor, fontSize }) => {
+const Quiz = () => {
   return (
     <View>
       <TouchableOpacity onPress={handleHere} style={styles.left}>
@@ -13,23 +13,4 @@ const Quiz = ({ title, onPress, width, height, backgroundColor, textColor, fontS
 
 export default Quiz;
 
-const styles = StyleSheet.create({
-    left: {
-        height: '60%',
-        marginLeft: 30,
-        borderWidth: 1,
-        borderColor: 'black',
-        flex: 1,
-        marginRight: 5,
-        justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowOpacity: 0.18,
-        shadowRadius: 1.0,
-    
-        elevation: 3,
-      },
-});
+const styles = StyleSheet.create({});

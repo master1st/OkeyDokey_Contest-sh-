@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   Button,
   Image,
@@ -10,16 +10,14 @@ import {
 } from 'react-native';
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
-
+import Toggle from '../components/Toggle';
 
 const QCoffee = () => {
   const navigation = useNavigation();
-  const [data, setData] = useState(
-    {
-      eatin: false,
-      takeout: false,
-    }, 
-    );
+  const [data, setData] = useState({
+    eatin: false,
+    takeout: false,
+  });
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {
   //     setData({...data, eatin:true});
@@ -27,13 +25,13 @@ const QCoffee = () => {
   // };
   const handleHere = () => {
     navigation.push('Qmilk', {
-      qdata : data.eatin,
-    })
-  }
+      qdata: data.eatin,
+    });
+  };
   const handleTakeOut = () => {
     navigation.push('Qmilk', {
-      qdata : data.takeout,
-    })
+      qdata: data.takeout,
+    });
   };
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
@@ -43,14 +41,33 @@ const QCoffee = () => {
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
         />
       </View>
+      <View style={{alignItems:'center', justifyContent: 'center', width: '100%'}}>
+        <Toggle />
+      </View>
       <View style={{flex: 9}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleHere} QuizText={"커피"}/>
-          <Quiz handleEvent={handleTakeOut} QuizText={"커피가 아닌 것"}/>
+          <Quiz handleEvent={handleHere} QuizText={'커피'} />
+          <Quiz handleEvent={handleTakeOut} QuizText={'커피가 아닌 것'} />
         </View>
-        <View style={{flexDirection:'row'}}>
-          <CustomButton title={"뒤로가기"} onPress={""} width={"50%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
-          <CustomButton title={"장바구니"} onPress={""} width={"50%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
+        <View style={{flexDirection: 'row'}}>
+          <CustomButton
+            title={'뒤로가기'}
+            onPress={''}
+            width={'50%'}
+            height={150}
+            backgroundColor={'#056CF2'}
+            textColor={'white'}
+            fontSize={50}
+          />
+          <CustomButton
+            title={'장바구니'}
+            onPress={''}
+            width={'50%'}
+            height={150}
+            backgroundColor={'#056CF2'}
+            textColor={'white'}
+            fontSize={50}
+          />
         </View>
       </View>
     </View>

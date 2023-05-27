@@ -8,6 +8,11 @@ import QCoffee from './src/screens/QCoffee';
 import Qmilk from './src/screens/Qmilk';
 import HomeGrayColor from './src/screens/HomeGrayColor';
 import EasyMenu from './src/screens/EasyMenu';
+
+import InputPhoneNum from './src/screens/InputPhoneNum'; //비회원 적립 화면
+import Payment from './src/screens/Payment';
+import OrderNum from './src/screens/OrderNum';
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -18,6 +23,10 @@ const App = () => {
         <Stack.Screen name="QCoffee" component={QCoffee} />
         <Stack.Screen name="Qmilk" component={Qmilk} />
         <Stack.Screen name="EasyMenu" component={EasyMenu} />
+
+        <Stack.Screen name="OrderNum" component={OrderNum} />
+        <Stack.Screen name="Payment" component={Payment} />
+        <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -24,6 +24,8 @@ const CustomButton = ({
         color: textColor,
         fontSize: fontSize,
         textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'Pretendard',
         }}>{title}</Text>
     </TouchableOpacity>
   );

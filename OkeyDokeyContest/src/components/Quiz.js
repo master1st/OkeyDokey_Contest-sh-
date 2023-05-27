@@ -4,7 +4,7 @@ import React from 'react';
 const Quiz = ({QuizText, handleEvent}) => {
   return (
       <TouchableOpacity onPress={handleEvent} style={styles.left}>
-        <Text style={{fontSize: 40, color:'black', fontWeight:'bold', textAlign: 'center'}}>{QuizText}</Text>
+        <Text style={{fontSize: 40, color:'black', fontWeight:'bold', textAlign: 'center', fontFamily: 'Pretendard'}}>{QuizText}</Text>
       </TouchableOpacity>
   );
 };
@@ -15,11 +15,10 @@ const styles = StyleSheet.create({
     left: {
         backgroundColor:'white',
         height: '60%',
-        marginLeft: 30,
-        borderWidth: 1,
-        borderColor: 'black',
+        // marginLeft: 30,
         flex: 1,
-        marginRight: 5,
+        // marginRight: 5,
+        marginHorizontal: 30,
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: {

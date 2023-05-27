@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import CustomButton from './CustomButton';
+import KeyPad from './KeyPad';
 
 const InputModal = ({width, height, title}) => {
   return (
@@ -13,28 +14,30 @@ const InputModal = ({width, height, title}) => {
           <Text style={styles.subtitle}>전화번호를 입력해 주세요.</Text>
         </View>
         <View style={styles.inputView}>
-          <Text>전화번호 뷰</Text>
+          <View style={styles.inputPhoneNumber}></View>
+          <KeyPad />
         </View>
-        <View style={styles.bottomButtons}>
-          <CustomButton
-            title={'적립 안하기'}
-            onPress={''}
-            width={'50%'}
-            height={120}
-            backgroundColor={'#6D6D6D'}
-            textColor={'white'}
-            fontSize={35}
-          />
-          <CustomButton
-            title={'뒤로가기'}
-            onPress={''}
-            width={'50%'}
-            height={120}
-            backgroundColor={'#056CF2'}
-            textColor={'white'}
-            fontSize={35}
-          />
-        </View>
+      </View>
+
+      <View style={styles.bottomButtons}>
+        <CustomButton
+          title={'적립 안하기'}
+          onPress={''}
+          width={'50%'}
+          height={110}
+          backgroundColor={'#6D6D6D'}
+          textColor={'white'}
+          fontSize={35}
+        />
+        <CustomButton
+          title={'적립하기'}
+          onPress={''}
+          width={'50%'}
+          height={110}
+          backgroundColor={'#056CF2'}
+          textColor={'white'}
+          fontSize={35}
+        />
       </View>
     </View>
   );
@@ -70,6 +73,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 25,
     fontWeight: 'bold',
+    color: 'black',
   },
   bottomButtons: {
     flexDirection: 'row',
@@ -80,5 +84,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '75%',
     borderColor: 'black',
+    marginBottom: 60,
+  },
+  inputPhoneNumber: {
+    width: '85%',
+    height: 60,
+    backgroundColor: '#F5F7FB',
+    marginBottom: 30,
+    borderRadius: 20,
   },
 });

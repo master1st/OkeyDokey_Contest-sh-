@@ -9,6 +9,7 @@ const CustomButton = ({
   backgroundColor,
   textColor,
   fontSize,
+  margin,
 }) => {
   return (
     <TouchableOpacity
@@ -16,17 +17,21 @@ const CustomButton = ({
         width: width,
         height: height,
         backgroundColor: backgroundColor,
-        justifyContent:'center',
-        alignItems:'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: margin,
       }}
       onPress={onPress}>
-      <Text style={{
-        color: textColor,
-        fontSize: fontSize,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontFamily: 'Pretendard',
-        }}>{title}</Text>
+      <Text
+        style={{
+          color: textColor,
+          fontSize: fontSize,
+          textAlign: 'center',
+          fontWeight: 'bold',
+          fontFamily: 'Pretendard',
+        }}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };

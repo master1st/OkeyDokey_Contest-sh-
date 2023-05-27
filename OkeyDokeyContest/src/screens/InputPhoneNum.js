@@ -1,9 +1,9 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
-import InputModal from './InputModal';
+import InputModal from '../components/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-const HomeGrayColor = () => {
+const InputPhoneNum = () => {
   return (
     <SafeAreaView
       style={{
@@ -27,7 +27,7 @@ const HomeGrayColor = () => {
       <View
         style={{
           position: 'absolute',
-          top: '15%',
+          top: '20%',
           width: '100%',
           height: '100%',
           justifyContent: 'center',
@@ -39,7 +39,7 @@ const HomeGrayColor = () => {
   );
 };
 
-export default HomeGrayColor;
+export default InputPhoneNum;
 
 const styles = StyleSheet.create({
   header: {

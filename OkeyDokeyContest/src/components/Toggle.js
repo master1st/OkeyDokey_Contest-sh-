@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, Animated, StyleSheet } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
 
-const ToggleButton = () => {
+const Toggle = () => {
   const [isToggled, setIsToggled] = useState(false);
-  const [slideAnimation] = useState(new Animated.Value(0));
+  const slideAnimation = useRef(new Animated.Value(0)).current;
 
   const handleToggle = () => {
     setIsToggled(!isToggled);
     Animated.timing(slideAnimation, {
       toValue: isToggled ? 0 : 1,
-      duration: 300,
-      useNativeDriver: false,
+      duration: 600,
+      useNativeDriver: true,
     }).start();
   };
 
-  const slideAnimationStyle = {
+  const buttonStyle = {
     transform: [
       {
         translateX: slideAnimation.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, 80],
+          outputRange: [0, 150],
         }),
       },
     ],
@@ -27,19 +27,21 @@ const ToggleButton = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <View style={styles.circleContainer}>
-          <Animated.View style={[styles.circle, slideAnimationStyle]} />
-        </View>
-        <TouchableOpacity style={styles.button} onPress={handleToggle}>
-          <Text style={[styles.buttonText, isToggled ? styles.buttonTextHighlighted : null]}>
-            쉬운메뉴
-          </Text>
+      <View style={[styles.toggleButton, { width: 300, height: 50 }]}>
+      <Animated.View style={[styles.slideButton, buttonStyle]} />
+        <TouchableOpacity
+          style={[styles.button, styles.leftButton,isToggled ? styles.buttonActive : null]}
+          activeOpacity={1}
+          onPress={handleToggle}
+        >
+          <Text style={[styles.buttonText, !isToggled ? styles.buttonTextActive : null]}>일반</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleToggle}>
-          <Text style={[styles.buttonText, !isToggled ? styles.buttonTextHighlighted : null]}>
-            일반메뉴
-          </Text>
+        <TouchableOpacity
+          style={[styles.button, styles.rightButton, !isToggled ? styles.buttonActive : null]}
+          activeOpacity={1}
+          onPress={handleToggle}
+        >
+          <Text style={[styles.buttonText , isToggled ? styles.buttonTextActive : null]}>쉬운메뉴</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -50,41 +52,46 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  buttonContainer: {
+  toggleButton: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'gray',
-    borderRadius: 20,
-    padding: 5,
-    width: 200,
-    height: 40,
-  },
-  circleContainer: {
     backgroundColor: 'white',
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  circle: {
-    backgroundColor: 'blue',
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
   button: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  leftButton: {
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  rightButton: {
+    borderTopRightRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  buttonActive: {
+    backgroundColor: 'white',
+    
   },
   buttonText: {
-    fontSize: 14,
-    color: 'white',
+    // color: 'white',
+    fontSize: 16,
   },
-  buttonTextHighlighted: {
-    fontWeight: 'bold',
+  buttonTextActive: {
+     color: 'white',
+  },
+  slideButton: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 150,
+    backgroundColor: 'blue',
+    borderRadius: 20,
+    elevation: 1,
   },
 });
 
-export default ToggleButton;
+export default Toggle;

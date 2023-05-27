@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
+import Toggle from '../components/Toggle';
 
 
 const Qmilk = () => {
@@ -42,6 +43,9 @@ const Qmilk = () => {
           style={{width: 150, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
         />
+      </View>
+      <View style={{alignItems:'center', justifyContent: 'center', width: '100%'}}>
+        <Toggle />
       </View>
       <View style={{flex: 9}}>
         <View style={styles.mid}>

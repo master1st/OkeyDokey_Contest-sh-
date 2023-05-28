@@ -1,14 +1,33 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Image, View} from 'react-native';
 import React from 'react';
 
-const Coffee = () => {
+const Coffee = ({
+  backgroundImageSize,
+  title,
+  price,
+  imgsrc,
+  coffeeImageWidth,
+  coffeeImageHeight,
+}) => {
+  const styles = StyleSheet.create({
+    coffeeBackgroundImage: {
+      width: backgroundImageSize,
+      height: backgroundImageSize,
+      borderRadius: backgroundImageSize / 2,
+      backgroundColor: '#D9D9D9',
+      alignItems: 'center',
+    },
+  });
   return (
     <View>
-      <Text>Coffee</Text>
+      <View style={styles.coffeeBackgroundImage}>
+        <Image
+          style={{width: coffeeImageWidth, height: coffeeImageHeight}}
+          source={require('OkeyDokeyContest/assets/images/coffee.png')}
+        />
+      </View>
     </View>
   );
 };
 
 export default Coffee;
-
-const styles = StyleSheet.create({});

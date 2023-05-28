@@ -53,6 +53,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toggleButton: {
+    shadowColor: "#000",
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
     flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 20,
@@ -78,6 +84,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     // color: 'white',
+    fontFamily:'Pretendard',
+    fontWeight:'bold',
     fontSize: 16,
   },
   buttonTextActive: {

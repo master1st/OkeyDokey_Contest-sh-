@@ -11,6 +11,7 @@ import {
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
+import CoffeeObject from '../components/CoffeeObject';
 
 
 const EasyMenu = () => {
@@ -49,9 +50,10 @@ const EasyMenu = () => {
       </View>
       <View style={{flex: 9}}>
         <View style={styles.mid}>
+            <CoffeeObject/>
         </View>
         <View style={{flexDirection:'row'}}>
-          <CustomButton title={"뒤로가기"} onPress={""} width={"50%"} height={150} backgroundColor={"#6D6D6D"} textColor={'white'} fontSize={50}/>
+          <CustomButton title={"뒤로가기"} onPress={() => navigation.popToTop()} width={"50%"} height={150} backgroundColor={"#6D6D6D"} textColor={'white'} fontSize={50}/>
           <CustomButton title={"장바구니"} onPress={""} width={"50%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
         </View>
       </View>

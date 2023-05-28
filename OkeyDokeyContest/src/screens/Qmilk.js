@@ -13,12 +13,12 @@ import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
 
-const Qmilk = () => {
-  const navigation = useNavigation();
+const Qmilk = ({ route, navigation  }) => {
+  const { qdata } = route.params;
   const [data, setData] = useState(
     {
-      eatin: false,
-      takeout: false,
+      nonMilk: "우유가 안 들어간 것",
+      milk: "우유가 들어간 것",
     }, 
     );
   // const handleHere = textValue => {
@@ -28,17 +28,18 @@ const Qmilk = () => {
   // };
   const handleHere = () => {
     navigation.push('EasyMenu', {
-      qdata : data.eatin,
+      qdata : data.nonMilk,
     })
   }
   const handleTakeOut = () => {
     navigation.push('EasyMenu', {
-      qdata : data.takeout,
+      qdata : data.milk,
     })
   };
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
       <View style={styles.header}>
+        <Text>{qdata}</Text>
         <Image
           style={{width: 150, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
@@ -53,7 +54,7 @@ const Qmilk = () => {
           <Quiz handleEvent={handleTakeOut} QuizText={"우유가 들어간 것"}/>
         </View>
         <View style={{flexDirection:'row'}}>
-          <CustomButton title={"뒤로가기"} onPress={""} width={"50%"} height={150} backgroundColor={"#6D6D6D"} textColor={'white'} fontSize={50}/>
+          <CustomButton title={"뒤로가기"} onPress={() => navigation.pop()} width={"50%"} height={150} backgroundColor={"#6D6D6D"} textColor={'white'} fontSize={50}/>
           <CustomButton title={"장바구니"} onPress={""} width={"50%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
         </View>
       </View>

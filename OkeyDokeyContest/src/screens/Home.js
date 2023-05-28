@@ -34,6 +34,11 @@ const Home = () => {
     navigation.push('QCoffee', {
       qdata : data.takeout,
     })
+  }
+  const handleNonMembers = () => {
+      navigation.push('QCoffee', {
+        qdata : "비회원",
+    })
   };
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
@@ -45,11 +50,11 @@ const Home = () => {
       </View>
       <View style={{flex: 9}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleTakeOut} QuizText={"매장에서 먹기"}/>
+          <Quiz handleEvent={handleHere} QuizText={"매장에서 먹기"}/>
           <Quiz handleEvent={handleTakeOut} QuizText={"들고가기"}/>
         </View>
         <View style={{}}>
-          <CustomButton title={"비회원으로 계속하기"} onPress={""} width={"100%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
+          <CustomButton title={"비회원으로 계속하기"} onPress={handleNonMembers} width={"100%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
         </View>
       </View>
     </View>

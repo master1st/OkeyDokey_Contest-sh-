@@ -1,7 +1,8 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
-import { useState } from 'react';
-
+import {useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {addShopping} from '../redux/slices/shoppingSlice';
 const Coffee = ({
   navigation,
   backgroundImageSize,
@@ -12,6 +13,7 @@ const Coffee = ({
   coffeeImageHeight,
   CoffeeName,
   CoffeePrice,
+  goto,
 }) => {
   const styles = StyleSheet.create({
     coffeeBackgroundImage: {
@@ -31,21 +33,36 @@ const Coffee = ({
       fontSize: 20,
     },
   });
+  const dispatch = useDispatch();
 
-  const [coffeeInfo, setCoffeeInfo] = useState([{
+  const [coffeeInfo, setCoffeeInfo] = useState([
+    {
       id: 0,
       name: CoffeeName,
       src: imgsrc,
       price: CoffeePrice,
-      },
-    ])
-  const GoOrdercheckPage = () => {
-    navigation.push('OrderCheck', {
-      qdata : coffeeInfo,
-    })
-  }
+    },
+  ]);
+  const handleNavigation = () => {
+    if (goto === 'OrderCheck') {
+      navigation.push(`${goto}`, {
+        qdata: coffeeInfo,
+      });
+    } else if (goto === 'Nothing') {
+      dispatch(
+        addShopping({
+          title: CoffeeName,
+          price: CoffeePrice,
+          quantity: 1,
+          imgsrc: imgsrc,
+          ice: true,
+          size: 'Tall',
+        }),
+      );
+    }
+  };
   return (
-    <TouchableOpacity onPress={GoOrdercheckPage} style={{padding: 20}}>
+    <TouchableOpacity onPress={handleNavigation} style={{padding: 20}}>
       <View style={styles.coffeeBackgroundImage}>
         <Image
           style={{width: coffeeImageWidth, height: coffeeImageHeight}}

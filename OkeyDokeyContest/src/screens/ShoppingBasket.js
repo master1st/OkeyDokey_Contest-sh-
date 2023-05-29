@@ -4,19 +4,17 @@ import {
   Text,
   View,
   StatusBar,
-  FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
-import {useDispatch, useSelector} from 'react-redux';
-import {minusShopping, plusShopping} from '../redux/slices/shoppingSlice';
+import {useSelector} from 'react-redux';
 const ShoppingBasket = ({route, navigation}) => {
-  const dispatch = useDispatch();
   const shoppings = useSelector(state => state.shopping.shoppings);
+  // const [totalPrice, setTotalPrice] = useState(0);
 
   return (
     <SafeAreaView
@@ -126,7 +124,7 @@ const ShoppingBasket = ({route, navigation}) => {
               color: 'black',
             }}>
             결제금액{'    '}
-            {/* {price}원 */}
+            {/* {totalPrice}원 */}
           </Text>
         </View>
         <View
@@ -145,7 +143,7 @@ const ShoppingBasket = ({route, navigation}) => {
           />
           <CustomButton
             title={'결제하기'}
-            onPress={''}
+            onPress={() => navigation.push('InputPhoneNum')}
             width={'50%'}
             height={80}
             backgroundColor={'#056CF2'}

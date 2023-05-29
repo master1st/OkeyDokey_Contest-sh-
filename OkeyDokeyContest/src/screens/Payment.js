@@ -1,7 +1,6 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
-import InputModal from '../components/InputModal';
-import CustomButton from '../components/CustomButton';
+import Card from '../components/Card';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Payment = () => {
@@ -41,6 +40,7 @@ const Payment = () => {
             </View>
             <View style={styles.subtitleView}>
               <Text style={styles.subtitle}>카드를 꽂아주세요</Text>
+              <Card />
             </View>
             <View style={styles.inputView}></View>
           </View>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '15%',
-    marginTop: 0,
   },
   headerTitle: {
     fontSize: 35,
@@ -88,7 +87,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '50%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   subtitleView: {
     alignItems: 'center',

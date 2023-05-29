@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '50%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   subtitleView: {
     alignItems: 'center',

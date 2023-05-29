@@ -19,14 +19,14 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Payment" component={Payment} />
+        <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} />
+        <Stack.Screen name="OrderNum" component={OrderNum} />
+
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QCoffee" component={QCoffee} />
         <Stack.Screen name="Qmilk" component={Qmilk} />
         <Stack.Screen name="EasyMenu" component={EasyMenu} />
-
-        <Stack.Screen name="OrderNum" component={OrderNum} />
-        <Stack.Screen name="Payment" component={Payment} />
-        <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} />
       </Stack.Navigator>
     </NavigationContainer>
   );

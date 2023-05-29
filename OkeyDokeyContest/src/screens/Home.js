@@ -16,8 +16,8 @@ const Home = () => {
   const navigation = useNavigation();
   const [data, setData] = useState(
     {
-      eatin: false,
-      takeout: false,
+      eatin: `매장에서\n먹기`,
+      takeout: "들고 가기",
     }, 
     );
   // const handleHere = textValue => {
@@ -48,12 +48,12 @@ const Home = () => {
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
         />
       </View>
-      <View style={{flex: 9}}>
+      <View style={{flex:9 , width: '100%',height:'100%',justifyContent: 'center',alignItems:'center'}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleHere} QuizText={"매장에서 먹기"}/>
-          <Quiz handleEvent={handleTakeOut} QuizText={"들고가기"}/>
+          <Quiz handleEvent={handleHere} QuizText={data.eatin}/>
+          <Quiz handleEvent={handleTakeOut} QuizText={data.takeout}/>
         </View>
-        <View style={{}}>
+        <View style={{width:'100%'}}>
           <CustomButton title={"비회원으로 계속하기"} onPress={handleNonMembers} width={"100%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
         </View>
       </View>
@@ -71,11 +71,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mid: {
+    width: '80%',
+    height: '50%',
     flex: 1,
-    marginTop: 20,
+    marginTop: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 100,
   },
   left: {
     height: '60%',

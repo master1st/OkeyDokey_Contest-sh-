@@ -14,7 +14,7 @@ import Toggle from '../components/Toggle';
 
 const QCoffee = ({navigation}) => {
   const [data, setData] = useState({
-    nonCoffee: "커피가 아닌 것",
+    nonCoffee: "커피가\n 아닌 것",
     Coffee: "커피",
   });
   // const handleHere = textValue => {
@@ -22,14 +22,16 @@ const QCoffee = ({navigation}) => {
   //     setData({...data, eatin:true});
   //   }
   // };
-  const handleHere = () => {
+  const handleCoffee = () => {
+    const Coffee = data.Coffee.replace(/\n/g, "");
     navigation.push('Qmilk', {
-      qdata: data.nonCoffee,
+      qdata: Coffee,
     });
   };
-  const handleTakeOut = () => {
+  const handleNonCoffee = () => {
+    const nonCoffee = data.nonCoffee.replace(/\n/g, "");
     navigation.push('Qmilk', {
-      qdata: data.Coffee,
+      qdata: nonCoffee,
     });
   };
   return (
@@ -43,10 +45,10 @@ const QCoffee = ({navigation}) => {
       <View style={{alignItems:'center', justifyContent: 'center', width: '100%'}}>
         <Toggle />
       </View>
-      <View style={{flex: 9}}>
+      <View style={{flex:9 , width: '100%',justifyContent: 'center',alignItems:'center'}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleHere} QuizText={'커피'} />
-          <Quiz handleEvent={handleTakeOut} QuizText={'커피가 아닌 것'} />
+          <Quiz handleEvent={handleCoffee} QuizText={data.Coffee} />
+          <Quiz handleEvent={handleNonCoffee} QuizText={data.nonCoffee} />
         </View>
         <View style={{flexDirection: 'row'}}>
           <CustomButton
@@ -83,8 +85,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mid: {
+    marginTop: 50,
+    width:'80%',
+    height:'100%',
     flex: 1,
-    marginTop: 20,
+    marginBottom: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

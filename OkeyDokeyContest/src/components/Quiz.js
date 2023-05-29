@@ -14,11 +14,9 @@ export default Quiz;
 const styles = StyleSheet.create({
     left: {
         backgroundColor:'white',
-        height: '60%',
-        // marginLeft: 30,
-        flex: 1,
-        // marginRight: 5,
-        marginHorizontal: 30,
+        height: '90%',
+        flex: 1,   
+        marginHorizontal: 10,
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: {

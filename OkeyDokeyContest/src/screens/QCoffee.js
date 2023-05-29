@@ -12,11 +12,10 @@ import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
-const QCoffee = () => {
-  const navigation = useNavigation();
+const QCoffee = ({navigation}) => {
   const [data, setData] = useState({
-    eatin: false,
-    takeout: false,
+    nonCoffee: "커피가 아닌 것",
+    Coffee: "커피",
   });
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {
@@ -25,12 +24,12 @@ const QCoffee = () => {
   // };
   const handleHere = () => {
     navigation.push('Qmilk', {
-      qdata: data.eatin,
+      qdata: data.nonCoffee,
     });
   };
   const handleTakeOut = () => {
     navigation.push('Qmilk', {
-      qdata: data.takeout,
+      qdata: data.Coffee,
     });
   };
   return (
@@ -52,7 +51,7 @@ const QCoffee = () => {
         <View style={{flexDirection: 'row'}}>
           <CustomButton
             title={'뒤로가기'}
-            onPress={''}
+            onPress={() => navigation.pop()}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

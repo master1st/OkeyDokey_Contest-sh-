@@ -22,14 +22,14 @@ const App = () => {
     <NavigationContainer>
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          {/* <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="QCoffee" component={QCoffee} />
         <Stack.Screen name="Qmilk" component={Qmilk} />
-        <Stack.Screen name="EasyMenu" component={EasyMenu} /> */}
+        <Stack.Screen name="EasyMenu" component={EasyMenu} />
           <Stack.Screen name="OrderCheck" component={OrderCheck} />
-          <Stack.Screen name="ShoppingBasket" component={ShoppingBasket} />
+          {/* <Stack.Screen name="ShoppingBasket" component={ShoppingBasket} />
 
-          {/* <Stack.Screen name="OrderNum" component={OrderNum} />
+          <Stack.Screen name="OrderNum" component={OrderNum} />
         <Stack.Screen name="Payment" component={Payment} />
         <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} /> */}
         </Stack.Navigator>

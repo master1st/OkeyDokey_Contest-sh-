@@ -17,8 +17,8 @@ const Qmilk = ({ route, navigation  }) => {
   const { qdata } = route.params;
   const [data, setData] = useState(
     {
-      nonMilk: "우유가 안 들어간 것",
-      milk: "우유가 들어간 것",
+      nonMilk: "우유가\n 안 들어간 것",
+      milk: "우유가\n 들어간 것",
     }, 
     );
   // const handleHere = textValue => {
@@ -26,20 +26,21 @@ const Qmilk = ({ route, navigation  }) => {
   //     setData({...data, eatin:true});
   //   }
   // };
-  const handleHere = () => {
+  const handleNonMilk = () => {
+    const nonMilk = data.nonMilk.replace(/\n/g, "");
     navigation.push('EasyMenu', {
-      qdata : data.nonMilk,
-    })
-  }
-  const handleTakeOut = () => {
-    navigation.push('EasyMenu', {
-      qdata : data.milk,
+      qdata : nonMilk,
     })
   };
+  const handleMilk = () => {
+    const milk = data.milk.replace(/\n/g, "");
+    navigation.push('EasyMenu', {
+      qdata : milk,
+    })
+  }
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
       <View style={styles.header}>
-        <Text>{qdata}</Text>
         <Image
           style={{width: 150, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
@@ -48,10 +49,13 @@ const Qmilk = ({ route, navigation  }) => {
       <View style={{alignItems:'center', justifyContent: 'center', width: '100%'}}>
         <Toggle />
       </View>
-      <View style={{flex: 9}}>
+      <View style={{alignItems:'center', justifyContent: 'center', width: '100%', marginTop:22}}>
+      <Text style={{fontSize: 32, fontFamily:'Pretendard', fontWeight:'bold', color:'#212121'}}>{qdata}</Text>
+      </View>
+      <View style={{flex:9 , width: '100%', height:'100%',justifyContent: 'center',alignItems:'center'}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleHere} QuizText={"우유가 안 들어간 것"}/>
-          <Quiz handleEvent={handleTakeOut} QuizText={"우유가 들어간 것"}/>
+          <Quiz handleEvent={handleNonMilk} QuizText={data.nonMilk}/>
+          <Quiz handleEvent={handleMilk} QuizText={data.milk}/>
         </View>
         <View style={{flexDirection:'row'}}>
           <CustomButton title={"뒤로가기"} onPress={() => navigation.pop()} width={"50%"} height={150} backgroundColor={"#6D6D6D"} textColor={'white'} fontSize={50}/>
@@ -72,47 +76,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mid: {
+    width:'80%',
+    height:'100%',
     flex: 1,
-    marginTop: 20,
+    marginBottom: 100,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  left: {
-    height: '60%',
-    marginLeft: 30,
-    borderWidth: 1,
-    borderColor: 'black',
-    flex: 1,
-    marginRight: 5,
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-
-    elevation: 3,
-  },
-  right: {
-    height: '60%',
-    marginRight: 30,
-    borderWidth: 1,
-    borderColor: 'black',
-    flex: 1,
-    marginLeft: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.18,
-    shadowRadius: 1.0,
-
-    elevation: 3,
   },
 });

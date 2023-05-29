@@ -1,15 +1,23 @@
-import {StyleSheet, Image, Text, View, StatusBar} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  Text,
+  View,
+  StatusBar,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {minusShopping, plusShopping} from '../redux/slices/shoppingSlice';
 const ShoppingBasket = ({route, navigation}) => {
-  const {title, price, quantity, imgsrc, ice, size} = route.params;
-  const [quantity2, setquantity2] = useState(quantity);
-  const getQuantity = x => {
-    setquantity2(x);
-  };
+  const dispatch = useDispatch();
+  const shoppings = useSelector(state => state.shopping.shoppings);
+
   return (
     <SafeAreaView
       style={{
@@ -22,6 +30,7 @@ const ShoppingBasket = ({route, navigation}) => {
         position: 'relative',
       }}>
       <StatusBar barStyle="light-content" />
+
       <View style={styles.header}>
         <Image
           style={{width: 150, height: 50}}
@@ -84,18 +93,24 @@ const ShoppingBasket = ({route, navigation}) => {
             paddingHorizontal: 30,
             justifyContent: 'space-around',
           }}>
-          <CoffeeObject
-            width={'100%'}
-            height={220}
-            imageSize={200}
-            imgsrc={imgsrc}
-            title={title}
-            price={price}
-            ice={ice}
-            size={size}
-            quantity={quantity2}
-            getQuantity={getQuantity}
-          />
+          <ScrollView>
+            {shoppings.map(item => {
+              return (
+                <CoffeeObject
+                  id={item.id}
+                  width={'100%'}
+                  height={220}
+                  imageSize={200}
+                  imgsrc={item.imgsrc}
+                  title={item.title}
+                  price={item.price}
+                  ice={item.ice}
+                  size={item.size}
+                  quantity={item.quantity}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
         <View
           style={{
@@ -111,7 +126,7 @@ const ShoppingBasket = ({route, navigation}) => {
               color: 'black',
             }}>
             결제금액{'    '}
-            {price}원
+            {/* {price}원 */}
           </Text>
         </View>
         <View

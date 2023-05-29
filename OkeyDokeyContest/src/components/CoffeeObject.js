@@ -1,8 +1,11 @@
 import {TouchableOpacity, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import Coffee from './Coffee';
+import {useDispatch} from 'react-redux';
+import {minusShopping, plusShopping} from '../redux/slices/shoppingSlice';
 
 const CoffeeObject = ({
+  id,
   height,
   width,
   imageSize,
@@ -10,9 +13,9 @@ const CoffeeObject = ({
   price,
   imgsrc,
   quantity,
-  getQuantity,
   ice,
   size,
+  getQuantity,
 }) => {
   const styles = StyleSheet.create({
     container: {
@@ -43,15 +46,22 @@ const CoffeeObject = ({
       color: 'black',
     },
   });
+  const dispatch = useDispatch();
   const handleMinus = () => {
     if (quantity <= 1) return;
+    else if (getQuantity) getQuantity(quantity - 1);
     else {
-      getQuantity(quantity => quantity - 1);
+      dispatch(minusShopping(id));
+      console.log(id);
     }
   };
 
   const handlePlus = () => {
-    getQuantity(quantity => quantity + 1);
+    if (getQuantity) getQuantity(quantity + 1);
+    else {
+      dispatch(plusShopping(id));
+      console.log(id);
+    }
   };
 
   return (

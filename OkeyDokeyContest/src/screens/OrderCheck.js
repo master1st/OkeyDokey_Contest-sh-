@@ -4,15 +4,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
-
+import {coffeeData} from '../components/datas';
+import {useDispatch} from 'react-redux';
+import {addShopping} from '../redux/slices/shoppingSlice';
 const OrderCheck = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const item = {
-    title: '아메리카노',
-    price: '4500',
-    imgsrc: 'OkeyDokeyContest/assets/images/coffee.png',
-  };
   const [ice, setIce] = useState(true);
   const [size, setSize] = useState('Tall');
   const [quantity, setquantity] = useState(1);
@@ -20,25 +18,20 @@ const OrderCheck = () => {
     setquantity(x);
   };
   const handleConfirm = () => {
-    navigation.push('ShoppingBasket', {
-      title: item.title,
-      price: item.price,
-      quantity: quantity,
-      imgsrc: item.imgsrc,
-      ice: ice,
-      size: size,
-    });
+    dispatch(
+      addShopping({
+        title: coffeeData.title,
+        price: coffeeData.price,
+        quantity: quantity,
+        imgsrc: coffeeData.imgsrc,
+        ice: ice,
+        size: size,
+      }),
+    );
+    setquantity(1);
+    navigation.push('ShoppingBasket', {});
   };
-  const handleShoppingBacket = () => {
-    navigation.push('ShoppingBasket', {
-      title: item.title,
-      price: item.price,
-      quantity: quantity,
-      imgsrc: item.imgsrc,
-      ice: ice,
-      size: size,
-    });
-  };
+  const handleShoppingBacket = () => {};
   return (
     <SafeAreaView
       style={{
@@ -72,14 +65,6 @@ const OrderCheck = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          {/* <CustomModal
-            title="주문정보 확인"
-            width="75%"
-            height="70%"
-            coffeeTitle={'아메리카노'}
-            coffeePrice={'4500'}
-            coffeeImgsrc={}
-          /> */}
           <View style={{width: '75%', height: '70%', position: 'absolute'}}>
             <View
               style={{
@@ -111,12 +96,13 @@ const OrderCheck = () => {
                 width={'100%'}
                 height={220}
                 imageSize={200}
-                imgsrc={item.imgsrc}
-                title={item.title}
-                price={item.price}
+                imgsrc={coffeeData.imgsrc}
+                title={coffeeData.title}
+                price={coffeeData.price}
                 quantity={quantity}
                 getQuantity={getQuantity}
               />
+
               <Text style={{fontSize: 30, color: 'black', fontWeight: 'bold'}}>
                 온도
               </Text>

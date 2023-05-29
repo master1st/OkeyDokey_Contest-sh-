@@ -2,7 +2,11 @@ import {TouchableOpacity, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import Coffee from './Coffee';
 import {useDispatch} from 'react-redux';
-import {minusShopping, plusShopping} from '../redux/slices/shoppingSlice';
+import {
+  deleteShopping,
+  minusShopping,
+  plusShopping,
+} from '../redux/slices/shoppingSlice';
 
 const CoffeeObject = ({
   id,
@@ -52,7 +56,6 @@ const CoffeeObject = ({
     else if (getQuantity) getQuantity(quantity - 1);
     else {
       dispatch(minusShopping(id));
-      console.log(id);
     }
   };
 
@@ -62,6 +65,10 @@ const CoffeeObject = ({
       dispatch(plusShopping(id));
       console.log(id);
     }
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteShopping(id));
   };
 
   return (
@@ -80,7 +87,7 @@ const CoffeeObject = ({
               <Text style={{fontSize: 25, fontWeight: 'bold', color: 'black'}}>
                 {title}
               </Text>
-              <Text style={{fontSize: 20, color: 'black'}}>{price}원</Text>
+              <Text style={{fontSize: 20, color: 'black'}}>{price}</Text>
               <Text style={{fontSize: 20, color: 'black'}}>{size}</Text>
               <Text style={{fontSize: 20, color: 'black'}}>
                 {ice ? 'ICE' : 'HOT'}
@@ -141,6 +148,7 @@ const CoffeeObject = ({
               </View>
             </View>
             <TouchableOpacity
+              onPress={handleDelete}
               style={{
                 backgroundColor: '#F25D07',
                 width: 100,
@@ -218,7 +226,7 @@ const CoffeeObject = ({
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={styles.mainRight}>{price}원</Text>
+            <Text style={styles.mainRight}>{price}</Text>
           </>
         )}
       </View>

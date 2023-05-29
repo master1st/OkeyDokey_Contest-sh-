@@ -1,9 +1,34 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import CustomButton from './CustomButton';
 import KeyPad from './KeyPad';
 
 const InputModal = ({width, height, title}) => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const handleNumberPress = number => {
+    setPhoneNumber(prevPhoneNumber => {
+      let newPhoneNumber = prevPhoneNumber + number;
+      if (newPhoneNumber.length === 3 || newPhoneNumber.length === 8) {
+        newPhoneNumber += '-';
+      }
+      return newPhoneNumber.length <= 13 ? newPhoneNumber : prevPhoneNumber;
+    });
+  };
+
+  const handleDeletePress = () => {
+    setPhoneNumber(prevPhoneNumber => {
+      const lastChar = prevPhoneNumber.slice(-1);
+      console.log(lastChar);
+      const newPhoneNumber =
+        lastChar === '-'
+          ? prevPhoneNumber.slice(0, -2)
+          : prevPhoneNumber.slice(0, -1);
+
+      return newPhoneNumber;
+    });
+  };
+
   return (
     <View style={{width: width, height: height, position: 'absolute'}}>
       <View style={styles.main}>
@@ -14,8 +39,13 @@ const InputModal = ({width, height, title}) => {
           <Text style={styles.subtitle}>전화번호를 입력해 주세요.</Text>
         </View>
         <View style={styles.inputView}>
-          <View style={styles.inputPhoneNumber}></View>
-          <KeyPad />
+          <View style={styles.inputPhoneNumber}>
+            <Text style={styles.inputPhoneNumberText}>{phoneNumber}</Text>
+          </View>
+          <KeyPad
+            onNumberPress={handleNumberPress}
+            onDeletePress={handleDeletePress}
+          />
         </View>
       </View>
 
@@ -92,5 +122,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F7FB',
     marginBottom: 30,
     borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputPhoneNumberText: {
+    fontSize: 25,
+    color: 'black',
   },
 });

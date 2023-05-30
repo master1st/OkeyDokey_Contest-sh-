@@ -13,7 +13,7 @@ import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
 
-const Qmilk = ({ route, navigation  }) => {
+const Qmilk = async ({ route, navigation  }) => {
   const { qdata } = route.params;
   const [data, setData] = useState(
     {
@@ -21,6 +21,10 @@ const Qmilk = ({ route, navigation  }) => {
       milk: "우유가\n 들어간 것",
     }, 
     );
+
+  const { networkData } = await API.get("/category2/list/1");
+  console.log(networkData);
+
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {
   //     setData({...data, eatin:true});

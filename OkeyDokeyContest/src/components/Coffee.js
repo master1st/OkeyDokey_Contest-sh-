@@ -51,7 +51,6 @@ const Coffee = ({
     } else if (goto === 'Nothing') {
       dispatch(
         addShopping({
-          id : id,
           title: CoffeeName,
           price: CoffeePrice,
           quantity: 1,

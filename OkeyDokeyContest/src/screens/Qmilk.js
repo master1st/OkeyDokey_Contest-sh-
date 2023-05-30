@@ -13,7 +13,7 @@ import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
 
-const Qmilk = async ({ route, navigation  }) => {
+const Qmilk = ({ route, navigation  }) => {
   const { qdata } = route.params;
   const [data, setData] = useState(
     {
@@ -22,8 +22,8 @@ const Qmilk = async ({ route, navigation  }) => {
     }, 
     );
 
-  const { networkData } = await API.get("/category2/list/1");
-  console.log(networkData);
+  // const { networkData } = await API.get("/category2/list/1");
+  // console.log(networkData);
 
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {

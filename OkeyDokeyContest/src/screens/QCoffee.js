@@ -14,15 +14,15 @@ import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
-const QCoffee = async ({navigation}) => {
+const QCoffee = ({navigation}) => {
   const [data, setData] = useState({
     nonCoffee: '커피가\n 아닌 것',
     Coffee: '커피',
   });
 
 
-  const { networkData } = await API.get("/category1/list/");
-  console.log(networkData);
+  // const { networkData } = await API.get("/category1/list/");
+  // console.log(networkData);
 
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {

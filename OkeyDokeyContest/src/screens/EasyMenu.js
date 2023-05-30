@@ -23,7 +23,7 @@ import {
   plusShopping,
 } from '../redux/slices/shoppingSlice';
 
-const EasyMenu = async ({navigation, route}) => {
+const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
 
@@ -48,8 +48,8 @@ const EasyMenu = async ({navigation, route}) => {
     console.log(easy);
   };
 
-  const { networkData } = await API.get("/menu/list/1/");
-  console.log(networkData);
+  // const { networkData } = await API.get("/menu/list/1/");
+  // console.log(networkData);
 
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB', alignItems: 'center'}}>

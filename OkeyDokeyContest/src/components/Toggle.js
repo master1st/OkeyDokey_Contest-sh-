@@ -1,12 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import React, {useState, useRef} from 'react';
+import {View, TouchableOpacity, Text, StyleSheet, Animated} from 'react-native';
 
-const Toggle = () => {
+const Toggle = ({getEasy}) => {
   const [isToggled, setIsToggled] = useState(false);
   const slideAnimation = useRef(new Animated.Value(0)).current;
 
   const handleToggle = () => {
     setIsToggled(!isToggled);
+    getEasy();
+    console.log(isToggled);
+
     Animated.timing(slideAnimation, {
       toValue: isToggled ? 0 : 1,
       duration: 600,
@@ -27,22 +30,39 @@ const Toggle = () => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.toggleButton, { width: 300, height: 50 }]}>
-      <Animated.View style={[styles.slideButton, buttonStyle]} />
+      <View style={[styles.toggleButton, {width: 300, height: 55}]}>
+        <View style={styles.textContainer2}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={[
+                styles.buttonText,
+                isToggled ? styles.buttonTextActive : null,
+              ]}>
+              일반
+            </Text>
+          </View>
+        </View>
+        <View style={styles.textContainer}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={[
+                styles.buttonText,
+                !isToggled ? styles.buttonTextActive : null,
+              ]}>
+              쉬운메뉴
+            </Text>
+          </View>
+        </View>
         <TouchableOpacity
-          style={[styles.button, styles.leftButton,isToggled ? styles.buttonActive : null]}
+          style={[
+            styles.button,
+            styles.leftButton,
+            isToggled ? styles.buttonActive : null,
+          ]}
           activeOpacity={1}
           onPress={handleToggle}
-        >
-          <Text style={[styles.buttonText, !isToggled ? styles.buttonTextActive : null]}>일반</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.rightButton, !isToggled ? styles.buttonActive : null]}
-          activeOpacity={1}
-          onPress={handleToggle}
-        >
-          <Text style={[styles.buttonText , isToggled ? styles.buttonTextActive : null]}>쉬운메뉴</Text>
-        </TouchableOpacity>
+        />
+        <Animated.View style={[styles.slideButton, buttonStyle]} />
       </View>
     </View>
   );
@@ -53,43 +73,64 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toggleButton: {
-    shadowColor: "#000",
-    elevation: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.25,
     shadowRadius: 4,
     flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 20,
     overflow: 'hidden',
+    borderTopLeftRadius: 150,
+    borderBottomLeftRadius: 150,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 150,
   },
   button: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    zIndex: 100,
   },
   leftButton: {
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderTopLeftRadius: 150,
+    borderBottomLeftRadius: 150,
   },
   rightButton: {
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
+    borderTopRightRadius: 150,
+    borderBottomRightRadius: 150,
   },
   buttonActive: {
-    backgroundColor: 'white',
-    
+    // backgroundColor: 'white',
+  },
+  textContainer: {
+    position: 'absolute',
+    left: 30,
+    top: 10,
+    flexDirection: 'row',
+    width: '100%',
+    zIndex: 1,
+  },
+  textContainer2: {
+    position: 'absolute',
+    left: 200,
+    top: 10,
+    flexDirection: 'row',
+    width: '100%',
+    zIndex: 1,
   },
   buttonText: {
-    // color: 'white',
-    fontFamily:'Pretendard',
-    fontWeight:'bold',
-    fontSize: 16,
+    fontFamily: 'Pretendard',
+    fontWeight: 'bold',
+    fontSize: 24,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonTextActive: {
-     color: 'white',
+    color: 'white',
   },
   slideButton: {
     position: 'absolute',

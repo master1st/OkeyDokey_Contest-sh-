@@ -4,13 +4,12 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
-import {coffeeData} from '../components/datas';
 import {useDispatch} from 'react-redux';
 import {addShopping} from '../redux/slices/shoppingSlice';
-const OrderCheck = () => {
+const OrderCheck = ({route}) => {
+  const {qdata} = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
   const [ice, setIce] = useState(true);
   const [size, setSize] = useState('Tall');
   const [quantity, setquantity] = useState(1);
@@ -20,10 +19,10 @@ const OrderCheck = () => {
   const handleConfirm = () => {
     dispatch(
       addShopping({
-        title: coffeeData.title,
-        price: coffeeData.price,
+        title: qdata[0].name,
+        price: qdata[0].price,
         quantity: quantity,
-        imgsrc: coffeeData.imgsrc,
+        imgsrc: qdata[0].src,
         ice: ice,
         size: size,
       }),
@@ -31,7 +30,10 @@ const OrderCheck = () => {
     setquantity(1);
     navigation.push('ShoppingBasket', {});
   };
-  const handleShoppingBacket = () => {};
+  const handleShoppingBacket = () => {
+    setquantity(1);
+    navigation.push('ShoppingBasket');
+  };
   return (
     <SafeAreaView
       style={{
@@ -96,9 +98,9 @@ const OrderCheck = () => {
                 width={'100%'}
                 height={220}
                 imageSize={200}
-                imgsrc={coffeeData.imgsrc}
-                title={coffeeData.title}
-                price={coffeeData.price}
+                imgsrc={qdata[0].src}
+                title={qdata[0].name}
+                price={qdata[0].price}
                 quantity={quantity}
                 getQuantity={getQuantity}
               />

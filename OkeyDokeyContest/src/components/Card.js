@@ -1,15 +1,56 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Image, Animated, Easing} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+
+import React, {useRef, useEffect, useState} from 'react';
 
 const Card = () => {
+  const navigation = useNavigation();
+  const cardAnimation = useRef(new Animated.Value(0)).current;
+  const [animationCount, setAnimationCount] = useState(0);
+  const [reverseAnimation, setReverseAnimation] = useState(false);
+
+  useEffect(() => {
+    if (animationCount < 6) {
+      //왔다갔다 3번..
+      animatedCard(reverseAnimation);
+      setReverseAnimation(prevReverse => !prevReverse); //방향전환
+    } else {
+      navigation.navigate('OrderNum'); //왔다갔다 다하면 주문번호 화면으로 이동
+    }
+  }, [animationCount]);
+
+  //reverse false면 위로, true면 아래로 이동
+  const animatedCard = reverse => {
+    Animated.timing(cardAnimation, {
+      toValue: reverse ? 0 : 1,
+      easing: Easing.linear,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start(() => {
+      setAnimationCount(count => count + 1);
+    });
+  };
+
+  // 애니메이션 스타일 적용
+  const animatedStyle = {
+    transform: [
+      {
+        translateY: cardAnimation.interpolate({
+          inputRange: [0, 1],
+          outputRange: [50, 0], // 애니메이션에 따라 y축 이동
+        }),
+      },
+    ],
+  };
+
   return (
     <View style={styles.cardView}>
-      <View style={styles.cardImg}>
+      <Animated.View style={[styles.cardImg, animatedStyle]}>
         <Image
           style={{width: 150, height: 100}}
           source={require('OkeyDokeyContest/assets/images/card.png')}
         />
-      </View>
+      </Animated.View>
       <View style={styles.outlineBox}>
         <View style={styles.grayBox}></View>
         <View style={styles.redBox}></View>

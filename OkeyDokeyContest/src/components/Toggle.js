@@ -38,7 +38,7 @@ const Toggle = ({getEasy}) => {
                 styles.buttonText,
                 isToggled ? styles.buttonTextActive : null,
               ]}>
-              쉬운메뉴
+              일반
             </Text>
           </View>
         </View>
@@ -49,7 +49,7 @@ const Toggle = ({getEasy}) => {
                 styles.buttonText,
                 !isToggled ? styles.buttonTextActive : null,
               ]}>
-              일반
+              쉬운메뉴
             </Text>
           </View>
         </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     position: 'absolute',
-    left: 50,
+    left: 30,
     top: 10,
     flexDirection: 'row',
     width: '100%',
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   textContainer2: {
     position: 'absolute',
-    left: 180,
+    left: 200,
     top: 10,
     flexDirection: 'row',
     width: '100%',

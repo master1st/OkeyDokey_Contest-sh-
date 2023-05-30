@@ -12,13 +12,18 @@ import API from '../API/api';
 const OrderNum = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const shoppings = useSelector(state => state.shopping.shoppings); //장바구니에 담긴 배열
-  console.log(shoppings);
+  const orderNumber = useSelector(state => state.shopping.orderNumber); //주문번호
+  const is_pack = useSelector(state => state.shopping.is_pack); //포장여부
+
+  // console.log('주문번호 : ' + orderNumber + ', 포장 : ' + is_pack);
+  // console.log(shoppings);
 
   const sendData = async shoppings => {
     try {
       const requestData = {
-        is_pack: true, // 이거는 프로바이더로 가져와줘야함.
+        is_pack: is_pack,
         data: shoppings.map(item => ({
           name: item.title,
           quantity: item.quantity,
@@ -28,9 +33,9 @@ const OrderNum = () => {
       };
 
       const response = await API.post('/order/create/', requestData);
-      console.log('🥹 success : ' + response.data);
+      console.log('[🥹 success ] ' + response.data);
     } catch (error) {
-      console.log('😝 error : ' + error);
+      console.log('[😝 error ]' + error);
     }
 
     //쇼핑 배열 초기화함
@@ -77,7 +82,7 @@ const OrderNum = () => {
               <Text style={styles.headerTitle}>주문번호</Text>
             </View>
             <View style={styles.subtitleView}>
-              <Text style={styles.orderNumber}>123번</Text>
+              <Text style={styles.orderNumber}>{orderNumber}</Text>
               <Text style={styles.subtitle}>주문이 완료되었습니다</Text>
             </View>
             <View style={styles.inputView}></View>

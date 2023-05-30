@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import API from '../API/api';
+
 import {
   Button,
   Image,
@@ -12,23 +14,15 @@ import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 
-const QCoffee = ({navigation}) => {
+const QCoffee = async ({navigation}) => {
   const [data, setData] = useState({
     nonCoffee: '커피가\n 아닌 것',
     Coffee: '커피',
   });
-  // callback 을 사용할 때,
-  axios
-    .get('url')
-    .then(function (response) {
-      // response
-    })
-    .catch(function (error) {
-      // 오류발생시 실행
-    })
-    .then(function () {
-      // 항상 실행
-    });
+
+
+  const { networkData } = await API.get("/category1/list/");
+  console.log(networkData);
 
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {

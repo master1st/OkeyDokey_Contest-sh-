@@ -13,8 +13,12 @@ import {
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { resetOrderNumber } from '../redux/slices/shoppingSlice';
 const QCoffee = ({navigation}) => {
+
+  const shoppings = useSelector(state => state.shopping.shoppings);
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     nonCoffee: '커피가\n 아닌 것',
     Coffee: '커피',
@@ -67,7 +71,10 @@ const QCoffee = ({navigation}) => {
         <View style={{flexDirection: 'row'}}>
           <CustomButton
             title={'뒤로가기'}
-            onPress={() => navigation.pop()}
+            onPress={() => {
+              dispatch(resetOrderNumber());
+              navigation.pop();
+            }}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

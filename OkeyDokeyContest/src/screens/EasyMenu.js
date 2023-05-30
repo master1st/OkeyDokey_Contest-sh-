@@ -59,7 +59,7 @@ const EasyMenu = ({navigation, route}) => {
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
         <Toggle getEasy={getEasy} />
       </View>
-      {easy ? (
+      {!easy ? (
         <View
           style={{
             alignItems: 'center',
@@ -104,7 +104,7 @@ const EasyMenu = ({navigation, route}) => {
         </View>
       )}
 
-      {easy ? (
+      {!easy ? (
         <View style={{flex: 9, height: '100%'}}>
           <View style={styles.mid}>
             <View style={styles.midItemBox}>
@@ -223,6 +223,7 @@ const EasyMenu = ({navigation, route}) => {
               return (
                 <>
                   <Coffee
+                    key={item.id}
                     goto={'Nothing'}
                     backgroundImageSize={130}
                     coffeeImageWidth={99}
@@ -312,7 +313,7 @@ const EasyMenu = ({navigation, route}) => {
                           height={20}
                           backgroundColor={'#0583F2'}
                           title={'+'}
-                          fontSize={20}
+                          fontSize={10}
                           textColor={'white'}
                           onPress={() => handlePlus(item.id)}
                           borderRadius={20}
@@ -323,7 +324,7 @@ const EasyMenu = ({navigation, route}) => {
                           height={20}
                           backgroundColor={'#0583F2'}
                           title={'-'}
-                          fontSize={20}
+                          fontSize={10}
                           textColor={'white'}
                           onPress={() => handleMinus(item.id, item.quantity)}
                           borderRadius={20}
@@ -334,7 +335,7 @@ const EasyMenu = ({navigation, route}) => {
                           height={20}
                           backgroundColor={'#F25D07'}
                           title={'x'}
-                          fontSize={20}
+                          fontSize={10}
                           textColor={'white'}
                           onPress={() => handleDelete(item.id)}
                           borderRadius={20}

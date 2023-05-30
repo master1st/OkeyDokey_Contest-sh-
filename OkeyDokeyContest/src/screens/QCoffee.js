@@ -14,22 +14,35 @@ import Toggle from '../components/Toggle';
 
 const QCoffee = ({navigation}) => {
   const [data, setData] = useState({
-    nonCoffee: "커피가\n 아닌 것",
-    Coffee: "커피",
+    nonCoffee: '커피가\n 아닌 것',
+    Coffee: '커피',
   });
+  // callback 을 사용할 때,
+  axios
+    .get('url')
+    .then(function (response) {
+      // response
+    })
+    .catch(function (error) {
+      // 오류발생시 실행
+    })
+    .then(function () {
+      // 항상 실행
+    });
+
   // const handleHere = textValue => {
   //   if (textValue !== undefined) {
   //     setData({...data, eatin:true});
   //   }
   // };
   const handleCoffee = () => {
-    const Coffee = data.Coffee.replace(/\n/g, "");
+    const Coffee = data.Coffee.replace(/\n/g, '');
     navigation.push('Qmilk', {
       qdata: Coffee,
     });
   };
   const handleNonCoffee = () => {
-    const nonCoffee = data.nonCoffee.replace(/\n/g, "");
+    const nonCoffee = data.nonCoffee.replace(/\n/g, '');
     navigation.push('Qmilk', {
       qdata: nonCoffee,
     });
@@ -42,10 +55,17 @@ const QCoffee = ({navigation}) => {
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
         />
       </View>
-      <View style={{alignItems:'center', justifyContent: 'center', width: '100%'}}>
+      <View
+        style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
         <Toggle />
       </View>
-      <View style={{flex:9 , width: '100%',justifyContent: 'center',alignItems:'center'}}>
+      <View
+        style={{
+          flex: 9,
+          width: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <View style={styles.mid}>
           <Quiz handleEvent={handleCoffee} QuizText={data.Coffee} />
           <Quiz handleEvent={handleNonCoffee} QuizText={data.nonCoffee} />
@@ -86,8 +106,8 @@ const styles = StyleSheet.create({
   },
   mid: {
     marginTop: 50,
-    width:'80%',
-    height:'100%',
+    width: '80%',
+    height: '100%',
     flex: 1,
     marginBottom: 100,
     flexDirection: 'row',

@@ -61,9 +61,17 @@ const shoppingSlice = createSlice({
         state.shoppings.splice(item, 1);
       }
     },
+    resetShopping: state => {
+      state.shoppings = [];
+    },
   },
 });
 
 export default shoppingSlice.reducer;
-export const {addShopping, plusShopping, minusShopping, deleteShopping} =
-  shoppingSlice.actions;
+export const {
+  addShopping,
+  plusShopping,
+  minusShopping,
+  deleteShopping,
+  resetShopping,
+} = shoppingSlice.actions;

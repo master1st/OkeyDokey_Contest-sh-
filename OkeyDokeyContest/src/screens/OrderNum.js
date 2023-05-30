@@ -1,10 +1,47 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
-import InputModal from '../components/InputModal';
 import CustomButton from '../components/CustomButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {resetShopping} from '../redux/slices/shoppingSlice';
+
+import API from '../API/api';
 
 const OrderNum = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const shoppings = useSelector(state => state.shopping.shoppings); //장바구니에 담긴 배열
+  console.log(shoppings);
+
+  const sendData = async shoppings => {
+    try {
+      const requestData = {
+        is_pack: true, // 이거는 프로바이더로 가져와줘야함.
+        data: shoppings.map(item => ({
+          name: item.title,
+          quantity: item.quantity,
+          temperature: item.ice ? 'iced' : 'hot',
+          size: item.size.toLowerCase(),
+        })),
+      };
+
+      const response = await API.post('/order/create/', requestData);
+      console.log('🥹 success : ' + response.data);
+    } catch (error) {
+      console.log('😝 error : ' + error);
+    }
+
+    //쇼핑 배열 초기화함
+    dispatch(resetShopping());
+    //홈으로 돌아감
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'Home'}],
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -48,7 +85,7 @@ const OrderNum = () => {
 
           <CustomButton
             title={'확인'}
-            onPress={''}
+            onPress={() => sendData(shoppings)}
             width={'100%'}
             height={110}
             backgroundColor={'#056CF2'}

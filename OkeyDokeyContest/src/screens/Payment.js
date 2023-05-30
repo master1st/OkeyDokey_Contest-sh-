@@ -1,7 +1,8 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
-import Card from '../components/Card';
 import {SafeAreaView} from 'react-native-safe-area-context';
+
+import Card from '../components/Card';
 
 const Payment = () => {
   return (
@@ -98,5 +99,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
+  },
+  inputView: {
+    height: 40,
   },
 });

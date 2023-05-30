@@ -1,9 +1,12 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+
 import CustomButton from './CustomButton';
 import KeyPad from './KeyPad';
 
 const InputModal = ({width, height, title}) => {
+  const navigation = useNavigation();
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const handleNumberPress = number => {
@@ -19,7 +22,7 @@ const InputModal = ({width, height, title}) => {
   const handleDeletePress = () => {
     setPhoneNumber(prevPhoneNumber => {
       const lastChar = prevPhoneNumber.slice(-1);
-      console.log(lastChar);
+
       const newPhoneNumber =
         lastChar === '-'
           ? prevPhoneNumber.slice(0, -2)
@@ -52,7 +55,7 @@ const InputModal = ({width, height, title}) => {
       <View style={styles.bottomButtons}>
         <CustomButton
           title={'적립 안하기'}
-          onPress={''}
+          onPress={() => navigation.navigate('Payment')}
           width={'50%'}
           height={110}
           backgroundColor={'#6D6D6D'}
@@ -61,7 +64,7 @@ const InputModal = ({width, height, title}) => {
         />
         <CustomButton
           title={'적립하기'}
-          onPress={''}
+          onPress={() => navigation.navigate('Payment')}
           width={'50%'}
           height={110}
           backgroundColor={'#056CF2'}

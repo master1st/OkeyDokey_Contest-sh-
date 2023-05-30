@@ -10,9 +10,12 @@ import {
 } from 'react-native';
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addOrderNumber, setIsPack } from '../redux/slices/shoppingSlice';
 
 const Home = () => {
+  const shoppings = useSelector(state => state.shopping.shoppings);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [data, setData] = useState(
     {
@@ -26,11 +29,15 @@ const Home = () => {
   //   }
   // };
   const handleHere = () => {
+    dispatch(setIsPack(false));
+    dispatch(addOrderNumber());
     navigation.push('QCoffee', {
       qdata : data.eatin,
     })
   }
   const handleTakeOut = () => {
+    dispatch(setIsPack(true));
+    dispatch(addOrderNumber());
     navigation.push('QCoffee', {
       qdata : data.takeout,
     })

@@ -5,6 +5,8 @@ const shoppingSlice = createSlice({
   initialState: {
     currentId: 4,
     shoppings: [],
+    is_pack: false,
+    orderNumber: 0,
   },
   reducers: {
     addShopping: (state, action) => {
@@ -64,6 +66,24 @@ const shoppingSlice = createSlice({
     resetShopping: state => {
       state.shoppings = [];
     },
+
+    setIsPack : (state, action) => {
+      const item = action.payload;
+      state.is_pack = item;
+      console.log(state.is_pack);
+    },
+    addOrderNumber : (state, action) => {
+      if(state.orderNumber > 100){
+        state.orderNumber = 0;   
+      } else {
+        state.orderNumber += 1;
+      }
+      console.log(state.orderNumber);
+    },
+    resetOrderNumber : (state, action) => {
+      state.orderNumber = state.orderNumber - 1;
+    }
+
   },
 });
 
@@ -74,4 +94,7 @@ export const {
   minusShopping,
   deleteShopping,
   resetShopping,
+  setIsPack,
+  addOrderNumber,
+  resetOrderNumber
 } = shoppingSlice.actions;

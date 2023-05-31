@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   Button,
@@ -26,7 +26,23 @@ import {
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
+  const [totalPrice, setTotalPrice] = useState(0);
+  // 카데고리별 데이터
+  const coffeeList = coffeeDatas.find(item => item.name === '커피');
+  const nonCoffeeList = coffeeDatas.find(item => item.name === '논커피');
+  const adeList = coffeeDatas.find(item => item.name === '에이드');
+  const smoothieList = coffeeDatas.find(item => item.name === '스무디');
+  const teaList = coffeeDatas.find(item => item.name === '티');
 
+  // 어떤 카테고리인지
+  const [category, setCategory] = useState(coffeeList);
+  useEffect(() => {
+    let newTotalPrice = 0;
+    shoppings.forEach(item => {
+      newTotalPrice += item.price * item.quantity;
+    });
+    setTotalPrice(newTotalPrice);
+  }, [shoppings]);
   const handleMinus = (id, quantity) => {
     if (quantity <= 1) return;
     else {
@@ -89,20 +105,30 @@ const EasyMenu = ({navigation, route}) => {
             justifyContent: 'space-around',
             marginTop: 25,
           }}>
-          <TouchableOpacity style={styles.navItemWrap}>
+          <TouchableOpacity
+            style={styles.navItemWrap}
+            onPress={() => setCategory(coffeeList)}>
             <Text style={styles.navItem}>커피</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItemWrap}>
+          <TouchableOpacity
+            style={styles.navItemWrap}
+            onPress={() => setCategory(nonCoffeeList)}>
             <Text style={styles.navItem}>논커피</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItemWrap}>
+          <TouchableOpacity
+            style={styles.navItemWrap}
+            onPress={() => setCategory(adeList)}>
             <Text style={styles.navItem}>에이드</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.navItemWrap}>
+          <TouchableOpacity
+            style={styles.navItemWrap}
+            onPress={() => setCategory(smoothieList)}>
             <Text style={styles.navItem}>스무디</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItemWrap}>
+          <TouchableOpacity
+            style={styles.navItemWrap}
+            onPress={() => setCategory(teaList)}>
             <Text style={styles.navItem}>티</Text>
           </TouchableOpacity>
         </View>
@@ -222,7 +248,7 @@ const EasyMenu = ({navigation, route}) => {
               flexWrap: 'wrap',
               elevation: 3,
             }}>
-            {coffeeDatas.map(item => {
+            {category.menues.map(item => {
               console.log(item);
               return (
                 <>
@@ -368,7 +394,8 @@ const EasyMenu = ({navigation, route}) => {
                     fontWeight: 'bold',
                     color: 'black',
                   }}>
-                  결제금액
+                  결제금액{'    '}
+                  {totalPrice}원
                 </Text>
                 <CustomButton
                   width={'100%'}

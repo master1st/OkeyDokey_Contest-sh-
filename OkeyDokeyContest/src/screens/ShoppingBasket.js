@@ -14,7 +14,15 @@ import CustomButton from '../components/CustomButton';
 import {useSelector} from 'react-redux';
 const ShoppingBasket = ({route, navigation}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
-  // const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  useEffect(() => {
+    let newTotalPrice = 0;
+    shoppings.forEach(item => {
+      let price = parseInt(item.price.replace('원', ''));
+      newTotalPrice += price * item.quantity;
+    });
+    setTotalPrice(newTotalPrice);
+  }, [shoppings]);
 
   return (
     <SafeAreaView
@@ -124,7 +132,7 @@ const ShoppingBasket = ({route, navigation}) => {
               color: 'black',
             }}>
             결제금액{'    '}
-            {/* {totalPrice}원 */}
+            {totalPrice}원
           </Text>
         </View>
         <View

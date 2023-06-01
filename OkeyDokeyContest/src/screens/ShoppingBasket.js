@@ -18,8 +18,7 @@ const ShoppingBasket = ({route, navigation}) => {
   useEffect(() => {
     let newTotalPrice = 0;
     shoppings.forEach(item => {
-      let price = parseInt(item.price.replace('원', ''));
-      newTotalPrice += price * item.quantity;
+      newTotalPrice += item.price * item.quantity;
     });
     setTotalPrice(newTotalPrice);
   }, [shoppings]);

@@ -67,23 +67,25 @@ const shoppingSlice = createSlice({
       state.shoppings = [];
     },
 
-    setIsPack : (state, action) => {
+    setIsPack: (state, action) => {
       const item = action.payload;
       state.is_pack = item;
       console.log(state.is_pack);
     },
-    addOrderNumber : (state, action) => {
-      if(state.orderNumber > 100){
-        state.orderNumber = 0;   
+    addOrderNumber: (state, action) => {
+      if (state.orderNumber > 100) {
+        state.orderNumber = 0;
       } else {
         state.orderNumber += 1;
       }
       console.log(state.orderNumber);
     },
-    resetOrderNumber : (state, action) => {
+    resetOrderNumber: (state, action) => {
       state.orderNumber = state.orderNumber - 1;
-    }
-
+    },
+    updateOrderNumber: (state, action) => {
+      state.orderNumber = action.payload;
+    },
   },
 });
 
@@ -96,5 +98,6 @@ export const {
   resetShopping,
   setIsPack,
   addOrderNumber,
-  resetOrderNumber
+  resetOrderNumber,
+  updateOrderNumber,
 } = shoppingSlice.actions;

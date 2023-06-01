@@ -19,6 +19,8 @@ target 'OkeyDokeyContest' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-cookies', :path => '../node_modules/react-native-cookies'
+
   target 'OkeyDokeyContestTests' do
     inherit! :complete
     # Pods for testing

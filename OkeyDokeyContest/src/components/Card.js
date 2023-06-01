@@ -1,13 +1,44 @@
 import {StyleSheet, Text, View, Image, Animated, Easing} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
 import React, {useRef, useEffect, useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {resetShopping, updateOrderNumber} from '../redux/slices/shoppingSlice';
+
+import axios from 'axios';
 
 const Card = () => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const cardAnimation = useRef(new Animated.Value(0)).current;
   const [animationCount, setAnimationCount] = useState(0);
   const [reverseAnimation, setReverseAnimation] = useState(false);
+
+  const shoppings = useSelector(state => state.shopping.shoppings); //장바구니에 담긴 배열
+  const is_pack = useSelector(state => state.shopping.is_pack); //포장여부
+
+  const sendData = async shoppings => {
+    const requestData = {
+      is_pack: is_pack,
+      data: shoppings.map(item => ({
+        name: item.title,
+        quantity: item.quantity,
+        temperature: item.ice ? 'ice' : 'hot',
+        size: item.size.toLowerCase(),
+      })),
+    };
+
+    try {
+      const response = await axios.post(
+        'http://13.125.232.138/order/create/',
+        requestData,
+      );
+
+      console.log('[🥹 success ] ' + response.data.order_num);
+      dispatch(updateOrderNumber(response.data.order_num));
+    } catch (error) {
+      console.log('[😝 error ]' + error.message);
+    }
+  };
 
   useEffect(() => {
     if (animationCount < 6) {
@@ -15,6 +46,7 @@ const Card = () => {
       animatedCard(reverseAnimation);
       setReverseAnimation(prevReverse => !prevReverse); //방향전환
     } else {
+      sendData(shoppings); //post 요청
       navigation.navigate('OrderNum'); //왔다갔다 다하면 주문번호 화면으로 이동
     }
   }, [animationCount]);

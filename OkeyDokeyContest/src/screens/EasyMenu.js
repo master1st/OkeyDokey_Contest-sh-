@@ -22,20 +22,56 @@ import {
   minusShopping,
   plusShopping,
 } from '../redux/slices/shoppingSlice';
+import API from '../API/api';
+import axios from 'axios';
 
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
+  const {qdata} = route.params;
+  const [easy, seteasy] = useState(false);
+  const getEasy = () => {
+    seteasy(!easy);
+  };
+
   const [totalPrice, setTotalPrice] = useState(0);
-  // 카데고리별 데이터
-  const coffeeList = coffeeDatas.find(item => item.name === '커피');
-  const nonCoffeeList = coffeeDatas.find(item => item.name === '논커피');
-  const adeList = coffeeDatas.find(item => item.name === '에이드');
-  const smoothieList = coffeeDatas.find(item => item.name === '스무디');
-  const teaList = coffeeDatas.find(item => item.name === '티');
+
+  //카테고리별 저장
+  const [coffeeList, setCoffeeList] = useState([]);
+  const [nonCoffeeList, setNonCoffeeList] = useState([]);
+  const [adeList, setAdeList] = useState([]);
+  const [smoothieList, setSmoothieList] = useState([]);
+  const [teaList, setTeaList] = useState([]);
 
   // 어떤 카테고리인지
-  const [category, setCategory] = useState(coffeeList);
+  const [category, setCategory] = useState([]);
+
+  //일반메뉴 받아오기 함수
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (coffeeList != []) {
+      setCategory(coffeeList);
+    }
+  }, [coffeeList]);
+
+  const fetchData = () => {
+    axios
+      .get('http://13.125.232.138/menu/list/')
+      .then(response => {
+        setCoffeeList(response.data.find(item => item.name === '커피'));
+        setNonCoffeeList(response.data.find(item => item.name === '논커피'));
+        setAdeList(response.data.find(item => item.name === '에이드'));
+        setSmoothieList(response.data.find(item => item.name === '스무디'));
+        setTeaList(response.data.find(item => item.name === '티'));
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
     let newTotalPrice = 0;
     shoppings.forEach(item => {
@@ -43,6 +79,7 @@ const EasyMenu = ({navigation, route}) => {
     });
     setTotalPrice(newTotalPrice);
   }, [shoppings]);
+
   const handleMinus = (id, quantity) => {
     if (quantity <= 1) return;
     else {
@@ -51,17 +88,9 @@ const EasyMenu = ({navigation, route}) => {
   };
   const handlePlus = id => {
     dispatch(plusShopping(id));
-    console.log(id);
   };
   const handleDelete = id => {
     dispatch(deleteShopping(id));
-  };
-
-  const {qdata} = route.params;
-  const [easy, seteasy] = useState(false);
-  const getEasy = () => {
-    seteasy(!easy);
-    console.log(easy);
   };
 
   // const { networkData } = await API.get("/menu/list/1/");
@@ -249,7 +278,6 @@ const EasyMenu = ({navigation, route}) => {
               elevation: 3,
             }}>
             {category.menues.map(item => {
-              console.log(item);
               return (
                 <>
                   <Coffee

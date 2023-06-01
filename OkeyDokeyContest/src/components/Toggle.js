@@ -8,7 +8,6 @@ const Toggle = ({getEasy}) => {
   const handleToggle = () => {
     setIsToggled(!isToggled);
     getEasy();
-    console.log(isToggled);
 
     Animated.timing(slideAnimation, {
       toValue: isToggled ? 0 : 1,

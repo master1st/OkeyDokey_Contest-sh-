@@ -66,13 +66,15 @@ const Coffee = ({
       <View style={styles.coffeeBackgroundImage}>
         <Image
           style={{width: coffeeImageWidth, height: coffeeImageHeight}}
-          // source={coffeeInfo[0].src}
-          source={{uri: imgsrc}}
+          source={coffeeInfo[0].src}
+          // source={{uri: imgsrc}}
         />
       </View>
       <View style={{marginTop: 30}}>
         <Text style={styles.CoffeeText}>{CoffeeName}</Text>
-        <Text style={styles.CoffeeText}>{CoffeePrice}</Text>
+        <Text style={styles.CoffeeText}>
+          {CoffeePrice ? CoffeePrice + '원' : ''}
+        </Text>
       </View>
     </TouchableOpacity>
   );

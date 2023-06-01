@@ -24,7 +24,6 @@ const shoppingSlice = createSlice({
             item.ice === action.payload.ice &&
             item.size === action.payload.size,
         );
-        console.log(a[0].id);
         const item = state.shoppings.findIndex(item => item.id === a[0].id);
         state.shoppings[item].quantity += 1;
         state.shoppings.push(state.shoppings.splice(item, 1)[0]);

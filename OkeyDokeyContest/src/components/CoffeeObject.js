@@ -226,7 +226,7 @@ const CoffeeObject = ({
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={styles.mainRight}>{price}</Text>
+            <Text style={styles.mainRight}>{price}원</Text>
           </>
         )}
       </View>

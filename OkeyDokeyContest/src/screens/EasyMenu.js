@@ -176,7 +176,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
               <Coffee
                 goto={'OrderCheck'}
@@ -187,7 +187,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
               <Coffee
                 goto={'OrderCheck'}
@@ -198,7 +198,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
 
               <Coffee
@@ -210,7 +210,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
               <Coffee
                 goto={'OrderCheck'}
@@ -221,7 +221,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
               <Coffee
                 goto={'OrderCheck'}
@@ -232,7 +232,7 @@ const EasyMenu = ({navigation, route}) => {
                 style={styles.imageWrap}
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
-                CoffeePrice={'4500원'}
+                CoffeePrice={'4500'}
               />
             </View>
           </View>

@@ -286,7 +286,7 @@ const EasyMenu = ({navigation, route}) => {
                     backgroundImageSize={130}
                     coffeeImageWidth={99}
                     coffeeImageHeight={162}
-                    imgsrc={item.imgsrc}
+                    imgsrc={item.image}
                     CoffeeName={item.name}
                     CoffeePrice={item.price}
                   />

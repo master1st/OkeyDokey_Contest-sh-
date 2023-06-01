@@ -66,7 +66,8 @@ const Coffee = ({
       <View style={styles.coffeeBackgroundImage}>
         <Image
           style={{width: coffeeImageWidth, height: coffeeImageHeight}}
-          source={coffeeInfo[0].src}
+          // source={coffeeInfo[0].src}
+          source={{uri: imgsrc}}
         />
       </View>
       <View style={{marginTop: 30}}>

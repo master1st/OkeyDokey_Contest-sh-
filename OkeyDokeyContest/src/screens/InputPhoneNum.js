@@ -1,5 +1,5 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import InputModal from '../components/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 

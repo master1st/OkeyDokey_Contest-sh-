@@ -2,47 +2,16 @@ import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React from 'react';
 import CustomButton from '../components/CustomButton';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {resetShopping} from '../redux/slices/shoppingSlice';
 
-import API from '../API/api';
-
 const OrderNum = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const orderNumber = useSelector(state => state.shopping.orderNumber); //order number
 
-  const shoppings = useSelector(state => state.shopping.shoppings); //장바구니에 담긴 배열
-  const orderNumber = useSelector(state => state.shopping.orderNumber); //주문번호
-  const is_pack = useSelector(state => state.shopping.is_pack); //포장여부
-
-  // console.log('주문번호 : ' + orderNumber + ', 포장 : ' + is_pack);
-  // console.log(shoppings);
-
-  const sendData = async shoppings => {
-    try {
-      const requestData = {
-        is_pack: is_pack,
-        data: shoppings.map(item => ({
-          name: item.title,
-          quantity: item.quantity,
-          temperature: item.ice ? 'iced' : 'hot',
-          size: item.size.toLowerCase(),
-        })),
-      };
-
-      console.log(requestData);
-
-      const response = await API.post(
-        '/order/create/',
-        JSON.stringify(requestData),
-      );
-
-      console.log('[🥹 success ] ' + response.data);
-    } catch (error) {
-      console.log('[😝 error ]' + error);
-    }
+  const navigateHome = () => {
     //쇼핑 배열 초기화함
     dispatch(resetShopping());
     //홈으로 돌아감
@@ -95,7 +64,7 @@ const OrderNum = () => {
 
           <CustomButton
             title={'확인'}
-            onPress={() => sendData(shoppings)}
+            onPress={() => navigateHome()}
             width={'100%'}
             height={110}
             backgroundColor={'#056CF2'}

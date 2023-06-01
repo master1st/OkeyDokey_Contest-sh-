@@ -32,12 +32,17 @@ const OrderNum = () => {
         })),
       };
 
-      const response = await API.post('/order/create/', requestData);
+      console.log(requestData);
+
+      const response = await API.post(
+        '/order/create/',
+        JSON.stringify(requestData),
+      );
+
       console.log('[🥹 success ] ' + response.data);
     } catch (error) {
       console.log('[😝 error ]' + error);
     }
-
     //쇼핑 배열 초기화함
     dispatch(resetShopping());
     //홈으로 돌아감

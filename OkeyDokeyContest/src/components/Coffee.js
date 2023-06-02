@@ -1,5 +1,5 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addShopping} from '../redux/slices/shoppingSlice';
@@ -38,11 +38,24 @@ const Coffee = ({
   const [coffeeInfo, setCoffeeInfo] = useState([
     {
       id: 0,
-      name: CoffeeName,
-      src: imgsrc,
-      price: CoffeePrice,
+      name: "",
+      src: "",
+      price: 0,
     },
   ]);
+
+  useEffect(() => {
+    const updatedCoffeeInfo = [
+      {
+        id: 0,
+        name: CoffeeName,
+        src: imgsrc,
+        price: CoffeePrice,
+      },
+    ];
+    setCoffeeInfo(updatedCoffeeInfo);
+  },[imgsrc])
+
   const handleNavigation = () => {
     if (goto === 'OrderCheck') {
       navigation.push(`${goto}`, {
@@ -66,7 +79,7 @@ const Coffee = ({
       <View style={styles.coffeeBackgroundImage}>
         <Image
           style={{width: coffeeImageWidth, height: coffeeImageHeight}}
-          source={coffeeInfo[0].src}
+          source={{uri: imgsrc}}
           // source={{uri: imgsrc}}
         />
       </View>

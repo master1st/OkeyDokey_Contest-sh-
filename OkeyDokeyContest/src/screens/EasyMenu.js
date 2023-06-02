@@ -28,11 +28,16 @@ import axios from 'axios';
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
-  const {qdata} = route.params;
+  const {qCoffee, qMilk} = route.params;
   const [easy, seteasy] = useState(false);
   const getEasy = () => {
     seteasy(!easy);
   };
+
+  //쉬운메뉴 response값
+  const [drinkItem, setDrinkItem] = useState([]);
+  const [esspresso,setEspresso] = useState([]);
+  const [americano, setAmericano] = useState([]);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -80,6 +85,26 @@ const EasyMenu = ({navigation, route}) => {
     setTotalPrice(newTotalPrice);
   }, [shoppings]);
 
+  const fetchDataEasy = async () => {
+    try {
+      const response = await API.get("/menu/list/1/");
+      const results = response.data;
+      console.log(results);
+      setDrinkItem(results);
+      const Espresso = results.find(item => item.name === "에스프레소");
+      const Americano = results.find(item => item.name === "아메리카노");
+      if (Espresso && Americano) {
+        setEspresso(Espresso);
+        setAmericano(Americano);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchDataEasy();
+  }, []);
+
   const handleMinus = (id, quantity) => {
     if (quantity <= 1) return;
     else {
@@ -95,6 +120,7 @@ const EasyMenu = ({navigation, route}) => {
 
   // const { networkData } = await API.get("/menu/list/1/");
   // console.log(networkData);
+
 
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB', alignItems: 'center'}}>
@@ -123,7 +149,7 @@ const EasyMenu = ({navigation, route}) => {
               fontWeight: 'bold',
               color: '#212121',
             }}>
-            {qdata}
+            {qMilk}
           </Text>
         </View>
       ) : (
@@ -174,11 +200,11 @@ const EasyMenu = ({navigation, route}) => {
                 coffeeImageWidth={110}
                 coffeeImageHeight={180}
                 style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
+                imgsrc={americano.image}
+                CoffeeName={americano.name}
+                CoffeePrice={americano.price}
               />
-              <Coffee
+              {/* <Coffee
                 goto={'OrderCheck'}
                 navigation={navigation}
                 backgroundImageSize={150}
@@ -233,7 +259,7 @@ const EasyMenu = ({navigation, route}) => {
                 imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
                 CoffeeName={'아메리카노'}
                 CoffeePrice={'4500'}
-              />
+              /> */}
             </View>
           </View>
           <View style={{flexDirection: 'row'}}>

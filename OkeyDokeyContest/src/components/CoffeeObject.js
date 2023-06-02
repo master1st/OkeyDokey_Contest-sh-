@@ -70,7 +70,7 @@ const CoffeeObject = ({
   const handleDelete = () => {
     dispatch(deleteShopping(id));
   };
-
+console.log(imgsrc);
   return (
     <View style={styles.container}>
       <Coffee

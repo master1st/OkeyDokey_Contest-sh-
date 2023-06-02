@@ -57,8 +57,8 @@ const Home = () => {
       </View>
       <View style={{flex:9 , width: '100%',height:'100%',justifyContent: 'center',alignItems:'center'}}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleHere} QuizText={data.eatin}/>
-          <Quiz handleEvent={handleTakeOut} QuizText={data.takeout}/>
+          <Quiz handleEvent={handleHere} QuizText={data.eatin} height={"90%"}/>
+          <Quiz handleEvent={handleTakeOut} QuizText={data.takeout} height={"90%"}/>
         </View>
         <View style={{width:'100%'}}>
           <CustomButton title={"비회원으로 계속하기"} onPress={handleNonMembers} width={"100%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>

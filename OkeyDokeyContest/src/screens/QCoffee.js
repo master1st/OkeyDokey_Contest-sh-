@@ -27,7 +27,7 @@ const QCoffee = ({navigation}) => {
       const response = await API.get("/category1/list/");
       const results = response.data;
       setResult(results);
-  
+      console.log(results);
       const coffeeItem = results.find(item => item.name === "커피");
       const nonCoffeeItem = results.find(item => item.name === "커피가 아닌것");
       
@@ -47,12 +47,14 @@ const QCoffee = ({navigation}) => {
     const Coffee = coffeeText.name.replace(/\n/g, '');
     navigation.push('Qmilk', {
       qCoffee: Coffee,
+      qCoffeeid: coffeeText.id,
     });
   };
   const handleNonCoffee = () => {
     const nonCoffee = nonCoffeeText.name.replace(/\n/g, '');
     navigation.push('Qmilk', {
       qCoffee: nonCoffee,
+      qCoffeeid : nonCoffeeText.id,
     });
   };
   let coffeedata = nonCoffeeText.name;
@@ -79,8 +81,8 @@ const QCoffee = ({navigation}) => {
           alignItems: 'center',
         }}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleCoffee} QuizText={coffeeText.name} />
-          <Quiz handleEvent={handleNonCoffee} QuizText={coffeedata} />
+          <Quiz handleEvent={handleCoffee} QuizText={coffeeText.name} height={"90%"}/>
+          <Quiz handleEvent={handleNonCoffee} QuizText={coffeedata} height={"90%"}/>
         </View>
         <View style={{flexDirection: 'row'}}>
           <CustomButton

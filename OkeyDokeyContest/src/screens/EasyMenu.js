@@ -22,13 +22,17 @@ import {
   minusShopping,
   plusShopping,
 } from '../redux/slices/shoppingSlice';
+
+import { addItem } from '../redux/slices/ItemSlice';
 import API from '../API/api';
 import axios from 'axios';
 
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
+  // const drinkItems = useSelector(state => state.drinkItem.item);
   const dispatch = useDispatch();
-  const {qCoffee, qMilk} = route.params;
+  const dispatchdrink = useDispatch();
+  const {qCoffee, qMilk, qMilkid} = route.params;
   const [easy, seteasy] = useState(false);
   const getEasy = () => {
     seteasy(!easy);
@@ -85,24 +89,23 @@ const EasyMenu = ({navigation, route}) => {
     setTotalPrice(newTotalPrice);
   }, [shoppings]);
 
-  const fetchDataEasy = async () => {
-    try {
-      const response = await API.get("/menu/list/1/");
-      const results = response.data;
-      console.log(results);
-      setDrinkItem(results);
-      const Espresso = results.find(item => item.name === "에스프레소");
-      const Americano = results.find(item => item.name === "아메리카노");
-      if (Espresso && Americano) {
-        setEspresso(Espresso);
-        setAmericano(Americano);
-      }
-    } catch (error) {
+
+
+  const fetchDataEasy = () => {
+    API.get(`/menu/list/${qMilkid}`)
+    .then(response => {
+      setDrinkItem(response.data);
+    })
+    .catch(error => {
       console.error(error);
-    }
+    });
   };
+
+  // dispatch(setItems(drinkItem));
+
   useEffect(() => {
     fetchDataEasy();
+    
   }, []);
 
   const handleMinus = (id, quantity) => {
@@ -193,17 +196,21 @@ const EasyMenu = ({navigation, route}) => {
         <View style={{flex: 9, height: '100%'}}>
           <View style={styles.mid}>
             <View style={styles.midItemBox}>
-              <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={americano.image}
-                CoffeeName={americano.name}
-                CoffeePrice={americano.price}
-              />
+              {drinkItem.map(item => {
+                return (
+                  <Coffee
+                  key={item.id}
+                  goto={'OrderCheck'}
+                  backgroundImageSize={150}
+                  coffeeImageWidth={110}
+                  coffeeImageHeight={180}
+                  style={styles.imageWrap}
+                  imgsrc={item.image}
+                  CoffeeName={item.name}
+                  CoffeePrice={item.price}
+                />
+                )
+              })}
               {/* <Coffee
                 goto={'OrderCheck'}
                 navigation={navigation}

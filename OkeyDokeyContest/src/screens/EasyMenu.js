@@ -23,15 +23,12 @@ import {
   plusShopping,
 } from '../redux/slices/shoppingSlice';
 
-import { addItem } from '../redux/slices/ItemSlice';
 import API from '../API/api';
 import axios from 'axios';
 
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
-  // const drinkItems = useSelector(state => state.drinkItem.item);
   const dispatch = useDispatch();
-  const dispatchdrink = useDispatch();
   const {qCoffee, qMilk, qMilkid} = route.params;
   const [easy, seteasy] = useState(false);
   const getEasy = () => {
@@ -40,8 +37,6 @@ const EasyMenu = ({navigation, route}) => {
 
   //쉬운메뉴 response값
   const [drinkItem, setDrinkItem] = useState([]);
-  const [esspresso,setEspresso] = useState([]);
-  const [americano, setAmericano] = useState([]);
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -100,8 +95,6 @@ const EasyMenu = ({navigation, route}) => {
       console.error(error);
     });
   };
-
-  // dispatch(setItems(drinkItem));
 
   useEffect(() => {
     fetchDataEasy();

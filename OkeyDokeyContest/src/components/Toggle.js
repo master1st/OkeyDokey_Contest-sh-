@@ -1,12 +1,31 @@
 import React, {useState, useRef} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet, Animated} from 'react-native';
 
-const Toggle = ({getEasy}) => {
+const Toggle = ({getEasy, QcoffeeSet, navigationQcoffee, whereScreen}) => {
   const [isToggled, setIsToggled] = useState(false);
   const slideAnimation = useRef(new Animated.Value(0)).current;
 
+  if(whereScreen ==='QCoffee' && !isToggled) {
+    Animated.timing(slideAnimation, {
+      toValue: isToggled ? 0 : 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  } else if(whereScreen ==='Qmilk' && !isToggled){
+    Animated.timing(slideAnimation, {
+      toValue: isToggled ? 0 : 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start();
+  }
   const handleToggle = () => {
-    setIsToggled(!isToggled);
+    console.log(isToggled);
+
+    if(whereScreen ==='QCoffee' && !isToggled){
+      navigationQcoffee();
+    } else if(whereScreen ==='Qmilk' && !isToggled){
+      navigationQcoffee();
+    }
     getEasy();
 
     Animated.timing(slideAnimation, {
@@ -14,6 +33,7 @@ const Toggle = ({getEasy}) => {
       duration: 600,
       useNativeDriver: true,
     }).start();
+    setIsToggled(!isToggled);
   };
 
   const buttonStyle = {

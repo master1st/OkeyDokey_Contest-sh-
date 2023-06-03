@@ -86,6 +86,13 @@ const Qmilk = ({route, navigation}) => {
       qCoffee: qCoffee,
     });
   };
+
+  const getEasy = () => {
+    navigation.push("EasyMenu", {
+      whereScreen : 'Qmilk', 
+      settingEasy : false,
+    });
+  }
   // let nonmilkdata;
   // let milkdata;
   // if (milkText && milkText.length > 0) {
@@ -108,7 +115,7 @@ const Qmilk = ({route, navigation}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle />
+        <Toggle getEasy={getEasy}/>
       </View>
       <View
         style={{
@@ -203,7 +210,7 @@ const Qmilk = ({route, navigation}) => {
           />
           <CustomButton
             title={'장바구니'}
-            onPress={''}
+            onPress={() => navigation.push('ShoppingBasket')}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

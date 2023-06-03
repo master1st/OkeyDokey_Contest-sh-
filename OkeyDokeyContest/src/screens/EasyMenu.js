@@ -25,15 +25,25 @@ import {
 
 import API from '../API/api';
 import axios from 'axios';
+import QCoffee from './QCoffee';
 
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
-  const {qCoffee, qMilk, qMilkid} = route.params;
+  const {qCoffee, qMilk, qMilkid, whereScreen, settingEasy} = route.params;
   const [easy, seteasy] = useState(false);
+  const [routereasy, setRoutereasy] = useState(false);
   const getEasy = () => {
     seteasy(!easy);
   };
+
+  const navigationQcoffee = () => {
+    if((whereScreen === 'QCoffee')){
+      navigation.pop()
+    } else if(whereScreen === 'Qmilk'){
+      navigation.pop()
+    }
+  }
 
   //쉬운메뉴 response값
   const [drinkItem, setDrinkItem] = useState([]);
@@ -70,6 +80,12 @@ const EasyMenu = ({navigation, route}) => {
         setAdeList(response.data.find(item => item.name === '에이드'));
         setSmoothieList(response.data.find(item => item.name === '스무디'));
         setTeaList(response.data.find(item => item.name === '티'));
+
+        if(whereScreen === 'QCoffee'){
+          getEasy();
+        } else if(whereScreen === 'Qmilk'){
+          getEasy();
+        }
       })
       .catch(error => {
         console.error(error);
@@ -101,6 +117,7 @@ const EasyMenu = ({navigation, route}) => {
     
   }, []);
 
+
   const handleMinus = (id, quantity) => {
     if (quantity <= 1) return;
     else {
@@ -128,7 +145,7 @@ const EasyMenu = ({navigation, route}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle getEasy={getEasy} />
+        <Toggle getEasy={getEasy} navigationQcoffee={navigationQcoffee} whereScreen={whereScreen}/>
       </View>
       {!easy ? (
         <View
@@ -191,8 +208,9 @@ const EasyMenu = ({navigation, route}) => {
             <View style={styles.midItemBox}>
               {drinkItem.map(item => {
                 return (
+                  <>
                   <Coffee
-                  key={item.id}
+                  navigation={navigation}
                   goto={'OrderCheck'}
                   backgroundImageSize={150}
                   coffeeImageWidth={110}
@@ -202,64 +220,9 @@ const EasyMenu = ({navigation, route}) => {
                   CoffeeName={item.name}
                   CoffeePrice={item.price}
                 />
+                </>
                 )
               })}
-              {/* <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
-              />
-              <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
-              />
-
-              <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
-              />
-              <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
-              />
-              <Coffee
-                goto={'OrderCheck'}
-                navigation={navigation}
-                backgroundImageSize={150}
-                coffeeImageWidth={110}
-                coffeeImageHeight={180}
-                style={styles.imageWrap}
-                imgsrc={require('OkeyDokeyContest/assets/images/coffee.png')}
-                CoffeeName={'아메리카노'}
-                CoffeePrice={'4500'}
-              /> */}
             </View>
           </View>
           <View style={{flexDirection: 'row'}}>

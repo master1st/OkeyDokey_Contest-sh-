@@ -21,6 +21,8 @@ const QCoffee = ({navigation}) => {
   const [result, setResult] = useState([]);
   const [coffeeText, setCoffeeText] = useState([]);
   const [nonCoffeeText, setNonCoffeeText] = useState([]);
+
+  
   //일반메뉴 받아오기 함수
   const fetchData = async () => {
     try {
@@ -61,6 +63,15 @@ const QCoffee = ({navigation}) => {
   if(coffeedata){
     coffeedata = coffeedata.replace(/\s/g, '\n');
   }
+
+  const getEasy = () => {
+    navigation.push("EasyMenu", {
+      whereScreen : 'QCoffee', 
+      settingEasy : false,
+    });
+  }
+
+
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
       <View style={styles.header}>
@@ -71,7 +82,7 @@ const QCoffee = ({navigation}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle />
+        <Toggle getEasy={getEasy}  />
       </View>
       <View
         style={{
@@ -99,7 +110,7 @@ const QCoffee = ({navigation}) => {
           />
           <CustomButton
             title={'장바구니'}
-            onPress={''}
+            onPress={() => navigation.push('ShoppingBasket')}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

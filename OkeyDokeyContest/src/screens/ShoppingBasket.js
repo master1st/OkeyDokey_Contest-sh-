@@ -51,7 +51,7 @@ const ShoppingBasket = ({route, navigation}) => {
           }}>
           <CustomButton
             title={'뒤로가기'}
-            onPress={() => navigation.pop()}
+            onPress={() => navigation.push("EasyMenu")}
             width={'50%'}
             height={150}
             backgroundColor={'#6D6D6D'}

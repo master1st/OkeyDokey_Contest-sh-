@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {addShopping} from '../redux/slices/shoppingSlice';
 const OrderCheck = ({route}) => {
-  const {qdata} = route.params;
+  const {qdata, goto} = route.params;
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [ice, setIce] = useState(true);
@@ -28,7 +28,11 @@ const OrderCheck = ({route}) => {
       }),
     );
     setquantity(1);
-    navigation.push('ShoppingBasket', {});
+    if (goto === 'ShoppingBasket') {
+      navigation.push('ShoppingBasket', {});
+    } else if (goto === 'EasyMenu') {
+      navigation.pop();
+    }
   };
   const handleShoppingBacket = () => {
     setquantity(1);

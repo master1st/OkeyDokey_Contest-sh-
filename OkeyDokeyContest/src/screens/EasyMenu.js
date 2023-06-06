@@ -167,7 +167,8 @@ const EasyMenu = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
         <Toggle
-          getEasy={getEasy}
+        settingEasy={false}
+          getEasy={getEasy} 
           navigationQcoffee={navigationQcoffee}
           whereScreen={whereScreen}
         />

@@ -52,6 +52,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: nonmilkText ? nonmilkText.name : null,
       qMilkid: nonmilkText ? nonmilkText.id : null,
       qCoffee: qCoffee,
+      whereScreen : 'EasyMenu'
     });
   };
 
@@ -60,6 +61,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: milkText ? milkText.name : null,
       qMilkid: milkText ? milkText.id : null,
       qCoffee: qCoffee,
+      whereScreen : 'EasyMenu'
     });
   };
 

@@ -39,13 +39,13 @@ const Toggle = ({
       navigationQcoffee();
     }
     getEasy();
-    //   if(CoffeeScreen !== '커피'){
-    //   Animated.timing(slideAnimation, {
-    //     toValue: isToggled ? 0 : 1,
-    //     duration: 600,
-    //     useNativeDriver: true,
-    //   }).start();
-    // }
+    if (whereScreen === 'EasyMenu') {
+      Animated.timing(slideAnimation, {
+        toValue: isToggled ? 0 : 1,
+        duration: 600,
+        useNativeDriver: true,
+      }).start();
+    }
     setIsToggled(!isToggled);
   };
 
@@ -65,7 +65,16 @@ const Toggle = ({
       <View style={[styles.toggleButton, {width: 300, height: 55}]}>
         <View style={styles.textContainer2}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            {whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
+            {whereScreen === 'EasyMenu' ? (
+               <Text
+               style={[
+                 styles.buttonText,
+                 !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+               ]}>
+               일반
+             </Text>
+            ) :
+            (whereScreen === 'QCoffee' || whereScreen === 'Qmilk')  ? (
                <Text
                style={[
                  styles.buttonText,
@@ -80,7 +89,16 @@ const Toggle = ({
         </View>
         <View style={styles.textContainer}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          {whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
+          {whereScreen === 'EasyMenu' ? (
+               <Text
+               style={[
+                 styles.buttonText,
+                 isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+               ]}>
+               쉬운메뉴
+             </Text>
+            ) :
+          (whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ) ? (
             <Text
             style={[
               styles.buttonText,

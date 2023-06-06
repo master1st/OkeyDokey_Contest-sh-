@@ -13,6 +13,7 @@ const OrderCheck = ({route}) => {
   const [ice, setIce] = useState(true);
   const [size, setSize] = useState('Tall');
   const [quantity, setquantity] = useState(1);
+
   const getQuantity = x => {
     setquantity(x);
   };
@@ -121,18 +122,22 @@ const OrderCheck = ({route}) => {
                   justifyContent: 'space-around',
                 }}>
                 <CustomButton
-                  onPress={() => setIce(false)}
-                  title={'따뜻하게'}
-                  backgroundColor={'#F25D07'}
+                  onPress={() => {
+                    setIce(true);
+                  }}
+                  title={'차갑게'}
+                  backgroundColor={ice ? '#0583F2' : '#6D6D6D'}
                   textColor={'white'}
                   fontSize={20}
                   height={50}
                   width={150}
                 />
                 <CustomButton
-                  onPress={() => setIce(true)}
-                  title={'차갑게'}
-                  backgroundColor={'#056CF2'}
+                  onPress={() => {
+                    setIce(false);
+                  }}
+                  title={'따뜻하게'}
+                  backgroundColor={ice ? '#6D6D6D' : '#F25D07'}
                   textColor={'white'}
                   fontSize={20}
                   height={50}
@@ -151,7 +156,7 @@ const OrderCheck = ({route}) => {
                 <CustomButton
                   title={'톨'}
                   onPress={() => setSize('Tall')}
-                  backgroundColor={'#6D6D6D'}
+                  backgroundColor={size === 'Tall' ? '#373737' : '#6D6D6D'}
                   textColor={'white'}
                   fontSize={20}
                   height={50}
@@ -160,7 +165,7 @@ const OrderCheck = ({route}) => {
                 <CustomButton
                   title={'그란데'}
                   onPress={() => setSize('Grande')}
-                  backgroundColor={'#6D6D6D'}
+                  backgroundColor={size === 'Grande' ? '#373737' : '#6D6D6D'}
                   textColor={'white'}
                   fontSize={20}
                   height={50}
@@ -169,7 +174,7 @@ const OrderCheck = ({route}) => {
                 <CustomButton
                   title={'벤티'}
                   onPress={() => setSize('Venti')}
-                  backgroundColor={'#6D6D6D'}
+                  backgroundColor={size === 'Venti' ? '#373737' : '#6D6D6D'}
                   textColor={'white'}
                   fontSize={20}
                   height={50}

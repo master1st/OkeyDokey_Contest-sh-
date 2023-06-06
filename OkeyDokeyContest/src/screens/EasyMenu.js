@@ -146,10 +146,11 @@ const EasyMenu = ({navigation, route}) => {
           width: '100%',
           position: 'relative',
         }}>
-       <TouchableOpacity onPress={() => {
-        navigation.push('Home');
-        dispatch(resetShopping());
-        }}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.popToTop();
+            dispatch(resetShopping());
+          }}
           style={{
             position: 'absolute',
             left: 30,
@@ -170,8 +171,8 @@ const EasyMenu = ({navigation, route}) => {
           </Text>
         </TouchableOpacity>
         <Toggle
-        settingEasy={false}
-          getEasy={getEasy} 
+          settingEasy={false}
+          getEasy={getEasy}
           navigationQcoffee={navigationQcoffee}
           whereScreen={whereScreen}
         />

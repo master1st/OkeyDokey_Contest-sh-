@@ -63,11 +63,14 @@ const QCoffee = ({navigation}) => {
   if(coffeedata){
     coffeedata = coffeedata.replace(/\s/g, '\n');
   }
-
   const getEasy = () => {
+    const Coffee = coffeeText.name.replace(/\n/g, '');
+    console.log(Coffee,coffeeText.id);
     navigation.push("EasyMenu", {
       whereScreen : 'QCoffee', 
       settingEasy : false,
+      qCoffee: Coffee,
+      qCoffeeid: coffeeText.id,
     });
   }
 
@@ -82,7 +85,7 @@ const QCoffee = ({navigation}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle getEasy={getEasy}  />
+        <Toggle getEasy={getEasy} CoffeeScreen={'커피'} />
       </View>
       <View
         style={{

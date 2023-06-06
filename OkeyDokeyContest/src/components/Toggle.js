@@ -1,38 +1,51 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet, Animated} from 'react-native';
 
-const Toggle = ({getEasy, QcoffeeSet, navigationQcoffee, whereScreen}) => {
+const Toggle = ({
+  getEasy,
+  QcoffeeSet,
+  navigationQcoffee,
+  whereScreen,
+  CoffeeScreen,
+  settingEasy,
+}) => {
   const [isToggled, setIsToggled] = useState(false);
   const slideAnimation = useRef(new Animated.Value(0)).current;
 
-  if(whereScreen ==='QCoffee' && !isToggled) {
-    Animated.timing(slideAnimation, {
-      toValue: isToggled ? 0 : 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
-  } else if(whereScreen ==='Qmilk' && !isToggled){
-    Animated.timing(slideAnimation, {
-      toValue: isToggled ? 0 : 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
-  }
-  const handleToggle = () => {
-    console.log(isToggled);
+  useEffect(() => {
+    console.log(`색깔 : ${isToggled}`);
+  }, [isToggled]);
 
-    if(whereScreen ==='QCoffee' && !isToggled){
+  useEffect(() => {
+    if (whereScreen === 'QCoffee' && !isToggled) {
+      Animated.timing(slideAnimation, {
+        toValue: isToggled ? 0 : 1,
+        duration: 600,
+        useNativeDriver: true,
+      }).start();
+    } else if (whereScreen === 'Qmilk' && !isToggled) {
+      Animated.timing(slideAnimation, {
+        toValue: isToggled ? 0 : 1,
+        duration: 600,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [isToggled]);
+
+  const handleToggle = () => {
+    if (whereScreen === 'QCoffee' && !isToggled) {
       navigationQcoffee();
-    } else if(whereScreen ==='Qmilk' && !isToggled){
+    } else if (whereScreen === 'Qmilk' && !isToggled) {
       navigationQcoffee();
     }
     getEasy();
-
-    Animated.timing(slideAnimation, {
-      toValue: isToggled ? 0 : 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
+    //   if(CoffeeScreen !== '커피'){
+    //   Animated.timing(slideAnimation, {
+    //     toValue: isToggled ? 0 : 1,
+    //     duration: 600,
+    //     useNativeDriver: true,
+    //   }).start();
+    // }
     setIsToggled(!isToggled);
   };
 
@@ -52,24 +65,32 @@ const Toggle = ({getEasy, QcoffeeSet, navigationQcoffee, whereScreen}) => {
       <View style={[styles.toggleButton, {width: 300, height: 55}]}>
         <View style={styles.textContainer2}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text
-              style={[
-                styles.buttonText,
-                isToggled ? styles.buttonTextActive : null,
-              ]}>
-              일반
-            </Text>
+            {whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
+               <Text
+               style={[
+                 styles.buttonText,
+                 isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+               ]}>
+               일반
+             </Text>
+            ) : (
+              <Text style={[styles.buttonText, styles.buttonTextActive]}>일반</Text>
+            )}
           </View>
         </View>
         <View style={styles.textContainer}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          {whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
             <Text
-              style={[
-                styles.buttonText,
-                !isToggled ? styles.buttonTextActive : null,
-              ]}>
-              쉬운메뉴
-            </Text>
+            style={[
+              styles.buttonText,
+              !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+            ]}>
+            쉬운메뉴
+          </Text>
+          ) : (
+          <Text style={[styles.buttonText, styles.buttonTextWhite]}>쉬운메뉴</Text>
+            )}
           </View>
         </View>
         <TouchableOpacity
@@ -149,7 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonTextActive: {
-    color: 'white',
+    color: 'black',
   },
   slideButton: {
     position: 'absolute',
@@ -159,6 +180,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderRadius: 20,
     elevation: 1,
+  },
+  buttonTextWhite: {
+    color: 'white',
   },
 });
 

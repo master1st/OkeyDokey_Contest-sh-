@@ -60,8 +60,8 @@ const Home = () => {
           <Quiz handleEvent={handleHere} QuizText={data.eatin} height={"90%"}/>
           <Quiz handleEvent={handleTakeOut} QuizText={data.takeout} height={"90%"}/>
         </View>
-        <View style={{width:'100%'}}>
-          <CustomButton title={"비회원으로 계속하기"} onPress={handleNonMembers} width={"100%"} height={150} backgroundColor={"#056CF2"} textColor={'white'} fontSize={50}/>
+        <View style={{width:'100%', marginBottom: 150}}>
+
         </View>
       </View>
     </View>

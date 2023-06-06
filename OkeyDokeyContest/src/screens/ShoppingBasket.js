@@ -141,7 +141,7 @@ const ShoppingBasket = ({route, navigation}) => {
           }}>
           <CustomButton
             title={'뒤로가기'}
-            onPress={() => navigation.popToTop()}
+            onPress={() => navigation.pop()}
             width={'50%'}
             height={80}
             backgroundColor={'#6D6D6D'}

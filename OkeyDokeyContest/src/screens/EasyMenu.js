@@ -21,6 +21,7 @@ import {
   deleteShopping,
   minusShopping,
   plusShopping,
+  resetShopping,
 } from '../redux/slices/shoppingSlice';
 
 import API from '../API/api';
@@ -145,8 +146,10 @@ const EasyMenu = ({navigation, route}) => {
           width: '100%',
           position: 'relative',
         }}>
-        <TouchableOpacity
-          onPress={() => navigation.push('Home')}
+       <TouchableOpacity onPress={() => {
+        navigation.push('Home');
+        dispatch(resetShopping());
+        }}
           style={{
             position: 'absolute',
             left: 30,
@@ -263,7 +266,7 @@ const EasyMenu = ({navigation, route}) => {
             />
             <CustomButton
               title={'장바구니'}
-              onPress={''}
+              onPress={() => navigation.push('ShoppingBasket')}
               width={'50%'}
               height={150}
               backgroundColor={'#056CF2'}

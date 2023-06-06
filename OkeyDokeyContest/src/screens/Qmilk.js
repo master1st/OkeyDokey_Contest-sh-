@@ -70,6 +70,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: iceItemText ? iceItemText.name : null,
       qMilkid: iceItemText ? iceItemText.id : null,
       qCoffee: qCoffee,
+      whereScreen : 'EasyMenu'
     });
   };
 
@@ -78,6 +79,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: TeaItemText ? TeaItemText.name : null,
       qMilkid: TeaItemText ? TeaItemText.id : null,
       qCoffee: qCoffee,
+      whereScreen : 'EasyMenu'
     });
   };
 
@@ -86,6 +88,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: softDrinkItemText ? softDrinkItemText.name : null,
       qMilkid: softDrinkItemText ? softDrinkItemText.id : null,
       qCoffee: qCoffee,
+      whereScreen : 'EasyMenu'
     });
   };
 
@@ -93,6 +96,7 @@ const Qmilk = ({route, navigation}) => {
     navigation.push("EasyMenu", {
       whereScreen : 'Qmilk', 
       settingEasy : false,
+      whereScreen : 'EasyMenu'
     });
   }
   // let nonmilkdata;

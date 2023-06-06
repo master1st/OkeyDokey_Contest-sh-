@@ -70,13 +70,13 @@ const CoffeeObject = ({
   const handleDelete = () => {
     dispatch(deleteShopping(id));
   };
-console.log(imgsrc);
+  console.log(imgsrc);
   return (
     <View style={styles.container}>
       <Coffee
         backgroundImageSize={imageSize}
-        coffeeImageWidth={140}
-        coffeeImageHeight={210}
+        coffeeImageWidth={150}
+        coffeeImageHeight={200}
         style={styles.imageWrap}
         imgsrc={imgsrc}
       />

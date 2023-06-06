@@ -38,12 +38,12 @@ const EasyMenu = ({navigation, route}) => {
   };
 
   const navigationQcoffee = () => {
-    if((whereScreen === 'QCoffee')){
-      navigation.pop()
-    } else if(whereScreen === 'Qmilk'){
-      navigation.pop()
+    if (whereScreen === 'QCoffee') {
+      navigation.pop();
+    } else if (whereScreen === 'Qmilk') {
+      navigation.pop();
     }
-  }
+  };
 
   //쉬운메뉴 response값
   const [drinkItem, setDrinkItem] = useState([]);
@@ -81,9 +81,9 @@ const EasyMenu = ({navigation, route}) => {
         setSmoothieList(response.data.find(item => item.name === '스무디'));
         setTeaList(response.data.find(item => item.name === '티'));
 
-        if(whereScreen === 'QCoffee'){
+        if (whereScreen === 'QCoffee') {
           getEasy();
-        } else if(whereScreen === 'Qmilk'){
+        } else if (whereScreen === 'Qmilk') {
           getEasy();
         }
       })
@@ -100,23 +100,19 @@ const EasyMenu = ({navigation, route}) => {
     setTotalPrice(newTotalPrice);
   }, [shoppings]);
 
-
-
   const fetchDataEasy = () => {
     API.get(`/menu/list/${qMilkid}`)
-    .then(response => {
-      setDrinkItem(response.data);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => {
+        setDrinkItem(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
     fetchDataEasy();
-    
   }, []);
-
 
   const handleMinus = (id, quantity) => {
     if (quantity <= 1) return;
@@ -134,7 +130,6 @@ const EasyMenu = ({navigation, route}) => {
   // const { networkData } = await API.get("/menu/list/1/");
   // console.log(networkData);
 
-
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB', alignItems: 'center'}}>
       <View style={styles.header}>
@@ -145,7 +140,11 @@ const EasyMenu = ({navigation, route}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle getEasy={getEasy} navigationQcoffee={navigationQcoffee} whereScreen={whereScreen}/>
+        <Toggle
+          getEasy={getEasy}
+          navigationQcoffee={navigationQcoffee}
+          whereScreen={whereScreen}
+        />
       </View>
       {!easy ? (
         <View
@@ -209,19 +208,18 @@ const EasyMenu = ({navigation, route}) => {
               {drinkItem.map(item => {
                 return (
                   <>
-                  <Coffee
-                  navigation={navigation}
-                  goto={'OrderCheck'}
-                  backgroundImageSize={150}
-                  coffeeImageWidth={110}
-                  coffeeImageHeight={180}
-                  style={styles.imageWrap}
-                  imgsrc={item.image}
-                  CoffeeName={item.name}
-                  CoffeePrice={item.price}
-                />
-                </>
-                )
+                    <Coffee
+                      navigation={navigation}
+                      goto={'OrderCheck'}
+                      coffeeImageWidth={140}
+                      coffeeImageHeight={160}
+                      style={styles.imageWrap}
+                      imgsrc={item.image}
+                      CoffeeName={item.name}
+                      CoffeePrice={item.price}
+                    />
+                  </>
+                );
               })}
             </View>
           </View>
@@ -259,12 +257,13 @@ const EasyMenu = ({navigation, route}) => {
             style={{
               width: '80%',
               flexDirection: 'row',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               backgroundColor: 'white',
               height: '80%',
               flexWrap: 'wrap',
               elevation: 3,
+              paddingHorizontal: 50,
             }}>
             {category.menues.map(item => {
               return (
@@ -272,9 +271,8 @@ const EasyMenu = ({navigation, route}) => {
                   <Coffee
                     key={item.id}
                     goto={'Nothing'}
-                    backgroundImageSize={130}
-                    coffeeImageWidth={99}
-                    coffeeImageHeight={162}
+                    coffeeImageWidth={140}
+                    coffeeImageHeight={160}
                     imgsrc={item.image}
                     CoffeeName={item.name}
                     CoffeePrice={item.price}
@@ -469,9 +467,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   midItemBox: {
+    paddingHorizontal: 50,
     width: '80%',
     height: '80%',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',

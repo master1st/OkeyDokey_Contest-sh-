@@ -29,7 +29,7 @@ const App = () => {
           <Stack.Screen name="OrderCheck" component={OrderCheck} />
           <Stack.Screen name="ShoppingBasket" component={ShoppingBasket} />
           <Stack.Screen name="OrderNum" component={OrderNum} />
-          {/* <Stack.Screen name="Payment" component={Payment} /> */}
+          <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} />
         </Stack.Navigator>
       </Provider>

@@ -1,5 +1,5 @@
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addShopping} from '../redux/slices/shoppingSlice';
@@ -16,20 +16,13 @@ const Coffee = ({
   goto,
 }) => {
   const styles = StyleSheet.create({
-    coffeeBackgroundImage: {
-      width: backgroundImageSize,
-      height: backgroundImageSize,
-      borderRadius: backgroundImageSize / 2,
-      backgroundColor: '#D9D9D9',
-      alignItems: 'center',
-    },
     CoffeeText: {
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
       fontFamily: 'Pretendard',
       fontWeight: '500',
-      color: '#212121',
+      color: 'black',
       fontSize: 20,
     },
   });
@@ -38,8 +31,8 @@ const Coffee = ({
   const [coffeeInfo, setCoffeeInfo] = useState([
     {
       id: 0,
-      name: "",
-      src: "",
+      name: '',
+      src: '',
       price: 0,
     },
   ]);
@@ -54,7 +47,7 @@ const Coffee = ({
       },
     ];
     setCoffeeInfo(updatedCoffeeInfo);
-  },[imgsrc])
+  }, [imgsrc]);
 
   const handleNavigation = () => {
     if (goto === 'OrderCheck') {
@@ -76,19 +69,34 @@ const Coffee = ({
   };
   return (
     <TouchableOpacity onPress={handleNavigation} style={{padding: 20}}>
-      <View style={styles.coffeeBackgroundImage}>
-        <Image
-          style={{width: coffeeImageWidth, height: coffeeImageHeight}}
-          source={{uri: imgsrc}}
-          // source={{uri: imgsrc}}
-        />
-      </View>
-      <View style={{marginTop: 30}}>
-        <Text style={styles.CoffeeText}>{CoffeeName}</Text>
-        <Text style={styles.CoffeeText}>
-          {CoffeePrice ? CoffeePrice + '원' : ''}
-        </Text>
-      </View>
+      <Image
+        style={{
+          width: coffeeImageWidth,
+          height: coffeeImageHeight,
+          borderTopLeftRadius: CoffeeName && CoffeePrice ? 20 : 10,
+          borderTopRightRadius: CoffeeName && CoffeePrice ? 20 : 10,
+          borderBottomLeftRadius: CoffeeName && CoffeePrice ? 0 : 10,
+          borderBottomRightRadius: CoffeeName && CoffeePrice ? 0 : 10,
+        }}
+        source={{uri: imgsrc}}
+        // source={{uri: imgsrc}}
+      />
+      {CoffeeName && CoffeePrice ? (
+        <View
+          style={{
+            padding: 5,
+            backgroundColor: '#F5F7FB',
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+          }}>
+          <Text style={styles.CoffeeText}>{CoffeeName}</Text>
+          <Text style={styles.CoffeeText}>
+            {CoffeePrice ? CoffeePrice + '원' : ''}
+          </Text>
+        </View>
+      ) : (
+        <></>
+      )}
     </TouchableOpacity>
   );
 };

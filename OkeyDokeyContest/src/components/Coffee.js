@@ -49,24 +49,32 @@ const Coffee = ({
     setCoffeeInfo(updatedCoffeeInfo);
   }, [imgsrc]);
 
+  // const handleNavigation = () => {
+  //   if (goto === 'OrderCheck') {
+  //     navigation.push(`${goto}`, {
+  //       qdata: coffeeInfo,
+  //     });
+  //   } else if (goto === 'Nothing') {
+  //     dispatch(
+  //       addShopping({
+  //         title: CoffeeName,
+  //         price: CoffeePrice,
+  //         quantity: 1,
+  //         imgsrc: imgsrc,
+  //         ice: true,
+  //         size: 'Tall',
+  //       }),
+  //     );
+  //   }
+  // };
   const handleNavigation = () => {
-    if (goto === 'OrderCheck') {
-      navigation.push(`${goto}`, {
-        qdata: coffeeInfo,
-      });
-    } else if (goto === 'Nothing') {
-      dispatch(
-        addShopping({
-          title: CoffeeName,
-          price: CoffeePrice,
-          quantity: 1,
-          imgsrc: imgsrc,
-          ice: true,
-          size: 'Tall',
-        }),
-      );
-    }
+    console.log(goto);
+    navigation.push('OrderCheck', {
+      qdata: coffeeInfo,
+      goto: goto,
+    });
   };
+
   return (
     <TouchableOpacity onPress={handleNavigation} style={{padding: 20}}>
       <Image

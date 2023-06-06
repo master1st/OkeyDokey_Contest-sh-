@@ -139,7 +139,33 @@ const EasyMenu = ({navigation, route}) => {
         />
       </View>
       <View
-        style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          position: 'relative',
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.push('Home')}
+          style={{
+            position: 'absolute',
+            left: 30,
+            borderColor: 'white',
+            borderWidth: 1,
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            borderRadius: 10,
+            backgroundColor: '#056CF2',
+          }}>
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: 'white',
+            }}>
+            처음으로
+          </Text>
+        </TouchableOpacity>
         <Toggle
           getEasy={getEasy}
           navigationQcoffee={navigationQcoffee}
@@ -209,8 +235,9 @@ const EasyMenu = ({navigation, route}) => {
                 return (
                   <>
                     <Coffee
+                      key={item.id}
                       navigation={navigation}
-                      goto={'OrderCheck'}
+                      goto={'ShoppingBasket'}
                       coffeeImageWidth={140}
                       coffeeImageHeight={160}
                       style={styles.imageWrap}
@@ -269,8 +296,9 @@ const EasyMenu = ({navigation, route}) => {
               return (
                 <>
                   <Coffee
+                    navigation={navigation}
                     key={item.id}
-                    goto={'Nothing'}
+                    goto={'EasyMenu'}
                     coffeeImageWidth={140}
                     coffeeImageHeight={160}
                     imgsrc={item.image}

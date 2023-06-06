@@ -34,10 +34,12 @@ const OrderCheck = ({route}) => {
       navigation.pop();
     }
   };
+
   const handleShoppingBacket = () => {
     setquantity(1);
     navigation.push('ShoppingBasket');
   };
+
   return (
     <SafeAreaView
       style={{

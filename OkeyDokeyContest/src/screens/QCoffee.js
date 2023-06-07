@@ -13,26 +13,24 @@ import {
 import Quiz from '../components/Quiz';
 import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetOrderNumber } from '../redux/slices/shoppingSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetOrderNumber} from '../redux/slices/shoppingSlice';
 const QCoffee = ({navigation}) => {
-
   const dispatch = useDispatch();
   const [result, setResult] = useState([]);
   const [coffeeText, setCoffeeText] = useState([]);
   const [nonCoffeeText, setNonCoffeeText] = useState([]);
 
-  
   //일반메뉴 받아오기 함수
   const fetchData = async () => {
     try {
-      const response = await API.get("/category1/list/");
+      const response = await API.get('/category1/list/');
       const results = response.data;
       setResult(results);
       console.log(results);
-      const coffeeItem = results.find(item => item.name === "커피");
-      const nonCoffeeItem = results.find(item => item.name === "커피가 아닌것");
-      
+      const coffeeItem = results.find(item => item.name === '커피');
+      const nonCoffeeItem = results.find(item => item.name === '커피가 아닌것');
+
       if (coffeeItem && nonCoffeeItem) {
         setCoffeeText(coffeeItem);
         setNonCoffeeText(nonCoffeeItem);
@@ -56,24 +54,23 @@ const QCoffee = ({navigation}) => {
     const nonCoffee = nonCoffeeText.name.replace(/\n/g, '');
     navigation.push('Qmilk', {
       qCoffee: nonCoffee,
-      qCoffeeid : nonCoffeeText.id,
+      qCoffeeid: nonCoffeeText.id,
     });
   };
   let coffeedata = nonCoffeeText.name;
-  if(coffeedata){
+  if (coffeedata) {
     coffeedata = coffeedata.replace(/\s/g, '\n');
   }
   const getEasy = () => {
     const Coffee = coffeeText.name.replace(/\n/g, '');
-    console.log(Coffee,coffeeText.id);
-    navigation.push("EasyMenu", {
-      whereScreen : 'QCoffee', 
-      settingEasy : false,
+    console.log(Coffee, coffeeText.id);
+    navigation.push('EasyMenu', {
+      whereScreen: 'QCoffee',
+      settingEasy: false,
       qCoffee: Coffee,
       qCoffeeid: coffeeText.id,
     });
-  }
-
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
@@ -95,8 +92,16 @@ const QCoffee = ({navigation}) => {
           alignItems: 'center',
         }}>
         <View style={styles.mid}>
-          <Quiz handleEvent={handleCoffee} QuizText={coffeeText.name} height={"90%"}/>
-          <Quiz handleEvent={handleNonCoffee} QuizText={coffeedata} height={"90%"}/>
+          <Quiz
+            handleEvent={handleCoffee}
+            QuizText={coffeeText.name}
+            height={'90%'}
+          />
+          <Quiz
+            handleEvent={handleNonCoffee}
+            QuizText={coffeedata}
+            height={'90%'}
+          />
         </View>
         <View style={{flexDirection: 'row'}}>
           <CustomButton
@@ -113,7 +118,7 @@ const QCoffee = ({navigation}) => {
           />
           <CustomButton
             title={'장바구니'}
-            onPress={() => navigation.push('ShoppingBasket')}
+            onPress={() => navigation.push('ShoppingBasket', {})}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

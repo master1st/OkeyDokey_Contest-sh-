@@ -14,6 +14,8 @@ import CustomButton from '../components/CustomButton';
 import {useSelector} from 'react-redux';
 const ShoppingBasket = ({route, navigation}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
+  const {data} = route.params;
+
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     let newTotalPrice = 0;
@@ -142,10 +144,14 @@ const ShoppingBasket = ({route, navigation}) => {
           <CustomButton
             title={'뒤로가기'}
             onPress={() => {
-              navigation.pop();
-              setTimeout(() => {
+              if (data === 'confirm') {
                 navigation.pop();
-              }, 100);
+                setTimeout(() => {
+                  navigation.pop();
+                }, 100);
+              } else {
+                navigation.pop();
+              }
             }}
             width={'50%'}
             height={80}

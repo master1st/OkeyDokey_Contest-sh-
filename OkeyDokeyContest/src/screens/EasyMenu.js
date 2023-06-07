@@ -206,28 +206,76 @@ const EasyMenu = ({navigation, route}) => {
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(coffeeList)}>
-            <Text style={styles.navItem}>커피</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === coffeeList ? '#056CF2' : 'white',
+                  color: category === coffeeList ? 'white' : 'black',
+                },
+              ]}>
+              커피
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(nonCoffeeList)}>
-            <Text style={styles.navItem}>논커피</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === nonCoffeeList ? '#056CF2' : 'white',
+                  color: category === nonCoffeeList ? 'white' : 'black',
+                },
+              ]}>
+              논커피
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(adeList)}>
-            <Text style={styles.navItem}>에이드</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor: category === adeList ? '#056CF2' : 'white',
+                  color: category === adeList ? 'white' : 'black',
+                },
+              ]}>
+              에이드
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(smoothieList)}>
-            <Text style={styles.navItem}>스무디</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === smoothieList ? '#056CF2' : 'white',
+                  color: category === smoothieList ? 'white' : 'black',
+                },
+              ]}>
+              스무디
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(teaList)}>
-            <Text style={styles.navItem}>티</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor: category === teaList ? '#056CF2' : 'white',
+                  color: category === teaList ? 'white' : 'black',
+                },
+              ]}>
+              티
+            </Text>
           </TouchableOpacity>
         </View>
       )}

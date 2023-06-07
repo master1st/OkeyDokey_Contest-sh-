@@ -206,28 +206,76 @@ const EasyMenu = ({navigation, route}) => {
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(coffeeList)}>
-            <Text style={styles.navItem}>커피</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === coffeeList ? '#056CF2' : 'white',
+                  color: category === coffeeList ? 'white' : 'black',
+                },
+              ]}>
+              커피
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(nonCoffeeList)}>
-            <Text style={styles.navItem}>논커피</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === nonCoffeeList ? '#056CF2' : 'white',
+                  color: category === nonCoffeeList ? 'white' : 'black',
+                },
+              ]}>
+              논커피
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(adeList)}>
-            <Text style={styles.navItem}>에이드</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor: category === adeList ? '#056CF2' : 'white',
+                  color: category === adeList ? 'white' : 'black',
+                },
+              ]}>
+              에이드
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(smoothieList)}>
-            <Text style={styles.navItem}>스무디</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor:
+                    category === smoothieList ? '#056CF2' : 'white',
+                  color: category === smoothieList ? 'white' : 'black',
+                },
+              ]}>
+              스무디
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.navItemWrap}
             onPress={() => setCategory(teaList)}>
-            <Text style={styles.navItem}>티</Text>
+            <Text
+              style={[
+                styles.navItem,
+                {
+                  backgroundColor: category === teaList ? '#056CF2' : 'white',
+                  color: category === teaList ? 'white' : 'black',
+                },
+              ]}>
+              티
+            </Text>
           </TouchableOpacity>
         </View>
       )}
@@ -267,7 +315,7 @@ const EasyMenu = ({navigation, route}) => {
             />
             <CustomButton
               title={'장바구니'}
-              onPress={() => navigation.push('ShoppingBasket')}
+              onPress={() => navigation.push('ShoppingBasket', {})}
               width={'50%'}
               height={150}
               backgroundColor={'#056CF2'}
@@ -295,7 +343,7 @@ const EasyMenu = ({navigation, route}) => {
               height: '80%',
               flexWrap: 'wrap',
               elevation: 3,
-              paddingHorizontal: 50,
+              paddingHorizontal: 30,
             }}>
             {category.menues.map(item => {
               return (
@@ -344,9 +392,9 @@ const EasyMenu = ({navigation, route}) => {
                   return (
                     <View
                       style={{
+                        width: '100%',
                         marginTop: 10,
                         backgroundColor: '#F5F7FB',
-
                         borderRadius: 10,
                         flexDirection: 'row',
                         paddingHorizontal: 10,
@@ -354,37 +402,67 @@ const EasyMenu = ({navigation, route}) => {
                         position: 'relative',
                         alignItems: 'center',
                       }}>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          marginRight: 10,
-                          color: 'black',
-                          fontWeight: 'bold',
-                        }}>
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          marginRight: 10,
-                          color: 'black',
-                          fontWeight: 'bold',
-                        }}>
-                        {item.price}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          color: 'black',
-                          fontWeight: 'bold',
-                        }}>
-                        {item.quantity}
-                      </Text>
                       <View
                         style={{
                           flexDirection: 'row',
-                          position: 'absolute',
-                          right: 10,
+                          flex: 3 / 6,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                          {item.ice ? '아이스' : '핫'}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            marginRight: 10,
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                          {item.title}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          flex: 2 / 6,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            marginRight: 10,
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                          {item.size}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            marginRight: 10,
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                          {item.price}원
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: 'black',
+                            fontWeight: 'bold',
+                          }}>
+                          {item.quantity}잔
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          flex: 1 / 6,
                         }}>
                         <CustomButton
                           width={20}
@@ -452,7 +530,11 @@ const EasyMenu = ({navigation, route}) => {
                   title={'결제하기'}
                   fontSize={20}
                   textColor={'white'}
-                  onPress={() => navigation.push('InputPhoneNum')}
+                  onPress={() => {
+                    if (totalPrice != 0) {
+                      navigation.push('InputPhoneNum');
+                    }
+                  }}
                 />
               </View>
             </View>
@@ -485,11 +567,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderRightColor: 'gray',
+    borderColor: '#B9B8B8',
     borderStyle: 'solid',
     borderWidth: 1,
-    borderLeftWidth: 0,
-    borderBottomWidth: 0,
   },
   mid: {
     flex: 1,
@@ -507,6 +587,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingHorizontal: 30,
+
     backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {

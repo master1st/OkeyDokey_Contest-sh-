@@ -76,7 +76,7 @@ const CoffeeObject = ({
       <Coffee
         backgroundImageSize={imageSize}
         coffeeImageWidth={150}
-        coffeeImageHeight={200}
+        coffeeImageHeight={180}
         style={styles.imageWrap}
         imgsrc={imgsrc}
       />

@@ -30,7 +30,9 @@ const OrderCheck = ({route}) => {
     );
     setquantity(1);
     if (goto === 'ShoppingBasket') {
-      navigation.push('ShoppingBasket', {});
+      navigation.push('ShoppingBasket', {
+        data: 'confirm',
+      });
     } else if (goto === 'EasyMenu') {
       navigation.pop();
     }
@@ -38,7 +40,7 @@ const OrderCheck = ({route}) => {
 
   const handleShoppingBacket = () => {
     setquantity(1);
-    navigation.push('ShoppingBasket');
+    navigation.push('ShoppingBasket', {});
   };
 
   return (
@@ -189,7 +191,7 @@ const OrderCheck = ({route}) => {
               <CustomButton
                 onPress={handleConfirm}
                 width={'100%'}
-                title={'확인'}
+                title={'담기'}
                 backgroundColor={'#056CF2'}
                 fontSize={35}
                 height={100}

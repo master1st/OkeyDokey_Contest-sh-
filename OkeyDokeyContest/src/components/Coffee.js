@@ -76,7 +76,22 @@ const Coffee = ({
   };
 
   return (
-    <TouchableOpacity onPress={handleNavigation} style={{padding: 20}}>
+    <TouchableOpacity
+      onPress={CoffeeName && CoffeePrice ? handleNavigation : null}
+      style={{
+        margin: 20,
+        borderWidth: 0.1,
+        borderColor: 'black',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.18,
+        shadowRadius: 1.0,
+        borderRadius: 20,
+        elevation: 3,
+      }}>
       <Image
         style={{
           width: coffeeImageWidth,

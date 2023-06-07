@@ -52,7 +52,7 @@ const Qmilk = ({route, navigation}) => {
       qMilk: nonmilkText ? nonmilkText.name : null,
       qMilkid: nonmilkText ? nonmilkText.id : null,
       qCoffee: qCoffee,
-      whereScreen : 'EasyMenu'
+      whereScreen: 'EasyMenu',
     });
   };
 
@@ -61,44 +61,44 @@ const Qmilk = ({route, navigation}) => {
       qMilk: milkText ? milkText.name : null,
       qMilkid: milkText ? milkText.id : null,
       qCoffee: qCoffee,
-      whereScreen : 'EasyMenu'
+      whereScreen: 'EasyMenu',
     });
   };
 
-  const handleIceItem  = () => {
+  const handleIceItem = () => {
     navigation.push('EasyMenu', {
       qMilk: iceItemText ? iceItemText.name : null,
       qMilkid: iceItemText ? iceItemText.id : null,
       qCoffee: qCoffee,
-      whereScreen : 'EasyMenu'
+      whereScreen: 'EasyMenu',
     });
   };
 
-  const handleTeaItem  = () => {
+  const handleTeaItem = () => {
     navigation.push('EasyMenu', {
       qMilk: TeaItemText ? TeaItemText.name : null,
       qMilkid: TeaItemText ? TeaItemText.id : null,
       qCoffee: qCoffee,
-      whereScreen : 'EasyMenu'
+      whereScreen: 'EasyMenu',
     });
   };
 
-  const handleSoftDrinkItem  = () => {
+  const handleSoftDrinkItem = () => {
     navigation.push('EasyMenu', {
       qMilk: softDrinkItemText ? softDrinkItemText.name : null,
       qMilkid: softDrinkItemText ? softDrinkItemText.id : null,
       qCoffee: qCoffee,
-      whereScreen : 'EasyMenu'
+      whereScreen: 'EasyMenu',
     });
   };
 
   const getEasy = () => {
-    navigation.push("EasyMenu", {
-      whereScreen : 'Qmilk', 
-      settingEasy : false,
-      whereScreen : 'EasyMenu'
+    navigation.push('EasyMenu', {
+      whereScreen: 'Qmilk',
+      settingEasy: false,
+      whereScreen: 'EasyMenu',
     });
-  }
+  };
   // let nonmilkdata;
   // let milkdata;
   // if (milkText && milkText.length > 0) {
@@ -121,7 +121,7 @@ const Qmilk = ({route, navigation}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle getEasy={getEasy}/>
+        <Toggle getEasy={getEasy} />
       </View>
       <View
         style={{
@@ -150,41 +150,41 @@ const Qmilk = ({route, navigation}) => {
         }}>
         {qCoffeeid === 2 ? (
           <View style={styles.mid}>
-          <View style={{padding: 20,width:'60%',height:'70%'}}>
-            {iceItemText && (
-              <Quiz
-                handleEvent={handleIceItem}
-                QuizText={iceItemText.name}
-                height={'40%'}
-              />
-            )}
-          
-            {TeaItemText && (
-              <Quiz
-                handleEvent={handleTeaItem}
-                QuizText={TeaItemText.name}
-                height={'40%'}
-                marginBottom={50}
-              />
-            )}
+            <View style={{padding: 20, width: '60%', height: '70%'}}>
+              {iceItemText && (
+                <Quiz
+                  handleEvent={handleIceItem}
+                  QuizText={iceItemText.name}
+                  height={'40%'}
+                />
+              )}
+
+              {TeaItemText && (
+                <Quiz
+                  handleEvent={handleTeaItem}
+                  QuizText={TeaItemText.name}
+                  height={'40%'}
+                  marginBottom={50}
+                />
+              )}
             </View>
-            <View style={{padding: 20,width:'60%',height:'70%'}}>
-            {softDrinkItemText && (
-              <Quiz
-                handleEvent={handleSoftDrinkItem}
-                QuizText={softDrinkItemText.name}
-                height={'40%'}
-              />
-            )}
-            {milkText && (
-              <Quiz
-                handleEvent={handleMilk}
-                QuizText={milkText.name}
-                height={qCoffeeid === 2 ? '40%' : '90%'}
-                marginBottom={50}
-              />
-            )}
-          </View>
+            <View style={{padding: 20, width: '60%', height: '70%'}}>
+              {softDrinkItemText && (
+                <Quiz
+                  handleEvent={handleSoftDrinkItem}
+                  QuizText={softDrinkItemText.name}
+                  height={'40%'}
+                />
+              )}
+              {milkText && (
+                <Quiz
+                  handleEvent={handleMilk}
+                  QuizText={milkText.name}
+                  height={qCoffeeid === 2 ? '40%' : '90%'}
+                  marginBottom={50}
+                />
+              )}
+            </View>
           </View>
         ) : (
           <View style={styles.mid}>
@@ -216,7 +216,7 @@ const Qmilk = ({route, navigation}) => {
           />
           <CustomButton
             title={'장바구니'}
-            onPress={() => navigation.push('ShoppingBasket')}
+            onPress={() => navigation.push('ShoppingBasket', {})}
             width={'50%'}
             height={150}
             backgroundColor={'#056CF2'}

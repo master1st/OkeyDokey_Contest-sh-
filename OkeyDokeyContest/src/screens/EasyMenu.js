@@ -289,7 +289,7 @@ const EasyMenu = ({navigation, route}) => {
                 return (
                   <>
                     <Coffee
-                      key={item.id}
+                      key={item.length}
                       navigation={navigation}
                       goto={'ShoppingBasket'}
                       coffeeImageWidth={140}

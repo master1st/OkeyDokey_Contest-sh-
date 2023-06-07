@@ -152,6 +152,7 @@ const EasyMenu = ({navigation, route}) => {
             dispatch(resetShopping());
           }}
           style={{
+            flexDirection: 'row',
             position: 'absolute',
             left: 30,
             borderColor: 'white',

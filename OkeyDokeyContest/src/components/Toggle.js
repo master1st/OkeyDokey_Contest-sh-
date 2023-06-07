@@ -66,48 +66,50 @@ const Toggle = ({
         <View style={styles.textContainer2}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             {whereScreen === 'EasyMenu' ? (
-               <Text
-               style={[
-                 styles.buttonText,
-                 !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
-               ]}>
-               일반
-             </Text>
-            ) :
-            (whereScreen === 'QCoffee' || whereScreen === 'Qmilk')  ? (
-               <Text
-               style={[
-                 styles.buttonText,
-                 isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
-               ]}>
-               일반
-             </Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+                ]}>
+                일반
+              </Text>
+            ) : whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
+              <Text
+                style={[
+                  styles.buttonText,
+                  isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+                ]}>
+                일반
+              </Text>
             ) : (
-              <Text style={[styles.buttonText, styles.buttonTextActive]}>일반</Text>
+              <Text style={[styles.buttonText, styles.buttonTextActive]}>
+                일반
+              </Text>
             )}
           </View>
         </View>
         <View style={styles.textContainer}>
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          {whereScreen === 'EasyMenu' ? (
-               <Text
-               style={[
-                 styles.buttonText,
-                 isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
-               ]}>
-               쉬운메뉴
-             </Text>
-            ) :
-          (whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ) ? (
-            <Text
-            style={[
-              styles.buttonText,
-              !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
-            ]}>
-            쉬운메뉴
-          </Text>
-          ) : (
-          <Text style={[styles.buttonText, styles.buttonTextWhite]}>쉬운메뉴</Text>
+            {whereScreen === 'EasyMenu' ? (
+              <Text
+                style={[
+                  styles.buttonText,
+                  isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+                ]}>
+                쉬운메뉴
+              </Text>
+            ) : whereScreen === 'QCoffee' || whereScreen === 'Qmilk' ? (
+              <Text
+                style={[
+                  styles.buttonText,
+                  !isToggled ? styles.buttonTextActive : styles.buttonTextWhite,
+                ]}>
+                쉬운메뉴
+              </Text>
+            ) : (
+              <Text style={[styles.buttonText, styles.buttonTextWhite]}>
+                쉬운메뉴
+              </Text>
             )}
           </View>
         </View>
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 150,
-    backgroundColor: 'blue',
+    backgroundColor: '#056CF2',
     borderRadius: 20,
     elevation: 1,
   },

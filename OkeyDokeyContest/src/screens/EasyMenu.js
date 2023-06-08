@@ -41,10 +41,13 @@ const EasyMenu = ({navigation, route}) => {
   const navigationQcoffee = () => {
     if (whereScreen === 'QCoffee') {
       navigation.pop();
-    } else if (whereScreen === 'Qmilk') {
-      navigation.pop();
     }
   };
+  const navigationQmilk = () => {
+    if(whereScreen === 'Qmilk'){
+      navigation.pop();
+    }
+  }
 
   //쉬운메뉴 response값
   const [drinkItem, setDrinkItem] = useState([]);
@@ -175,6 +178,7 @@ const EasyMenu = ({navigation, route}) => {
           settingEasy={false}
           getEasy={getEasy}
           navigationQcoffee={navigationQcoffee}
+          navigationQmilk={navigationQmilk}
           whereScreen={whereScreen}
         />
       </View>

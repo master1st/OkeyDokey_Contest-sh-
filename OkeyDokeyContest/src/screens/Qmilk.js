@@ -96,7 +96,6 @@ const Qmilk = ({route, navigation}) => {
     navigation.push('EasyMenu', {
       whereScreen: 'Qmilk',
       settingEasy: false,
-      whereScreen: 'EasyMenu',
     });
   };
   // let nonmilkdata;
@@ -121,7 +120,7 @@ const Qmilk = ({route, navigation}) => {
       </View>
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
-        <Toggle getEasy={getEasy} />
+        <Toggle getEasy={getEasy} CoffeeScreen={'우유'}/>
       </View>
       <View
         style={{

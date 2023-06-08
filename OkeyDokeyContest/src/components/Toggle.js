@@ -5,6 +5,7 @@ const Toggle = ({
   getEasy,
   QcoffeeSet,
   navigationQcoffee,
+  navigationQmilk,
   whereScreen,
   CoffeeScreen,
   settingEasy,
@@ -36,7 +37,7 @@ const Toggle = ({
     if (whereScreen === 'QCoffee' && !isToggled) {
       navigationQcoffee();
     } else if (whereScreen === 'Qmilk' && !isToggled) {
-      navigationQcoffee();
+      navigationQmilk();
     }
     getEasy();
     if (whereScreen === 'EasyMenu') {

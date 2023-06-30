@@ -14,6 +14,9 @@ import Payment from './src/screens/Payment';
 import OrderNum from './src/screens/OrderNum';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
+import Welcome from './src/screens/Welcome';
+import Identify from './src/screens/Identify';
+import Favorites from './src/screens/Favorites';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +25,9 @@ const App = () => {
     <NavigationContainer>
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
+          {/* <Stack.Screen name="Welcome" component={Welcome} /> */}
+          <Stack.Screen name="favorites" component={Favorites} />
+          <Stack.Screen name="Identify" component={Identify} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="QCoffee" component={QCoffee} />
           <Stack.Screen name="Qmilk" component={Qmilk} />

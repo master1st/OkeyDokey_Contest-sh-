@@ -6,15 +6,18 @@ import CustomButton from './CustomButton';
 // 비회원으로 계속하기는 바로 Home으로 navigate
 // 즉 값이 있냐 없냐에 따라 "본인확인창"이나올건지, "Home"이 나오는지 삼항연산 체크
 
-const FaceModal = ({width, height, title,headerTitle,subTitle}) => {
-
-    const memberCheck = () => {
-        let data = "얼굴인식 성공시 넘어온 값";
-        data ? 
-        navigation.navigate('Home', { data })
-        :
-        navigation.navigate('Home')
-    }
+const FaceModal = ({
+  width,
+  height,
+  title,
+  headerTitle,
+  subTitle,
+  navigation,
+}) => {
+  const memberCheck = () => {
+    navigation.navigate('favorites');
+  };
+  //home으로 가서 버튼을 눌렀을때 얼굴인식 성공 데이타가 넘어온다면 즐겨찾는 메뉴로 바로 navigate
   return (
     <View style={{width: width, height: height, position: 'absolute'}}>
       <View style={styles.main}>
@@ -33,11 +36,11 @@ const FaceModal = ({width, height, title,headerTitle,subTitle}) => {
 
       <View style={styles.bottomButtons}>
         <CustomButton
-          title={'뒤로가기'}
+          title={'뒤로 가기'}
           onPress={() => navigation.goBack()}
           width={'50%'}
           height={110}
-          backgroundColor={'#6D6D6D'}
+          backgroundColor={'#056CF2'}
           textColor={'white'}
           fontSize={35}
         />
@@ -45,7 +48,7 @@ const FaceModal = ({width, height, title,headerTitle,subTitle}) => {
           title={'계속하기'}
           onPress={memberCheck}
           width={'50%'}
-          height={110}  
+          height={110}
           backgroundColor={'#056CF2'}
           textColor={'white'}
           fontSize={35}

@@ -1,11 +1,36 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import InputModal from '../components/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FaceModal from '../components/FaceModal';
 import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native';
 
 const Identify = () => {
+  const navigation = useNavigation();
+  const [userData, setUserData] = useState(null); // 회원 정보 상태
+
+  // useEffect(() => {
+  //   // 백엔드로부터 회원 정보 GET 요청
+  //   // 임시로 setTimeout으로 시뮬레이션하고, 실제 요청 코드로 대체해야 함
+  //   const getUserData = async () => {
+  //     try {
+  //       // GET 요청을 통해 회원 정보를 가져옴
+  //       const response = await fetch('backendUrl/userData');
+  //       const data = await response.json();
+  //       setUserData(data); // 가져온 회원 정보를 상태에 저장
+  //     } catch (error) {
+  //       console.error('Error fetching user data:', error);
+  //     }
+  //   };
+
+  //   getUserData();
+  // }, []);
+
+  const handleContinue = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -35,22 +60,28 @@ const Identify = () => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <FaceModal 
-        headerTitle="본인확인" 
-        title="김OO" 
-        subTitle="으로 계속하시겠어요?"
-        width="75%" 
-        height="100%" />
+        {/* {userData ? ( */}
+          <FaceModal
+            navigation={navigation}
+            headerTitle="본인확인"
+            title={`이름`}
+            subTitle="으로 계속하시겠어요?"
+            width="75%"
+            height="100%"
+          />
+        {/* ) : (
+          <Text>백엔드로부터 유저 데이터 받아오면 모달창이 보임.</Text>
+        )} */}
       </View>
       <CustomButton
-          title={'비회원으로 계속하기'}
-          onPress={() => navigation.navigate('Payment')}
-          width={'100%'}
-          height={110}
-          backgroundColor={'#056CF2'}
-          textColor={'white'}
-          fontSize={35}
-        />
+        title={'비회원으로 계속하기'}
+        onPress={handleContinue}
+        width={'100%'}
+        height={110}
+        backgroundColor={'#056CF2'}
+        textColor={'white'}
+        fontSize={35}
+      />
     </SafeAreaView>
   );
 };

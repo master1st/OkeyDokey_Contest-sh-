@@ -12,6 +12,7 @@ import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import {useNavigation} from '@react-navigation/native';
 import * as RNFS from 'react-native-fs';
 import CustomButton from './CustomButton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CameraScreen = ({state}) => {
   const navigation = useNavigation();
@@ -19,7 +20,7 @@ const CameraScreen = ({state}) => {
   const devices = useCameraDevices();
   const device = devices.front;
 
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
   const [imageSource, setImageSource] = useState(null);
   const [photos, setPhotos] = useState([]); // 보낼 사진들 빈 배열로 초기화
   const [imageObject, setImageObject] = useState('');
@@ -31,6 +32,16 @@ const CameraScreen = ({state}) => {
     }
     getPermission();
   }, []);
+  useEffect(() => {
+    // if(얼굴인식이 되었다면)
+    const timer = setTimeout(() => {
+      navigation.navigate('Identify');
+    }, 3000)
+    return () => clearTimeout(timer);
+    // else 얼굴인식이 안되었다면 다시 5번까지 인식  
+  }, [showCamera]);
+
+
 
 //   //김연출의 키오스크 사진 보내기
 //   const uploadData = async () => {
@@ -57,7 +68,7 @@ const CameraScreen = ({state}) => {
     if (camera.current == null) {
       return;
     }
-    navigation.navigate('Identify');
+    // navigation.navigate('Identify');
     const photo = await camera.current.takePhoto({});
     setImageSource(photo.path);
     console.log(photo.path);
@@ -79,37 +90,42 @@ const CameraScreen = ({state}) => {
     // );
   };
 
-  const startInterval = count => {
-    setShowCamera(true);
-    setPhotos([]);
-    let i = 0;
-    const id = setInterval(async () => {
-      if (i < count) {
-        await capturePhoto();
-        i++;
-      } else {
-        clearInterval(id);
-        setShowCamera(false);
-      }
-    }, 1000);
-  };
 
   if (device == null) {
     return <Text>Camera not available</Text>;
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+       <View style={{ flex: 1, backgroundColor: '#F5F7FB'}}>
+        <View style={styles.header}>
+          <Image
+            style={{ width: 150, height: 50 }}
+            source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
+          />
+        </View>
+      </View>
+      <View style={{ flex: 1, backgroundColor: 'rgba(217, 217, 217, 0.75)'}}>
+        <View style={styles.message}>
+          <Text style={{fontSize: 24, fontWeight: 'bold', color:'black'}}>오키도키로 키오스크를 편리하게 이용하세요! </Text>
+          <Image
+            style={{marginLeft:30 ,width: 80, height: 80 }}
+            source={require('OkeyDokeyContest/assets/images/Rectangle.png')}
+          />
+        </View>
+      </View>
       {showCamera ? (
         <>
-          <View style={{position: 'relative', width: 300, height: 300}}>
+          <View style={{position: 'relative', flex:8, width: '100%', height: '100%'}}>
             <Camera
               ref={camera}
-              style={{width: 300, height: 300}}
+              style={{width: '100%', height: '100%'}}
               device={device}
               isActive={showCamera}
               photo={true}
-            />
+            >
+              
+            </Camera>
             <View
               style={{
                 width: '100%',
@@ -121,8 +137,16 @@ const CameraScreen = ({state}) => {
               <Text style={{color: 'white'}}>정면을 응시해 주세요</Text>
             </View>
           </View>
-
-          <View style={styles.buttonContainer}>
+          <CustomButton
+          title={'비회원으로 계속하기'}
+          onPress={() => navigation.navigate('Home')}
+          width={'100%'}
+          height={110}
+          backgroundColor={'#056CF2'}
+          textColor={'white'}
+          fontSize={35}
+        />
+          {/* <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.camButton}
               onPress={() => {
@@ -130,7 +154,7 @@ const CameraScreen = ({state}) => {
                 setShowCamera(false);
               }}
             />
-          </View>
+          </View> */}
         </>
       ) : (
         <>
@@ -176,79 +200,29 @@ const CameraScreen = ({state}) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#fff',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: '#77c3ec',
-                }}
-                onPress={() => setShowCamera(true)}>
-                <Text style={{color: '#77c3ec', fontWeight: '500'}}>
-                  다시찍기
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#77c3ec',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: 'white',
-                }}
-                onPress={() => startInterval(5)}>
-                <Text style={{color: 'white', fontWeight: '500'}}>
-                  여러번 찍기
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#77c3ec',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: 'white',
-                }}
-                onPress={() => {
-                  navigation.push('PhotoList', {
-                    photos: photos,
-                  });
-                }}>
-                <Text style={{color: 'white', fontWeight: '500'}}>
-                  사진 확인하기
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          {/* <CustomButton
-          title={'비회원으로 계속하기'}
-          onPress={() => navigation.navigate('Home')}
-          width={'100%'}
-          height={110}
-          backgroundColor={'#056CF2'}
-          textColor={'white'}
-          fontSize={35}
-        /> */}
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  message : {
+    flex: 1,
+    flexDirection:'row',
+    // backgroundColor:'rgba(217, 217, 217, 0.75)',
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  header: {
+    flex: 1,
+    flexDirection:'row',
+    backgroundColor: '#F5F7FB',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     position: 'absolute',

@@ -13,10 +13,13 @@ import CustomButton from '../components/CustomButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { addOrderNumber, setIsPack } from '../redux/slices/shoppingSlice';
 
-const Home = () => {
+const Home = ({ route }) => {
+  const receivedData = route.params;
   const shoppings = useSelector(state => state.shopping.shoppings);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  console.log(receivedData);
+  // 데이터를 받는 부분이 존재하겠지
   const [data, setData] = useState(
     {
       eatin: `매장에서\n먹기`,
@@ -29,18 +32,26 @@ const Home = () => {
   //   }
   // };
   const handleHere = () => {
+    if(receivedData){
+      navigation.navigate('favorites');
+    } else {
     dispatch(setIsPack(false));
     dispatch(addOrderNumber());
     navigation.push('QCoffee', {
       qdata : data.eatin,
     })
   }
+  }
   const handleTakeOut = () => {
+    if(receivedData){
+      navigation.navigate('favorites');
+    } else{
     dispatch(setIsPack(true));
     dispatch(addOrderNumber());
     navigation.push('QCoffee', {
       qdata : data.takeout,
     })
+  }
   }
   const handleNonMembers = () => {
       navigation.push('QCoffee', {

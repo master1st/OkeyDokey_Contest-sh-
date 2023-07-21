@@ -8,7 +8,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const Identify = () => {
   const navigation = useNavigation();
-  const [userData, setUserData] = useState(null); // 회원 정보 상태
+  const [userData, setUserData] = useState({
+    name: "윤석현",
+    age: "25",
+    major: "computer",
+  }); // 회원 정보 상태
 
   // useEffect(() => {
   //   // 백엔드로부터 회원 정보 GET 요청
@@ -27,6 +31,7 @@ const Identify = () => {
   //   getUserData();
   // }, []);
 
+  // 본인확인된 모종의 부분이 있을거아냐 여기선 userData라고 가정.
   const handleContinue = () => {
     navigation.navigate('Home');
   };
@@ -62,6 +67,7 @@ const Identify = () => {
         }}>
         {/* {userData ? ( */}
           <FaceModal
+            userData={userData}
             navigation={navigation}
             headerTitle="본인확인"
             title={`이름`}
@@ -78,7 +84,7 @@ const Identify = () => {
         onPress={handleContinue}
         width={'100%'}
         height={110}
-        backgroundColor={'#056CF2'}
+        backgroundColor =  'rgba(5, 108, 242, 0.5)'
         textColor={'white'}
         fontSize={35}
       />

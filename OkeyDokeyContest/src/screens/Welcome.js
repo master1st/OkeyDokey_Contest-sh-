@@ -47,7 +47,7 @@ const Welcome = ({ navigation }) => {
           />
         </View>
       </View>
-      <View style={{ flex: 9, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 9, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5F7FB' }}>
         <Text style={{ fontSize: 50, marginBottom: 100 }}>음메카우 상명대점</Text>
       </View>
     </SafeAreaView>

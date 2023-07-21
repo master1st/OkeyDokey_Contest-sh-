@@ -1,14 +1,60 @@
-import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Image, View, Text, StatusBar, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import InputModal from '../components/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FaceModal from '../components/FaceModal';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import RNFS from 'react-native-fs';
+import axios from 'axios';
+import Coffee from '../components/Coffee';
 //즐겨찾는 메뉴 페이지
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
+  const [Mockdata, SetMockdata] = useState([
+    {
+      id: 1,
+      image: require('../../assets/images/coffee.png'),
+      name: '에스프레소',
+      price: 1000,
+    },
+    {
+      id: 2,
+      image: require('../../assets/images/coffee.png'),
+      name: '아메리카노',
+      price: 500,
+    },
+    {
+      id: 3,
+      image: require('../../assets/images/coffee.png'),
+      name: '아메리카노',
+      price: 1500,
+    },
+    {
+      id: 4,
+      image: require('../../assets/images/coffee.png'),
+      name: '아메리카노',
+      price: 2000,
+    },
+  ]);
+  const totalCoffeePrice = Mockdata.reduce((total, coffee) => total + coffee.price, 0)
+  console.log(totalCoffeePrice);
   const navigation = useNavigation();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get('your_local_data.json'); // 목데이터 파일 경로를 입력하세요.
+  //       setData(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // console.log(Mockdata);
   return (
     <SafeAreaView
       style={{
@@ -32,7 +78,7 @@ const Favorites = () => {
       <View
         style={{
           position: 'absolute',
-          top: '20%',
+          top: '15%',
           width: '100%',
           height: '100%',
           justifyContent: 'center',
@@ -45,12 +91,46 @@ const Favorites = () => {
                 김OO님이 즐겨찾는 메뉴
               </Text>
             </View>
-            {/* <View style={styles.header}>
-          <Text style={styles.title}>여기에 커피가 들어가야함.</Text>
+            <View style={styles.mid}>
+            <View style={styles.midItemBox}>
+           
+              {Mockdata.map(item => {
+                return (
+                  <>
+                    <Coffee
+                      key={item.id}
+                      navigation={navigation}
+                      goto={'ShoppingBasket'}
+                      coffeeImageWidth={120}
+                      coffeeImageHeight={140}
+                      // style={styles.imageWrap}
+                      imgsrc={item.image}
+                      CoffeeName={item.name}
+                      CoffeePrice={item.price}
+                    />
+                  </>
+                );
+              })}
+           
+            </View>
+          </View>
+          <View
+          style={{
+            width: '100%',
+            height: 100,
+            backgroundColor: '#F5F7FB',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text
+            style={{
+              fontSize: 30,
+              fontWeight: 'bold',
+              color: 'black',
+            }}>
+            결제금액 {totalCoffeePrice}원
+          </Text>
         </View>
-        <View style={styles.subtitleView}>
-          <Text style={styles.subtitle}>안녕</Text>
-        </View> */}
           </View>
           <CustomButton
             title={'확인'}
@@ -84,6 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '15%',
+    backgroundColor: '#F5F7FB',
+    // flex:1,
   },
   div: {
     flex: 9,
@@ -103,7 +185,7 @@ const styles = StyleSheet.create({
   main: {
     backgroundColor: 'white',
     width: '100%',
-    height: '50%',
+    height: '60%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -139,5 +221,29 @@ const styles = StyleSheet.create({
   inputPhoneNumberText: {
     fontSize: 25,
     color: 'black',
+  },
+  imageWrap: {
+    flex: 2,
+  
+  },
+  mid: {
+    flex: 1,
+    height: '100%',
+    marginTop: 110,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  midItemBox: {
+    width: '100%',
+    height: '80%',
+    justifyContent: 'flex-start',
+    alignContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 55,
+    // paddingVertical: 30,
+    backgroundColor: 'white',
+    marginBottom: 120,
   },
 });

@@ -96,12 +96,9 @@ const Coffee = ({
         style={{
           width: coffeeImageWidth,
           height: coffeeImageHeight,
-          borderTopLeftRadius: CoffeeName && CoffeePrice ? 20 : 10,
-          borderTopRightRadius: CoffeeName && CoffeePrice ? 20 : 10,
-          borderBottomLeftRadius: CoffeeName && CoffeePrice ? 0 : 10,
-          borderBottomRightRadius: CoffeeName && CoffeePrice ? 0 : 10,
+          borderRadius: 20, // 모든 꼭지점에 20을 설정
         }}
-        source={{uri: imgsrc}}
+        source={imgsrc}
         // source={{uri: imgsrc}}
       />
       {CoffeeName && CoffeePrice ? (

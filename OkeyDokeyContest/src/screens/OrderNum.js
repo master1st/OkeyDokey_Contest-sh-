@@ -5,6 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {resetShopping} from '../redux/slices/shoppingSlice';
+import WebviewContainer from '../components/WebviewContainer';
 
 const OrderNum = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const OrderNum = () => {
     //홈으로 돌아감
     navigation.reset({
       index: 0,
-      routes: [{name: 'Home'}],
+      routes: [{name: 'Welcome'}],
     });
   };
 
@@ -41,6 +42,7 @@ const OrderNum = () => {
       </View>
       <View style={styles.div}></View>
       <View style={styles.grayDiv}></View>
+
       <View
         style={{
           position: 'absolute',
@@ -61,16 +63,19 @@ const OrderNum = () => {
             </View>
             <View style={styles.inputView}></View>
           </View>
-
+         
+        <View style={{flexDirection:'row'}}>
           <CustomButton
             title={'확인'}
             onPress={() => navigateHome()}
-            width={'100%'}
+            width={'50%'}
             height={110}
             backgroundColor={'#056CF2'}
             textColor={'white'}
             fontSize={35}
           />
+            <WebviewContainer />
+        </View>
         </View>
       </View>
     </SafeAreaView>

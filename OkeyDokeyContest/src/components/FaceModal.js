@@ -7,6 +7,7 @@ import CustomButton from './CustomButton';
 // 즉 값이 있냐 없냐에 따라 "본인확인창"이나올건지, "Home"이 나오는지 삼항연산 체크
 
 const FaceModal = ({
+  userData,
   width,
   height,
   title,
@@ -15,7 +16,7 @@ const FaceModal = ({
   navigation,
 }) => {
   const memberCheck = () => {
-    navigation.navigate('favorites');
+    navigation.navigate('Home',userData);
   };
   //home으로 가서 버튼을 눌렀을때 얼굴인식 성공 데이타가 넘어온다면 즐겨찾는 메뉴로 바로 navigate
   return (
@@ -40,7 +41,7 @@ const FaceModal = ({
           onPress={() => navigation.goBack()}
           width={'50%'}
           height={110}
-          backgroundColor={'#056CF2'}
+          backgroundColor={'#6D6D6D'}
           textColor={'white'}
           fontSize={35}
         />

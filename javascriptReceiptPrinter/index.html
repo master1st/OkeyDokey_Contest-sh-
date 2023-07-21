@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<script src="./bxlcommon.js" ></script>
+<script src="./webPrintSDK/bxlpos.js" ></script>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<title>Web Print SDK Sample</title>
+
+	<link rel="stylesheet" type="text/css" href="./bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="./reset.css" />
+	<link rel="stylesheet" type="text/css" href="./style.css" />
+	<link rel="stylesheet" type="text/css" href="./responsive.css" />
+	<link rel="stylesheet" type="text/css" href="./modules.css" />
+
+</head>
+<script>
+</script>
+<script type="text/javascript">
+
+	var LF = "\n";
+	var issueID = 1;
+	var tmp = "123456789"
+	var _inch = 3;
+    var orderNumberz = 0;
+	(() => {
+		window.__WEBVIEW_BRIDGE__={
+			init: function() {
+				try{
+					document.addEventListener("message", e=> {
+						const jsonData = JSON.parse(e.data); // JSON 데이터를 JavaScript 객체로 변환
+       				   const orderNumber = jsonData.type; // 주문번호 변수에 "type"의 값 할당
+					   console.log(orderNumber);
+      				    displayOrderNumber(orderNumber); // 주문번호 출력 함수 호출
+					});
+				} catch(err) {
+					console.error(err);
+				}
+			}
+		}
+
+		window.__WEBVIEW_BRIDGE__.init();
+
+		function displayOrderNumber(orderNumber) {
+			orderNumberz =  orderNumber;
+		}
+	})();
+	function changeInch() {
+		_inch = type_inch.value;
+	}
+
+	function viewResult(result) {
+		p_result.value = result;
+	}
+
+	function PrintReceipt() {
+		setPosId(issueID);
+		checkPrinterStatus();
+		printText("--------------------------------\n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("			주  문  번  호       "+"\n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("Order Number: " + orderNumberz + "\n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("								   \n", 0, 0, false, false, false, 0, 0);
+		printText("--------------------------------\n", 0, 0, false, false, false, 0, 0);
+
+		
+		cutPaper(1);
+
+		var strSubmit = getPosData();
+
+		console.log(strSubmit);
+
+		issueID++;
+		requestPrint(p_name.value, strSubmit, viewResult);
+
+		return true;
+	}
+
+
+	var arrSymbol = [0, 1, 2, 3, 5, 6, 4, 7, 8];
+
+	// 
+
+	function initialize() {
+		// get references to the canvas element as well as the 2D drawing context
+		var sigCanvas = document.getElementById("canvas");
+		var context = sigCanvas.getContext("2d");
+		context.strokeStyle = "#FF";
+		context.lineJoin = "round";
+		context.lineWidth = 5;
+
+
+		// This will be defined on a TOUCH device such as iPad or Android, etc.
+		var is_touch_device = "ontouchstart" in document.documentElement;
+
+		if (is_touch_device) {
+			// create a drawer which tracks touch movements
+			var drawer = {
+				isDrawing: false,
+				touchstart: function (coors) {
+					context.beginPath();
+					context.moveTo(coors.x, coors.y);
+					this.isDrawing = true;
+				},
+				touchmove: function (coors) {
+					if (this.isDrawing) {
+						context.lineTo(coors.x, coors.y);
+						context.stroke();
+					}
+				},
+				touchend: function (coors) {
+					if (this.isDrawing) {
+						this.touchmove(coors);
+						this.isDrawing = false;
+					}
+				}
+			};
+
+			// create a function to pass touch events and coordinates to drawer
+			function draw(event) {
+				// get the touch coordinates.  Using the first touch in case of multi-touch
+				var coors = {
+					x: event.targetTouches[0].pageX,
+					y: event.targetTouches[0].pageY
+				};
+
+				// Now we need to get the offset of the canvas location
+				var obj = sigCanvas;
+
+				if (obj.offsetParent) {
+					// Every time we find a new object, we add its offsetLeft and offsetTop to curleft and curtop.
+					do {
+						coors.x -= obj.offsetLeft;
+						coors.y -= obj.offsetTop;
+					} while (
+						// The while loop can be "while (obj = obj.offsetParent)" only, which does return null
+						// when null is passed back, but that creates a warning in some editors (i.e. VS2010).
+						(obj = obj.offsetParent) != null
+					);
+				}
+
+				// pass the coordinates to the appropriate handler
+				drawer[event.type](coors);
+			}
+
+			// attach the touchstart, touchmove, touchend event listeners.
+			sigCanvas.addEventListener("touchstart", draw, false);
+			sigCanvas.addEventListener("touchmove", draw, false);
+			sigCanvas.addEventListener("touchend", draw, false);
+
+			// prevent elastic scrolling
+			sigCanvas.addEventListener(
+				"touchmove",
+				function (event) {
+					event.preventDefault();
+				},
+				false
+			);
+		} else {
+			// start drawing when the mousedown event fires, and attach handlers to
+			// draw a line to wherever the mouse moves to
+			$("#canvas").mousedown(function (mouseEvent) {
+				var position = getPosition(mouseEvent, sigCanvas);
+				context.moveTo(position.X, position.Y);
+				context.beginPath();
+
+				// attach event handlers
+				$(this)
+					.mousemove(function (mouseEvent) {
+						drawLine(mouseEvent, sigCanvas, context);
+					})
+					.mouseup(function (mouseEvent) {
+						finishDrawing(mouseEvent, sigCanvas, context);
+					})
+					.mouseout(function (mouseEvent) {
+						finishDrawing(mouseEvent, sigCanvas, context);
+					});
+			});
+		}
+	}
+
+
+	// draws a line to the x and y coordinates of the mouse event inside
+	// the specified element using the specified context
+	function drawLine(mouseEvent, sigCanvas, context) {
+		var position = getPosition(mouseEvent, sigCanvas);
+
+		context.lineTo(position.X, position.Y);
+		context.stroke();
+	}
+
+	// draws a line from the last coordiantes in the path to the finishing
+	// coordinates and unbind any event handlers which need to be preceded
+	// by the mouse down event
+	function finishDrawing(mouseEvent, sigCanvas, context) {
+		// draw the line to the finishing coordinates
+		drawLine(mouseEvent, sigCanvas, context);
+
+		context.closePath();
+
+		// unbind any events which could draw
+		$(sigCanvas)
+			.unbind("mousemove")
+			.unbind("mouseup")
+			.unbind("mouseout");
+	}
+
+	function changeBarcodeSymbol() {
+		var symbologySelect = document.getElementById("b_symbol");
+		var index = symbologySelect.selectedIndex;
+
+		if 		(index == 0) { $("#barcode_data").val("123456789012"); }			//UPCA
+		else if (index == 1) { $("#barcode_data").val("01234567890"); }				//UPCE
+		else if (index == 2) { $("#barcode_data").val("12345678"); }				//EAN8
+		else if (index == 3) { $("#barcode_data").val("1234567890123"); }			//EAN13
+		else if (index == 4) { $("#barcode_data").val("2468024680"); }				//ITF
+		else if (index == 5) { $("#barcode_data").val("ABCD1234567890$+-/:"); }		//Codabar
+		else if (index == 6) { $("#barcode_data").val("ABCDE1234567890VWXYZ"); }	//Code39
+		else if (index == 7) { $("#barcode_data").val("BXLTEST1234567890123"); }	//Code93
+		else if (index == 8) { $("#barcode_data").val("BXLTEST12345678901234567"); }//Code128
+	}
+
+</script>
+
+<style>
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+}
+.ripple:active {
+  background-color: #6eb9f7;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* Button style */
+button {
+  border: none;
+  border-radius: 2px;
+  padding: 12px 18px;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: white;
+  background-color: #2196f3;
+  box-shadow: 0 0 4px #999;
+  outline: none;
+}
+</style>
+
+<!-- 여기를 건들면 된다. -->
+<body onload="initialize()">
+	<header>
+		<div class="container-fluid">
+			
+		</div>
+	</header>
+
+	<section>
+		<div id="contain">
+			<div id="wrap-contents">
+				<div id="image-contents" class="row" style="padding-top:20px;padding-left:20px">
+					<div class="col-md-6 cold-sm-6 product">
+						<input type="text" class="text form-control" id="p_result" style="visibility: hidden;"/>
+						<input type="text" class="text form-control" id="p_name" value="Printer1" style="visibility: hidden;"/>
+						<button id="print_bt" class="ripple" style="font-size:30px; margin-top:15px" onclick="PrintReceipt();"> Print receipt </button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+	  $(document).ready(function() {
+	   $('#sampleBox').on('change',function(){
+		    if(this.value == 'pos') {
+		     location.href = "Sample_PosPrinter.html";
+		    } else if(this.value == 'label') {
+		     location.href = "Sample_LabelPrinter.html";
+		    } else if(this.value == 'msr') {
+		     location.href = "Sample_MSR.html";
+		    }
+		});
+	   });
+	  </script>
+
+	  <script type="text/javascript">
+		$(document).ready(function() {
+		 $('#sampleBoxMode').on('change',function(){
+			  if(this.value == 'http') {
+			   setConnectionMode("http:");
+			  } else if(this.value == 'https') {
+			   setConnectionMode("https:");
+			  } else if(this.value == 'ws') {
+			   setConnectionMode("ws:");
+		   	  } else if(this.value == 'wss') {
+			   setConnectionMode("wss:");
+			  }
+		 });
+		});
+	  </script>
+
+	  <footer class="container-fluid">
+	   
+	  </footer>
+
+	</body>
+
+</html>

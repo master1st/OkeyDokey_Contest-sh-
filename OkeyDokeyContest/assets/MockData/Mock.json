@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "image": "http://127.0.0.1:8000/media/menu/coffe.jpg",
+    "name": "에스프레소",
+    "price": 1000
+  },
+  {
+    "id": 2,
+    "image": "http://127.0.0.1:8000/media/menu/coffe.jpg",
+    "name": "아메리카노",
+    "price": 500
+  },
+  {
+    "id": 3,
+    "image": "http://127.0.0.1:8000/media/menu/coffe.jpg",
+    "name": "아메리카노",
+    "price": 1500
+  },
+  {
+    "id": 4,
+    "image": "http://127.0.0.1:8000/media/menu/coffe.jpg",
+    "name": "아메리카노",
+    "price": 2000
+  }
+
+]

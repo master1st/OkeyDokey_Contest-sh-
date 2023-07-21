@@ -24,6 +24,7 @@
     "react-native-screens": "^3.20.0",
     "react-native-switch-toggle": "^2.2.1",
     "react-native-vision-camera": "^2.15.4",
+    "react-native-webview": "^13.2.3",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1"
   },

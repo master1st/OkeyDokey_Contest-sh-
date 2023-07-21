@@ -12,7 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.okeydokeycontest.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
+import com.reactnativecommunity.webview.RNCWebViewPackage; // WebView 패키지 임포트
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -24,10 +24,11 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
-          // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
+          // 기존에 등록된 RNCWebViewPackage를 찾아 제거하세요.
+          packages.removeIf(packageItem -> packageItem instanceof RNCWebViewPackage);
+          // RNCWebViewPackage를 새로 추가하세요.
+          packages.add(new RNCWebViewPackage());
           return packages;
         }
 

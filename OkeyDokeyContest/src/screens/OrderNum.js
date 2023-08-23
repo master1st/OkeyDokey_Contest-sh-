@@ -5,7 +5,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
 import {resetShopping} from '../redux/slices/shoppingSlice';
-import WebviewContainer from '../components/WebviewContainer';
+import WebviewContainer from '../pages/WebviewContainer';
 
 const OrderNum = () => {
   const dispatch = useDispatch();

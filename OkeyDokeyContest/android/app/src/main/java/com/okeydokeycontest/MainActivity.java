@@ -22,26 +22,26 @@ public class MainActivity extends ReactActivity {
     return "OkeyDokeyContest";
   }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    // @Override
+    // protected void onCreate(Bundle savedInstanceState) {
+    //     super.onCreate(savedInstanceState);
+    //     setContentView(R.layout.activity_main);
 
-        webView = findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
+    //     webView = findViewById(R.id.webView);
+    //     webView.getSettings().setJavaScriptEnabled(true);
+    //     webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+    //     webView.setWebViewClient(new WebViewClient() {
+    //         @Override
+    //         public void onPageFinished(WebView view, String url) {
+    //             super.onPageFinished(view, url);
 
-                // Call the JavaScript function to start the camera
-                webView.loadUrl("javascript:main()");
-            }
-        });
+    //             // Call the JavaScript function to start the camera
+    //             webView.loadUrl("javascript:main()");
+    //         }
+    //     });
 
-        webView.loadUrl("http://192.168.123.103:5500/keyosk_camera-main/index.html");
-    }
+    //     webView.loadUrl("http://192.168.123.103:5500/keyosk_camera-main/index.html");
+    // }
 
   // Add other methods here if needed
 

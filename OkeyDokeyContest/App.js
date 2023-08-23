@@ -17,7 +17,7 @@ import {store} from './src/redux/store';
 import Welcome from './src/screens/Welcome';
 import Identify from './src/screens/Identify';
 import Favorites from './src/screens/Favorites';
-
+import WebviewContainer from './src/pages/WebviewContainer';
 import Facerecognition from './src/pages/Facerecognition';
 const Stack = createNativeStackNavigator();
 
@@ -27,10 +27,10 @@ const App = () => {
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           {/* <Stack.Screen name="MyWebViewScreen" component={MyWebViewScreen} /> */}
-          
+          {/* <Stack.Screen name="Facerecognition" component={Facerecognition}/> */}
           <Stack.Screen name="Welcome" component={Welcome} />
           <Stack.Screen name="Identify" component={Identify} />
-          <Stack.Screen name="Facerecognition" component={Facerecognition}/>
+          <Stack.Screen name="WebviewContainer" component={WebviewContainer} />
           <Stack.Screen name="favorites" component={Favorites} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="QCoffee" component={QCoffee} />

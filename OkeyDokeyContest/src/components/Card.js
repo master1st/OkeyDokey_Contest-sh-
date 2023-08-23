@@ -16,7 +16,10 @@ const Card = () => {
   const shoppings = useSelector(state => state.shopping.shoppings); //장바구니에 담긴 배열
   const is_pack = useSelector(state => state.shopping.is_pack); //포장여부
 
+  const [access, setAccess] = useState(null);
+
   const sendData = async shoppings => {
+    console.log(shoppings);
     const requestData = {
       is_pack: is_pack,
       data: shoppings.map(item => ({
@@ -29,11 +32,16 @@ const Card = () => {
 
     try {
       const response = await axios.post(
-        'http://13.125.232.138/order/create/',
+        'http://15.164.232.208/order/create/',
         requestData,
+        {
+          headers: {
+            // Authorization: `Bearer ${acess}`, // Access Token을 Authorization 헤더에 포함
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODI0NTA1LCJpYXQiOjE2OTI4MjA5MDUsImp0aSI6ImFjMjU4YjFhMGUzNTRhZWNiMmU2MmFmMjNjYTFhZjMyIiwidXNlcl9pZCI6Mn0.CCloi90KCB62QfbnkbO3D98jqU0dtMipTVHW_44acGo`, // Access Token을 Authorization 헤더에 포함
+          },
+        },
       );
-
-      console.log('[🥹 success ] ' + response.data.order_num);
+      console.log(response.data);
       dispatch(updateOrderNumber(response.data.order_num));
     } catch (error) {
       console.log('[😝 error ]' + error.message);
@@ -50,6 +58,22 @@ const Card = () => {
       navigation.navigate('OrderNum'); //왔다갔다 다하면 주문번호 화면으로 이동
     }
   }, [animationCount]);
+
+  useEffect(() => {
+    setAccessToken();
+  }, []);
+
+  //access token 받아오기
+  const setAccessToken = async () => {
+    await AsyncStorage.getItem('access')
+      .then(value => {
+        if (value !== null) {
+          console.log('Value retrieved:', value);
+          setAccess(value);
+        }
+      })
+      .catch(error => console.error('Error retrieving data:', error));
+  };
 
   //reverse false면 위로, true면 아래로 이동
   const animatedCard = reverse => {

@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -6,37 +7,50 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const Welcome = () => {
   const [distanceSensor, setDistanceSensor] = useState(true);
   const navigation = useNavigation();
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get('http://15.164.232.208/OKDK/signal/');
+  //     console.log(response.data);
+  //     if (response.data == true) {
+  //       setDistanceSensor(true);
+  //     }
+  //     return response.data; // response.data가 true이면 무한 루프 탈출
+  //   } catch (error) {
+  //     console.error('error' + error);
+  //     return false;
+  //   }
+  // };
+
   useEffect(() => {
-    // 백엔드 API를 호출하여 distanceSensor 값을 받아온다고 가정
-    // API 호출 로직은 해당 프로젝트의 백엔드와의 통신 방식에 따라 구현되어야 합니다.
-    const fetchData = async () => {
-      try {
-        // 백엔드 API 호출
-        // const response =` await fetch('API_ENDPOINT');
-        // const data = await response.json();
+    let interval;
 
-        // 받아온 데이터 중 distanceSensor 값 사용
-        // setDistanceSensor(data.distanceSensor);
-
-        // 가상의 예시: 3초 후에 distanceSensor 값을 true로 변경
-        const timer = setTimeout(() => {
-          setDistanceSensor(true);
-        }, 3000);
-
-        return () => clearTimeout(timer);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+    const startLoop = () => {
+      interval = setInterval(async () => {
+        await fetchData();
+        if (distanceSensor) {
+          clearInterval(interval);
+          navigation.navigate('FaceRecognition');
+        }
+      }, 2000);
     };
 
-    fetchData();
+    const stopLoop = () => {
+      clearInterval(interval); // interval 정리
+    };
+
+    startLoop();
+
+    return () => {
+      stopLoop();
+    };
   }, []);
 
-  useEffect(() => {
-    if (distanceSensor) {
-      navigation.navigate('CameraScreen');
-    }
-  }, [distanceSensor, navigation]);
+  // useEffect(() => {
+  //   console.log('nav');
+  //   if (distanceSensor) {
+  //     navigation.navigate('FaceRecognition');
+  //   }
+  // }, [distanceSensor]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,7 +69,15 @@ const Welcome = () => {
           alignItems: 'center',
           backgroundColor: '#F5F7FB',
         }}>
-        <Text style={{fontSize: 50, marginBottom: 100}}>음메카우 상명대점</Text>
+        <Text
+          style={{
+            fontSize: 50,
+            marginBottom: 100,
+            fontWeight: '700',
+            color: 'black',
+          }}>
+          음메카우 상명대점
+        </Text>
       </View>
     </SafeAreaView>
   );

@@ -18,7 +18,7 @@ import Welcome from './src/screens/Welcome';
 import Identify from './src/screens/Identify';
 import Favorites from './src/screens/Favorites';
 import WebviewContainer from './src/pages/WebviewContainer';
-import Facerecognition from './src/pages/Facerecognition';
+import FaceRecognition from './src/pages/FaceRecognition';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -27,8 +27,8 @@ const App = () => {
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           {/* <Stack.Screen name="MyWebViewScreen" component={MyWebViewScreen} /> */}
-          {/* <Stack.Screen name="Facerecognition" component={Facerecognition}/> */}
           <Stack.Screen name="Welcome" component={Welcome} />
+          <Stack.Screen name="FaceRecognition" component={FaceRecognition} />
           <Stack.Screen name="Identify" component={Identify} />
           <Stack.Screen name="WebviewContainer" component={WebviewContainer} />
           <Stack.Screen name="favorites" component={Favorites} />

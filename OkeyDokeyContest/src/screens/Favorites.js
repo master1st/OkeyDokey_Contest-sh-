@@ -1,4 +1,12 @@
-import {StyleSheet, Image, View, Text, StatusBar, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -8,53 +16,126 @@ import {useNavigation} from '@react-navigation/native';
 import RNFS from 'react-native-fs';
 import axios from 'axios';
 import Coffee from '../components/Coffee';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {addShopping} from '../redux/slices/shoppingSlice';
+
 //즐겨찾는 메뉴 페이지
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
-  const [Mockdata, SetMockdata] = useState([
-    {
-      id: 1,
-      image: require('../../assets/images/coffee.png'),
-      name: '에스프레소',
-      price: 1000,
-    },
-    {
-      id: 2,
-      image: require('../../assets/images/coffee.png'),
-      name: '아메리카노',
-      price: 500,
-    },
-    {
-      id: 3,
-      image: require('../../assets/images/coffee.png'),
-      name: '아메리카노',
-      price: 1500,
-    },
-    {
-      id: 4,
-      image: require('../../assets/images/coffee.png'),
-      name: '아메리카노',
-      price: 2000,
-    },
-  ]);
-  const totalCoffeePrice = Mockdata.reduce((total, coffee) => total + coffee.price, 0)
-  console.log(totalCoffeePrice);
+  const [access, setAccess] = useState(null);
+  const [name, setName] = useState(null);
+  const [totalCoffeePrice, setTotalCoffeePrice] = useState(0);
+  const [menuData, setMenuData] = useState([]);
+
+  const dispatch = useDispatch();
+
+  // const [Mockdata, SetMockdata] = useState([
+  //   {
+  //     id: 1,
+  //     image: require('../../assets/images/coffee.png'),
+  //     name: '에스프레소',
+  //     price: 1000,
+  //   },
+  //   {
+  //     id: 2,
+  //     image: require('../../assets/images/coffee.png'),
+  //     name: '아메리카노',
+  //     price: 500,
+  //   },
+  //   {
+  //     id: 3,
+  //     image: require('../../assets/images/coffee.png'),
+  //     name: '아메리카노',
+  //     price: 1500,
+  //   },
+  //   {
+  //     id: 4,
+  //     image: require('../../assets/images/coffee.png'),
+  //     name: '아메리카노',
+  //     price: 2000,
+  //   },
+  // ]);
+  // const totalCoffeePrice = Mockdata.reduce(
+  //   (total, coffee) => total + coffee.price,
+  //   0,
+  // );
+  // console.log(totalCoffeePrice);
   const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('your_local_data.json'); // 목데이터 파일 경로를 입력하세요.
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  const handleConfirm = () => {
+    menuData.map((item, index) => {
+      // console.log(item);
+      dispatch(
+        addShopping({
+          title: item.menu.name,
+          price: item.menu.price,
+          quantity: 1,
+          imgsrc: item.menu.image,
+          ice: item.temperature.name,
+          size: item.size.name,
+        }),
+      );
+    });
+  };
+  //username 받아오기
+  const setUserName = async () => {
+    await AsyncStorage.getItem('username')
+      .then(value => {
+        if (value !== null) {
+          setName(value);
+        }
+      })
+      .catch(error => console.error('Error retrieving data:', error));
+  };
 
-  //   fetchData();
-  // }, []);
+  //access token 받아오기
+  const setAccessToken = async () => {
+    await AsyncStorage.getItem('access')
+      .then(value => {
+        if (value !== null) {
+          console.log('Value retrieved:', value);
+          setAccess(value);
+          // fetchData();
+        }
+      })
+      .catch(error => console.error('Error retrieving data:', error));
+  };
 
-  // console.log(Mockdata);
+  const fetchData = () => {
+    axios
+      .get('http://15.164.232.208/menu/favorite/list/', {
+        headers: {
+          // Authorization: `Bearer ${acess}`, // Access Token을 Authorization 헤더에 포함
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODI0NTA1LCJpYXQiOjE2OTI4MjA5MDUsImp0aSI6ImFjMjU4YjFhMGUzNTRhZWNiMmU2MmFmMjNjYTFhZjMyIiwidXNlcl9pZCI6Mn0.CCloi90KCB62QfbnkbO3D98jqU0dtMipTVHW_44acGo`, // Access Token을 Authorization 헤더에 포함
+        },
+      })
+      .then(response => {
+        setMenuData(response.data.OKDK);
+        console.log(response.data.OKDK);
+        // console.log(menuData);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    setUserName();
+    setAccessToken();
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (menuData) {
+      const totalPrice = menuData.reduce(
+        (total, item) => total + item.menu.price,
+        0,
+      );
+      setTotalCoffeePrice(totalPrice);
+    }
+  }, [menuData]);
+
   return (
     <SafeAreaView
       style={{
@@ -88,53 +169,69 @@ const Favorites = () => {
           <View style={styles.main}>
             <View style={styles.header}>
               <Text style={{fontWeight: 'bold', color: 'black', fontSize: 40}}>
-                김OO님이 즐겨찾는 메뉴
+                {name ? name : '익명'}님이 즐겨찾는 메뉴
               </Text>
             </View>
             <View style={styles.mid}>
-            <View style={styles.midItemBox}>
-           
-              {Mockdata.map(item => {
-                return (
-                  <>
+              <View style={styles.midItemBox}>
+                {menuData && menuData.length !== 0 ? (
+                  menuData.map(item => (
                     <Coffee
-                      key={item.id}
+                      key={item.menu.id}
                       navigation={navigation}
                       goto={'ShoppingBasket'}
                       coffeeImageWidth={120}
                       coffeeImageHeight={140}
-                      // style={styles.imageWrap}
-                      imgsrc={item.image}
-                      CoffeeName={item.name}
-                      CoffeePrice={item.price}
+                      imgsrc={item.menu.image}
+                      CoffeeName={item.menu.name}
+                      CoffeePrice={item.menu.price}
                     />
-                  </>
-                );
-              })}
-           
+                  ))
+                ) : (
+                  <Text
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      textAlign: 'center',
+                      color: 'black',
+                      fontSize: 25,
+                    }}>
+                    즐겨찾는 메뉴가 없습니다.
+                  </Text>
+                )}
+              </View>
             </View>
-          </View>
-          <View
-          style={{
-            width: '100%',
-            height: 100,
-            backgroundColor: '#F5F7FB',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: 'black',
-            }}>
-            결제금액 {totalCoffeePrice}원
-          </Text>
-        </View>
+            <View
+              style={{
+                width: '100%',
+                height: 100,
+                backgroundColor: '#F5F7FB',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}>
+                결제금액 {totalCoffeePrice}원
+              </Text>
+            </View>
           </View>
           <CustomButton
             title={'확인'}
-            onPress={() => navigation.navigate('Payment')}
+            onPress={() => {
+              if (totalCoffeePrice > 0) {
+                handleConfirm();
+                navigation.navigate('Payment');
+              } else {
+                Alert.alert('알림', '결제할 메뉴가 없어요');
+              }
+            }}
             width={'100%'}
             height={110}
             backgroundColor={'#056CF2'}
@@ -224,7 +321,6 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flex: 2,
-  
   },
   mid: {
     flex: 1,

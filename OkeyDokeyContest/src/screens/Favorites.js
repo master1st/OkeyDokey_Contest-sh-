@@ -17,6 +17,9 @@ import RNFS from 'react-native-fs';
 import axios from 'axios';
 import Coffee from '../components/Coffee';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {addShopping} from '../redux/slices/shoppingSlice';
+
 //즐겨찾는 메뉴 페이지
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
@@ -24,6 +27,9 @@ const Favorites = () => {
   const [name, setName] = useState(null);
   const [totalCoffeePrice, setTotalCoffeePrice] = useState(0);
   const [menuData, setMenuData] = useState([]);
+
+  const dispatch = useDispatch();
+
   // const [Mockdata, SetMockdata] = useState([
   //   {
   //     id: 1,
@@ -57,6 +63,21 @@ const Favorites = () => {
   // console.log(totalCoffeePrice);
   const navigation = useNavigation();
 
+  const handleConfirm = () => {
+    menuData.map((item, index) => {
+      // console.log(item);
+      dispatch(
+        addShopping({
+          title: item.menu.name,
+          price: item.menu.price,
+          quantity: 1,
+          imgsrc: item.menu.image,
+          ice: item.temperature.name,
+          size: item.size.name,
+        }),
+      );
+    });
+  };
   //username 받아오기
   const setUserName = async () => {
     await AsyncStorage.getItem('username')
@@ -75,7 +96,7 @@ const Favorites = () => {
         if (value !== null) {
           console.log('Value retrieved:', value);
           setAccess(value);
-          fetchData();
+          // fetchData();
         }
       })
       .catch(error => console.error('Error retrieving data:', error));
@@ -86,12 +107,13 @@ const Favorites = () => {
       .get('http://15.164.232.208/menu/favorite/list/', {
         headers: {
           // Authorization: `Bearer ${acess}`, // Access Token을 Authorization 헤더에 포함
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODE2MzMxLCJpYXQiOjE2OTI3ODg3NzUsImp0aSI6ImZlMTdjYzRmNDQ3YTQ4ZTNiMzljMGQ4M2YxOTgzZTRlIiwidXNlcl9pZCI6M30.kY3rfUzqVIrJ2QDn8ONTByQW81CD5XYKvDF_mBJ-ONQ`, // Access Token을 Authorization 헤더에 포함
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODI0NTA1LCJpYXQiOjE2OTI4MjA5MDUsImp0aSI6ImFjMjU4YjFhMGUzNTRhZWNiMmU2MmFmMjNjYTFhZjMyIiwidXNlcl9pZCI6Mn0.CCloi90KCB62QfbnkbO3D98jqU0dtMipTVHW_44acGo`, // Access Token을 Authorization 헤더에 포함
         },
       })
       .then(response => {
         setMenuData(response.data.OKDK);
-        console.log(menuData);
+        console.log(response.data.OKDK);
+        // console.log(menuData);
       })
       .catch(error => {
         console.error(error);
@@ -101,15 +123,17 @@ const Favorites = () => {
   useEffect(() => {
     setUserName();
     setAccessToken();
-    // fetchData();
+    fetchData();
   }, []);
 
   useEffect(() => {
-    const totalPrice = menuData.reduce(
-      (total, item) => total + item.menu.price,
-      0,
-    );
-    setTotalCoffeePrice(totalPrice);
+    if (menuData) {
+      const totalPrice = menuData.reduce(
+        (total, item) => total + item.menu.price,
+        0,
+      );
+      setTotalCoffeePrice(totalPrice);
+    }
   }, [menuData]);
 
   return (
@@ -202,6 +226,7 @@ const Favorites = () => {
             title={'확인'}
             onPress={() => {
               if (totalCoffeePrice > 0) {
+                handleConfirm();
                 navigation.navigate('Payment');
               } else {
                 Alert.alert('알림', '결제할 메뉴가 없어요');

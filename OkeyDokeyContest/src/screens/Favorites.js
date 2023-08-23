@@ -1,4 +1,11 @@
-import {StyleSheet, Image, View, Text, StatusBar, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -37,22 +44,43 @@ const Favorites = () => {
       price: 2000,
     },
   ]);
-  const totalCoffeePrice = Mockdata.reduce((total, coffee) => total + coffee.price, 0)
+  const totalCoffeePrice = Mockdata.reduce(
+    (total, coffee) => total + coffee.price,
+    0,
+  );
   console.log(totalCoffeePrice);
   const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get('your_local_data.json'); // 목데이터 파일 경로를 입력하세요.
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  const fetchData = () => {
+    // const accessToken = localStorage.getItem('access');
 
-  //   fetchData();
-  // }, []);
+    axios
+      .get('http://15.164.232.208/menu/favorite/list/', {
+        headers: {
+          // Authorization: `Bearer ${accessToken}`, // Access Token을 Authorization 헤더에 포함
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODEyNzM0LCJpYXQiOjE2OTI3MjM2NjMsImp0aSI6IjA2NzM5MmQyYmEwYjQ5NGZhZTdmZTE1NmQwNTExMDA5IiwidXNlcl9pZCI6M30.8-3MDihicqK7YW6kh8XzjtPpEAUYUfuZHSK_-Kw9fpo`, // Access Token을 Authorization 헤더에 포함
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get('your_local_data.json'); // 목데이터 파일 경로를 입력하세요.
+    //     setData(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // };
+
+    fetchData();
+  }, []);
 
   // console.log(Mockdata);
   return (
@@ -92,45 +120,43 @@ const Favorites = () => {
               </Text>
             </View>
             <View style={styles.mid}>
-            <View style={styles.midItemBox}>
-           
-              {Mockdata.map(item => {
-                return (
-                  <>
-                    <Coffee
-                      key={item.id}
-                      navigation={navigation}
-                      goto={'ShoppingBasket'}
-                      coffeeImageWidth={120}
-                      coffeeImageHeight={140}
-                      // style={styles.imageWrap}
-                      imgsrc={item.image}
-                      CoffeeName={item.name}
-                      CoffeePrice={item.price}
-                    />
-                  </>
-                );
-              })}
-           
+              <View style={styles.midItemBox}>
+                {Mockdata.map(item => {
+                  return (
+                    <>
+                      <Coffee
+                        key={item.id}
+                        navigation={navigation}
+                        goto={'ShoppingBasket'}
+                        coffeeImageWidth={120}
+                        coffeeImageHeight={140}
+                        // style={styles.imageWrap}
+                        imgsrc={item.image}
+                        CoffeeName={item.name}
+                        CoffeePrice={item.price}
+                      />
+                    </>
+                  );
+                })}
+              </View>
             </View>
-          </View>
-          <View
-          style={{
-            width: '100%',
-            height: 100,
-            backgroundColor: '#F5F7FB',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: 'black',
-            }}>
-            결제금액 {totalCoffeePrice}원
-          </Text>
-        </View>
+            <View
+              style={{
+                width: '100%',
+                height: 100,
+                backgroundColor: '#F5F7FB',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}>
+                결제금액 {totalCoffeePrice}원
+              </Text>
+            </View>
           </View>
           <CustomButton
             title={'확인'}
@@ -224,7 +250,6 @@ const styles = StyleSheet.create({
   },
   imageWrap: {
     flex: 2,
-  
   },
   mid: {
     flex: 1,

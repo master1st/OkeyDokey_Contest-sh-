@@ -20,6 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
   const [access, setAccess] = useState(null);
+  const [name, setName] = useState(null);
+  const [totalCoffeePrice, setTotalCoffeePrice] = useState(0);
   const [menuData, setMenuData] = useState([]);
   // const [Mockdata, SetMockdata] = useState([
   //   {
@@ -54,6 +56,17 @@ const Favorites = () => {
   // console.log(totalCoffeePrice);
   const navigation = useNavigation();
 
+  //username 받아오기
+  const setUserName = async () => {
+    await AsyncStorage.getItem('username')
+      .then(value => {
+        if (value !== null) {
+          setName(value);
+        }
+      })
+      .catch(error => console.error('Error retrieving data:', error));
+  };
+
   //access token 받아오기
   const setAccessToken = async () => {
     await AsyncStorage.getItem('access')
@@ -61,7 +74,7 @@ const Favorites = () => {
         if (value !== null) {
           console.log('Value retrieved:', value);
           setAccess(value);
-          // fetchData();
+          fetchData();
         }
       })
       .catch(error => console.error('Error retrieving data:', error));
@@ -71,7 +84,7 @@ const Favorites = () => {
     axios
       .get('http://15.164.232.208/menu/favorite/list/', {
         headers: {
-          // Authorization: `Bearer ${value}`, // Access Token을 Authorization 헤더에 포함
+          // Authorization: `Bearer ${acess}`, // Access Token을 Authorization 헤더에 포함
           Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyODE2MzMxLCJpYXQiOjE2OTI3ODg3NzUsImp0aSI6ImZlMTdjYzRmNDQ3YTQ4ZTNiMzljMGQ4M2YxOTgzZTRlIiwidXNlcl9pZCI6M30.kY3rfUzqVIrJ2QDn8ONTByQW81CD5XYKvDF_mBJ-ONQ`, // Access Token을 Authorization 헤더에 포함
         },
       })
@@ -85,10 +98,18 @@ const Favorites = () => {
   };
 
   useEffect(() => {
-    console.log(2);
+    setUserName();
     setAccessToken();
-    fetchData();
+    // fetchData();
   }, []);
+
+  useEffect(() => {
+    const totalPrice = menuData.reduce(
+      (total, item) => total + item.menu.price,
+      0,
+    );
+    setTotalCoffeePrice(totalPrice);
+  }, [menuData]);
 
   return (
     <SafeAreaView
@@ -123,12 +144,12 @@ const Favorites = () => {
           <View style={styles.main}>
             <View style={styles.header}>
               <Text style={{fontWeight: 'bold', color: 'black', fontSize: 40}}>
-                김OO님이 즐겨찾는 메뉴
+                {name ? name : '익명'}님이 즐겨찾는 메뉴
               </Text>
             </View>
             <View style={styles.mid}>
               <View style={styles.midItemBox}>
-                {menuData ? (
+                {menuData && menuData.length !== 0 ? (
                   menuData.map(item => (
                     <Coffee
                       key={item.menu.id}
@@ -172,7 +193,7 @@ const Favorites = () => {
                   fontWeight: 'bold',
                   color: 'black',
                 }}>
-                {/* 결제금액 {totalCoffeePrice}원 */}
+                결제금액 {totalCoffeePrice}원
               </Text>
             </View>
           </View>

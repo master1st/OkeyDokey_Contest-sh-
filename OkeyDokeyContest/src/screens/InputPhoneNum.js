@@ -1,6 +1,6 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React, {useState} from 'react';
-import InputModal from '../components/InputModal';
+import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const InputPhoneNum = () => {

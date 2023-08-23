@@ -12,7 +12,8 @@ import com.facebook.soloader.SoLoader;
 import com.okeydokeycontest.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.reactnativecommunity.webview.RNCWebViewPackage; // WebView 패키지 임포트
+import com.reactnativecommunity.webview.RNCWebViewPackage; // 기존 WebView 패키지 임포트
+import com.okeydokeycontest.CameraModulePackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -29,6 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
           packages.removeIf(packageItem -> packageItem instanceof RNCWebViewPackage);
           // RNCWebViewPackage를 새로 추가하세요.
           packages.add(new RNCWebViewPackage());
+
+          // 사용자 정의 모듈
+          packages.add(new CameraModulePackage());
           return packages;
         }
 

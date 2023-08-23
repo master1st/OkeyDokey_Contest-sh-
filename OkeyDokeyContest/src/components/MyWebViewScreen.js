@@ -31,14 +31,14 @@ const MyCameraScreen = () => {
       <TouchableOpacity onPress={startNativeCamera} style={styles.button}>
         <Text style={styles.buttonText}>카메라 켜기 (Native)</Text>
       </TouchableOpacity>
-      <WebView
+      {/* <WebView
         source={{ uri: 'http://192.168.123.103:5500/keyosk_camera-main/index.html' }}
         onMessage={handleWebViewMessage}
         style={styles.webView}
         allowsInlineMediaPlayback={true}
         mediaPlaybackRequiresUserAction={false}
         originWhitelist={['*']}
-      />
+      /> */}
       <TouchableOpacity onPress={startNativeCamera} style={styles.button}>
         <Text style={styles.buttonText}>카메라 켜기 (Native)</Text>
       </TouchableOpacity>

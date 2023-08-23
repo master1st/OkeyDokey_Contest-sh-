@@ -98,8 +98,8 @@ const Coffee = ({
           height: coffeeImageHeight,
           borderRadius: 20, // 모든 꼭지점에 20을 설정
         }}
-        source={imgsrc}
-        // source={{uri: imgsrc}}
+        // source={imgsrc}
+        source={{uri: imgsrc}}
       />
       {CoffeeName && CoffeePrice ? (
         <View

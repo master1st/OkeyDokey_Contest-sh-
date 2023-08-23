@@ -5,6 +5,7 @@ import {
   Text,
   StatusBar,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import InputModal from '../pages/InputModal';
@@ -199,7 +200,13 @@ const Favorites = () => {
           </View>
           <CustomButton
             title={'확인'}
-            onPress={() => navigation.navigate('Payment')}
+            onPress={() => {
+              if (totalCoffeePrice > 0) {
+                navigation.navigate('Payment');
+              } else {
+                Alert.alert('알림', '결제할 메뉴가 없어요');
+              }
+            }}
             width={'100%'}
             height={110}
             backgroundColor={'#056CF2'}

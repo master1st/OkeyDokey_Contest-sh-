@@ -9,11 +9,14 @@ import {
   Image,
 } from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+
 import {useNavigation} from '@react-navigation/native';
 import * as RNFS from 'react-native-fs';
 import CustomButton from './CustomButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeModules } from 'react-native';
 
+const CameraModule = NativeModules.CameraModule;
 const CameraScreen = ({state}) => {
   const navigation = useNavigation();
   const camera = useRef(null);
@@ -31,15 +34,68 @@ const CameraScreen = ({state}) => {
       console.log(newCameraPermission);
     }
     getPermission();
+
+
+    const FPS = 30;  // Target number of frames processed per second.
+    function captureFrame() {
+      var cap = new cv.VideoCapture(camera);
+      console.log('Capturing frame...');
+      var begin = Date.now();
+      cap.read(frame);  // Read a frame from camera
+      cv.cvtColor(frame, frameBGR, cv.COLOR_RGBA2BGR);
+
+      var faces = detectFaces(frameBGR);
+      faces.forEach(function (rect) {
+        cv.rectangle(frame, { x: rect.x, y: rect.y }, { x: rect.x + rect.width, y: rect.y + rect.height }, [0, 255, 0, 255]);
+
+        var face = frameBGR.roi(rect);
+        var name = recognize(face);
+        cv.putText(frame, name, { x: rect.x, y: rect.y }, cv.FONT_HERSHEY_SIMPLEX, 1.0, [0, 255, 0, 255]);
+      });
+
+      cv.imshow(output, frame);
+
+      // Loop this function.
+      var delay = 1000 / FPS - (Date.now() - begin);
+      setTimeout(captureFrame, delay);
+
+    };
+    function loadModels(callback) {
+      console.log('Loading models...');
+      var utils = new Utils('');
+      var proto = 'https://raw.githubusercontent.com/opencv/opencv/master/samples/dnn/face_detector/deploy_lowres.prototxt';
+      var weights = 'https://raw.githubusercontent.com/opencv/opencv_3rdparty/dnn_samples_face_detector_20180205_fp16/res10_300x300_ssd_iter_140000_fp16.caffemodel';
+      var recognModel = 'https://raw.githubusercontent.com/pyannote/pyannote-data/master/openface.nn4.small2.v1.t7';
+      utils.createFileFromUrl('face_detector.prototxt', proto, () => {
+        document.getElementById('status').innerHTML = 'Downloading face_detector.caffemodel';
+        utils.createFileFromUrl('face_detector.caffemodel', weights, () => {
+          document.getElementById('status').innerHTML = 'Downloading OpenFace model';
+          utils.createFileFromUrl('face_recognition.t7', recognModel, () => {
+            document.getElementById('status').innerHTML = '';
+            netDet = cv.readNetFromCaffe('face_detector.prototxt', 'face_detector.caffemodel');
+            netRecogn = cv.readNetFromTorch('face_recognition.t7');
+            callback();
+          });
+        });
+      });
+    };
+    captureFrame();
+    loadModels()
+    loadModels(function () {
+      captureFrame();
+      document.getElementById('addPersonButton').disabled = false;
+      console.log('captureFrame')
+      
+    });
   }, []);
-  useEffect(() => {
-    // if(얼굴인식이 되었다면)
-    const timer = setTimeout(() => {
-      navigation.navigate('Identify');
-    }, 3000)
-    return () => clearTimeout(timer);
-    // else 얼굴인식이 안되었다면 다시 5번까지 인식  
-  }, [showCamera]);
+  // useEffect(() => {
+  //   // if(얼굴인식이 되었다면)
+  //   const timer = setTimeout(() => {
+  //     navigation.navigate('Identify');
+  //   }, 3000)
+  //   return () => clearTimeout(timer);
+  //   // else 얼굴인식이 안되었다면 다시 5번까지 인식  
+  // }, [showCamera]);
 
 
 

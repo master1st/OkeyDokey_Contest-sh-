@@ -1,6 +1,6 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import InputModal from '../components/InputModal';
+import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FaceModal from '../components/FaceModal';
 import CustomButton from '../components/CustomButton';

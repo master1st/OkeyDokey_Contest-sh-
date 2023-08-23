@@ -17,10 +17,8 @@ import {store} from './src/redux/store';
 import Welcome from './src/screens/Welcome';
 import Identify from './src/screens/Identify';
 import Favorites from './src/screens/Favorites';
-import CameraScreen from './src/components/CameraScreen';
-import PhotoList from './src/screens/PhotoList';
-import WebviewContainer from './src/components/WebviewContainer';
 
+import Facerecognition from './src/pages/Facerecognition';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -28,17 +26,18 @@ const App = () => {
     <NavigationContainer>
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          {/* <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="CameraScreen" component={CameraScreen} />
-          <Stack.Screen name="PhotoList" component={PhotoList} />
-          <Stack.Screen name="Identify" component={Identify} /> */}
-          {/* <Stack.Screen name="favorites" component={Favorites} />
+          {/* <Stack.Screen name="MyWebViewScreen" component={MyWebViewScreen} /> */}
+          
+          <Stack.Screen name="Welcome" component={Welcome} />
+          <Stack.Screen name="Identify" component={Identify} />
+          <Stack.Screen name="Facerecognition" component={Facerecognition}/>
+          <Stack.Screen name="favorites" component={Favorites} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="QCoffee" component={QCoffee} />
           <Stack.Screen name="Qmilk" component={Qmilk} />
           <Stack.Screen name="EasyMenu" component={EasyMenu} />
           <Stack.Screen name="OrderCheck" component={OrderCheck} />
-          <Stack.Screen name="ShoppingBasket" component={ShoppingBasket} /> */}
+          <Stack.Screen name="ShoppingBasket" component={ShoppingBasket} />
           <Stack.Screen name="OrderNum" component={OrderNum} />
           <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="InputPhoneNum" component={InputPhoneNum} />

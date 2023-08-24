@@ -5,21 +5,21 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Welcome = () => {
-  const [distanceSensor, setDistanceSensor] = useState(true);
+  const [distanceSensor, setDistanceSensor] = useState(false);
   const navigation = useNavigation();
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get('http://15.164.232.208/OKDK/signal/');
-  //     console.log(response.data);
-  //     if (response.data == true) {
-  //       setDistanceSensor(true);
-  //     }
-  //     return response.data; // response.data가 true이면 무한 루프 탈출
-  //   } catch (error) {
-  //     console.error('error' + error);
-  //     return false;
-  //   }
-  // };
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://15.164.232.208/OKDK/signal/');
+      console.log(response.data);
+      if (response.data == true) {
+        setDistanceSensor(true);
+      }
+      return response.data; // response.data가 true이면 무한 루프 탈출
+    } catch (error) {
+      console.error('error' + error);
+      return false;
+    }
+  };
 
   useEffect(() => {
     let interval;

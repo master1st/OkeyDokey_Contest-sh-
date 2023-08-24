@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-} from 'react-native';
-import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import React, {useEffect, useState, useRef} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
+import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/core';
 
-const CameraScreen = () => {
+const FaceRecognition = () => {
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.front;
+
+  const navigation = useNavigation();
 
   const [showCamera, setShowCamera] = useState(false);
   const [imageSource, setImageSource] = useState(null);
@@ -42,10 +41,10 @@ const CameraScreen = () => {
         headers: {'Content-Type': 'multipart/form-data'},
       });
 
-      console.log("성공");
+      console.log('성공');
       //response 값으로 얼굴인식 성공했는지 실패했는지 분류.
       setTimeout(() => {
-        console.log("성공");
+        console.log('성공');
       }, 2000);
       //성공했으면 다음 페이지로 이동.
     } catch (error) {
@@ -55,6 +54,9 @@ const CameraScreen = () => {
   };
 
   useEffect(() => {
+    //test
+    navigation.navigate('Identify');
+
     async function getPermission() {
       const newCameraPermission = await Camera.requestCameraPermission();
       console.log(newCameraPermission);
@@ -66,7 +68,7 @@ const CameraScreen = () => {
     const intervalId = setInterval(() => {
       autoCapture();
     }, 3000);
-    
+
     // Clean up by clearing the interval when the component unmounts
     return () => {
       clearInterval(intervalId);
@@ -78,16 +80,16 @@ const CameraScreen = () => {
     if (!shouldCapture) {
       return;
     }
-  
+
     if (camera.current == null) {
       return;
     }
-  
+
     const photo = await camera.current.takeSnapshot({});
     console.log(photo);
     setImageSource(photo.path);
     setPhotos(prevPhotos => [...prevPhotos, photo.path]);
-  
+
     const backendResponse = 'no_face_detected';
     if (backendResponse === 'no_face_detected') {
       setImageObject(photo);
@@ -103,10 +105,10 @@ const CameraScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ position: 'relative', width: 300, height: 300 }}>
+      <View style={{position: 'relative', width: 300, height: 300}}>
         <Camera
           ref={camera}
-          style={{ width: 300, height: 300 }}
+          style={{width: 300, height: 300}}
           device={device}
           isActive={showCamera}
           photo={true}
@@ -119,7 +121,7 @@ const CameraScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{ color: 'white' }}>정면을 응시해 주세요</Text>
+          <Text style={{color: 'white'}}>정면을 응시해 주세요</Text>
         </View>
       </View>
     </View>
@@ -135,4 +137,4 @@ const styles = StyleSheet.create({
   // ...
 });
 
-export default CameraScreen;
+export default FaceRecognition;

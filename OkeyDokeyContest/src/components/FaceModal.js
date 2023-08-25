@@ -38,7 +38,7 @@ const FaceModal = ({
       <View style={styles.bottomButtons}>
         <CustomButton
           title={'뒤로 가기'}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('FaceRecognition', {backoff : 'rerenderPage'})}
           width={'50%'}
           height={110}
           backgroundColor={'#6D6D6D'}

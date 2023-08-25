@@ -48,7 +48,11 @@ const EasyMenu = ({navigation, route}) => {
       navigation.pop();
     }
   }
-
+  const navigationHome = () => {
+    if(whereScreen === 'Home'){
+      navigation.navigate('Home');
+    }
+  }
   //쉬운메뉴 response값
   const [drinkItem, setDrinkItem] = useState([]);
 
@@ -77,7 +81,7 @@ const EasyMenu = ({navigation, route}) => {
 
   const fetchData = () => {
     axios
-      .get('http://13.125.232.138/menu/list/')
+      .get('http://15.164.232.208/menu/list/')
       .then(response => {
         setCoffeeList(response.data.find(item => item.name === '커피'));
         setNonCoffeeList(response.data.find(item => item.name === '논커피'));
@@ -88,6 +92,8 @@ const EasyMenu = ({navigation, route}) => {
         if (whereScreen === 'QCoffee') {
           getEasy();
         } else if (whereScreen === 'Qmilk') {
+          getEasy();
+        } else if (whereScreen === 'Home') {
           getEasy();
         }
       })
@@ -179,9 +185,11 @@ const EasyMenu = ({navigation, route}) => {
           getEasy={getEasy}
           navigationQcoffee={navigationQcoffee}
           navigationQmilk={navigationQmilk}
+          navigationHome={navigationHome}
           whereScreen={whereScreen}
         />
       </View>
+      {/* easy값이 false가 되야 쉬운 메뉴 화면이 나타남. */}
       {!easy ? (
         <View
           style={{

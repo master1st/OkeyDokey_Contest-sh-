@@ -1,23 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { useSelector } from 'react-redux';
+
 const WebviewContainer = () => {
   const webviewRef = useRef(null);
-
+  const orderNumber = useSelector(state => state.shopping.orderNumber); // 주문 번호
   useEffect(() => {
-    if (webviewRef && webviewRef.current) {
-      webviewRef.current.postMessage("hi webview!");
-    }
-  }, [webviewRef]);
+    const handleSendMessage = () => {
+      const message = JSON.stringify({ type: orderNumber ? orderNumber : 0 });
+      if (webviewRef.current) {
+        webviewRef.current.postMessage(message);
+      }
+    };
+    handleSendMessage(); // handleSendMessage 함수 호출을 추가
+  }, [orderNumber]);
 
-  const uri = { uri: 'http://192.168.123.104:5500/javascriptReceiptPrinter/index.html' };
-
-  const handleSendMessage = () => {
-    const message = JSON.stringify({ type: 5 });
-    if (webviewRef.current) {
-      webviewRef.current.postMessage(message);
-    }
-  };
+  const uri = { uri: 'http://192.168.123.103:5500/javascriptReceiptPrinter/index.html' };
 
   return (
     <View style={{ flex: 1 }}>
@@ -30,7 +29,6 @@ const WebviewContainer = () => {
         allowFileAccessFromFileURLs
         mixedContentMode="always"
       />
-      <Button title="Send Message to WebView" onPress={handleSendMessage} />
     </View>
   );
 };

@@ -15,15 +15,24 @@ import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 import {useDispatch, useSelector} from 'react-redux';
 import {resetOrderNumber} from '../redux/slices/shoppingSlice';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const QCoffee = ({navigation}) => {
   const dispatch = useDispatch();
   const [result, setResult] = useState([]);
   const [coffeeText, setCoffeeText] = useState([]);
   const [nonCoffeeText, setNonCoffeeText] = useState([]);
-
+  const [userMode, setUserMode] = useState("easy")
+  //userData가
   //일반메뉴 받아오기 함수
   const fetchData = async () => {
-    try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${AsyncStorage.getItem("access")}`,
+      },
+    };
+    try {  
       const response = await API.get('/category1/list/');
       const results = response.data;
       setResult(results);
@@ -37,8 +46,9 @@ const QCoffee = ({navigation}) => {
       }
     } catch (error) {
       console.error(error);
+      }
     }
-  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -71,7 +81,7 @@ const QCoffee = ({navigation}) => {
       qCoffeeid: coffeeText.id,
     });
   };
-
+{/* 이부분의 getEasy부분의 settingEasy자리에 혹시나 easy를 넣어주면 되지 않을까 하는 생각 */}
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
       <View style={styles.header}>
@@ -83,6 +93,7 @@ const QCoffee = ({navigation}) => {
       <View
         style={{alignItems: 'center', justifyContent: 'center', width: '100%'}}>
         <Toggle getEasy={getEasy} CoffeeScreen={'커피'} />
+        
       </View>
       <View
         style={{

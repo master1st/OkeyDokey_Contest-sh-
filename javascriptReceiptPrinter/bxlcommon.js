@@ -1,4 +1,4 @@
-var localAddress = "//192.168.123.104:18080/WebPrintSDK/";
+var localAddress =  "//192.168.123.103:18080/WebPrintSDK/";
 var connectionMode = "http:";
 var wsPrint = null;
 

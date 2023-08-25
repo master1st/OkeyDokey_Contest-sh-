@@ -6,6 +6,7 @@ const Toggle = ({
   QcoffeeSet,
   navigationQcoffee,
   navigationQmilk,
+  navigationHome,
   whereScreen,
   CoffeeScreen,
   settingEasy,
@@ -30,6 +31,12 @@ const Toggle = ({
         duration: 600,
         useNativeDriver: true,
       }).start();
+    } else if (whereScreen === 'Home' && !isToggled) {
+      Animated.timing(slideAnimation, {
+        toValue: isToggled ? 0 : 1,
+        duration: 600,
+        useNativeDriver: true,
+      }).start();
     }
   }, [isToggled]);
 
@@ -38,6 +45,8 @@ const Toggle = ({
       navigationQcoffee();
     } else if (whereScreen === 'Qmilk' && !isToggled) {
       navigationQmilk();
+    } else if (whereScreen === 'Home' && !isToggled) {
+      navigationHome();
     }
     getEasy();
     if (whereScreen === 'EasyMenu') {

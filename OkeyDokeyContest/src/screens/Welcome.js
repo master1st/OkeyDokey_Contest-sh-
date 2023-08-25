@@ -20,16 +20,20 @@ const Welcome = () => {
       return false;
     }
   };
-
+  
+  useEffect(() => {
+    navigation.navigate('FaceRecognition');
+  },[])
   useEffect(() => {
     let interval;
 
     const startLoop = () => {
       interval = setInterval(async () => {
-        await fetchData();
+        // await fetchData();
         if (distanceSensor) {
           clearInterval(interval);
-          navigation.navigate('FaceRecognition');
+          // 테스트를 위해서
+          navigation.navigate('Identify');
         }
       }, 2000);
     };

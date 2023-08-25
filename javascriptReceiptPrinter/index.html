@@ -33,7 +33,7 @@
 					document.addEventListener("message", e=> {
 						const jsonData = JSON.parse(e.data); // JSON 데이터를 JavaScript 객체로 변환
        				   const orderNumber = jsonData.type; // 주문번호 변수에 "type"의 값 할당
-					   console.log(orderNumber);
+					   console.log(`주문번호 입니다 ${orderNumber}`);
       				    displayOrderNumber(orderNumber); // 주문번호 출력 함수 호출
 					});
 				} catch(err) {
@@ -57,20 +57,23 @@
 	}
 
 	function PrintReceipt() {
-		setPosId(issueID);
-		checkPrinterStatus();
-		printText("--------------------------------\n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("			주  문  번  호       "+"\n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("Order Number: " + orderNumberz + "\n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("								   \n", 0, 0, false, false, false, 0, 0);
-		printText("--------------------------------\n", 0, 0, false, false, false, 0, 0);
+  setPosId(issueID);
+  checkPrinterStatus();
 
+  printText("-------------------------------\n", 0, 0, false, false, false, 0, 1);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("        OKDK 얼굴인식 키오스크        \n", 0, 0, true, false, true, 2, 1);
+  printText("      얼굴인식 키오스크                \n", 0, 0, false, false, true, 2, 1);
+  printText("-------------------------------\n", 0, 0, false, false, false, 0, 1);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("주문번호 / Order No\n", 0, 0, false, false, true, 2, 1);
+  printText(orderNumberz + "\n", 0, 0, true, false, false, 2, 1);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("                               \n", 0, 0, false, false, false, 0, 0);
+  printText("-------------------------------\n", 0, 0, false, false, false, 0, 1);
 		
 		cutPaper(1);
 
@@ -268,13 +271,14 @@ button {
 	</header>
 
 	<section>
-		<div id="contain">
+		<button id="print_bt" class="ripple" style="font-size:30px; padding:10px" onclick="PrintReceipt();"> 주문번호 출력 </button>
+		<div id="contain" style="visibility: hidden;">
 			<div id="wrap-contents">
 				<div id="image-contents" class="row" style="padding-top:20px;padding-left:20px">
 					<div class="col-md-6 cold-sm-6 product">
 						<input type="text" class="text form-control" id="p_result" style="visibility: hidden;"/>
 						<input type="text" class="text form-control" id="p_name" value="Printer1" style="visibility: hidden;"/>
-						<button id="print_bt" class="ripple" style="font-size:30px; margin-top:15px" onclick="PrintReceipt();"> Print receipt </button>
+						
 					</div>
 				</div>
 			</div>

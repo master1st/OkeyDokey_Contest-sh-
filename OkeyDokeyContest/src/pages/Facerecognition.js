@@ -1,101 +1,104 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Image} from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/core';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from '../components/CustomButton';
 
-const FaceRecognition = () => {
+const FaceRecognition = ({route}) => {
   const camera = useRef(null);
   const devices = useCameraDevices();
   const device = devices.front;
-
+  const reRenderPage = route.params;
   const navigation = useNavigation();
 
   const [showCamera, setShowCamera] = useState(false);
-  const [imageSource, setImageSource] = useState(null);
-  const [photos, setPhotos] = useState([]);
-  const [imageObject, setImageObject] = useState('');
-  const [shouldCapture, setShouldCapture] = useState(true); // Control the loop
+  const handleContinue = () => {
+    navigation.navigate('Home');
+  };
+useEffect(() => {
+  console.log("뒤로가기 성공");
+},[reRenderPage])
 
-  const uploadData = async () => {
-    try {
-      var body = new FormData();
-
-      //   imageDataList.map((imageData, index) => {
-      //     var photo = {
-      //       uri: imageData,
-      //       type: 'multipart/form-data',
-      //       name: `${index}.jpg`,
-      //     };
-      //     body.append('image', photo);
-      //   });
-
-      var photo = {
-        uri: imageSource,
-        type: 'image/jpeg',
-        name: `test.jpg`,
-      };
-      body.append('image', photo);
-
-      await axios.post('http://3.35.136.45/account/user/face/register/', body, {
-        headers: {'Content-Type': 'multipart/form-data'},
-      });
-
-      console.log('성공');
-      //response 값으로 얼굴인식 성공했는지 실패했는지 분류.
-      setTimeout(() => {
-        console.log('성공');
-      }, 2000);
-      //성공했으면 다음 페이지로 이동.
-    } catch (error) {
-      console.log('😛 Error :', error);
-      console.log('😛 Error :', error.message);
+  useEffect(() => {
+    async function getPermission() {
+      const newCameraPermission = await Camera.requestCameraPermission();
+      console.log(`카메라 권한 ${newCameraPermission}`);
     }
+    getPermission();
+    // 페이지로 돌아올 때마다 카메라 상태 초기화
+  }, []);
+
+  const handleCameraInitialized = () => {
+    setShowCamera(true);
   };
 
   useEffect(() => {
-    //test
-    navigation.navigate('Identify');
-
-    async function getPermission() {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      console.log(newCameraPermission);
+    if (showCamera) {
+      autoCaptureAndUpload();
     }
-    getPermission();
-    setShowCamera(true);
+  }, [showCamera]);
 
-    // Set up autoCapture interval
-    const intervalId = setInterval(() => {
-      autoCapture();
-    }, 3000);
 
-    // Clean up by clearing the interval when the component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  const autoCapture = async () => {
-    //얼굴이 감지되면 true로 변경되어서 바로 return
-    if (!shouldCapture) {
-      return;
-    }
-
+  useFocusEffect(
+    React.useCallback(() => {
+      // setShowCamera(true);
+      return () => {
+        // 페이지가 벗어날 때 카메라 상태 초기화
+        setShowCamera(false);
+      };
+    }, [reRenderPage])
+  );
+  const autoCaptureAndUpload = async () => {
+    // console.log(camera.current);
     if (camera.current == null) {
+      console.log("현재 카메라 Ref 없음")
       return;
     }
+  
+    try {
+      const photo = await camera.current.takeSnapshot({});
+      console.log(`사진촬영됐음, ${photo.path}`)
+      const imageSource = photo.path; // 사진 경로
+     
+      let formdata = new FormData();
+      formdata.append('image', {
+        name: 'test.jpg',
+        type: 'image/jpeg',
+        uri: 'file://' + imageSource,
+      });
 
-    const photo = await camera.current.takeSnapshot({});
-    console.log(photo);
-    setImageSource(photo.path);
-    setPhotos(prevPhotos => [...prevPhotos, photo.path]);
+      const response = await axios.post('http://3.36.95.105/account/user/face/recognition/', formdata, {
+        headers: {'Content-Type': 'multipart/form-data'},
+        transformRequest: (data, headers) => {
+            return data;
+          },
+      });
+      console.log(`성공 ${response.data}`);
+      console.log(response);
+      console.log('Access 토큰:', response.data.access);
+      console.log('Refresh 토큰:', response.data.refresh);
 
-    const backendResponse = 'no_face_detected';
-    if (backendResponse === 'no_face_detected') {
-      setImageObject(photo);
-      uploadData();
-    } else {
-      setShouldCapture(false);
+     await AsyncStorage.setItem("access", response.data.access);
+     await AsyncStorage.setItem("refresh", response.data.refresh);
+     
+        navigation.navigate('Identify');
+    // 토큰 받고 시작하는거지 Easymenu를 말이야
+    } catch (error) {
+ 
+        // navigation.navigate('Identify');
+   
+      console.log('😛 Error :', error);
+      console.log('😛 Error :', error.message);
+      //if 문 추가했음. 401에러일때만 다시 촬영
+      if (error.response && error.response.status === 401) {
+        alert("얼굴 인식 실패 ...")
+      setTimeout(() => {
+        autoCaptureAndUpload();
+      }, 1000);
+      
+    }
     }
   };
 
@@ -105,13 +108,25 @@ const FaceRecognition = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{position: 'relative', width: 300, height: 300}}>
+         <View style={{flex: 1, backgroundColor: 'white'}}>
+        <View style={styles.header}>
+          <Image
+            style={{width: 150, height: 50, backgroundColor: 'white'}}
+            source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}
+          />
+        </View>
+      </View>
+      <View style={{position: 'relative', width: 400, height: 500}}>
+        <View>
+          <Text></Text>
+          </View>
         <Camera
           ref={camera}
-          style={{width: 300, height: 300}}
+          style={{width: 400, height: 500}}
           device={device}
           isActive={showCamera}
           photo={true}
+          onInitialized={handleCameraInitialized} // 카메라 초기화 후에 호출되는 콜백
         />
         <View
           style={{
@@ -124,17 +139,33 @@ const FaceRecognition = () => {
           <Text style={{color: 'white'}}>정면을 응시해 주세요</Text>
         </View>
       </View>
+      <CustomButton
+        title={'비회원으로 계속하기'}
+        onPress={handleContinue}
+        width={'100%'}
+        height={110}
+        backgroundColor = '#056CF2'
+        textColor={'white'}
+        fontSize={35}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // ...
+  header: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  
 });
 
 export default FaceRecognition;

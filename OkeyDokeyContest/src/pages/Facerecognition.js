@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
 import axios from 'axios';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../components/CustomButton';
 
@@ -17,9 +17,9 @@ const FaceRecognition = ({route}) => {
   const handleContinue = () => {
     navigation.navigate('Home');
   };
-useEffect(() => {
-  console.log("뒤로가기 성공");
-},[reRenderPage])
+  useEffect(() => {
+    console.log('뒤로가기 성공');
+  }, [reRenderPage]);
 
   useEffect(() => {
     async function getPermission() {
@@ -40,7 +40,6 @@ useEffect(() => {
     }
   }, [showCamera]);
 
-
   useFocusEffect(
     React.useCallback(() => {
       // setShowCamera(true);
@@ -48,20 +47,20 @@ useEffect(() => {
         // 페이지가 벗어날 때 카메라 상태 초기화
         setShowCamera(false);
       };
-    }, [reRenderPage])
+    }, [reRenderPage]),
   );
   const autoCaptureAndUpload = async () => {
     // console.log(camera.current);
     if (camera.current == null) {
-      console.log("현재 카메라 Ref 없음")
+      console.log('현재 카메라 Ref 없음');
       return;
     }
-  
+
     try {
       const photo = await camera.current.takeSnapshot({});
-      console.log(`사진촬영됐음, ${photo.path}`)
+      console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path; // 사진 경로
-     
+
       let formdata = new FormData();
       formdata.append('image', {
         name: 'test.jpg',
@@ -69,36 +68,38 @@ useEffect(() => {
         uri: 'file://' + imageSource,
       });
 
-      const response = await axios.post('http://3.36.95.105/account/user/face/recognition/', formdata, {
-        headers: {'Content-Type': 'multipart/form-data'},
-        transformRequest: (data, headers) => {
+      const response = await axios.post(
+        'http://3.36.95.105/account/user/face/recognition/',
+        formdata,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
+          transformRequest: (data, headers) => {
             return data;
           },
-      });
+        },
+      );
       console.log(`성공 ${response.data}`);
       console.log(response);
       console.log('Access 토큰:', response.data.access);
       console.log('Refresh 토큰:', response.data.refresh);
 
-     await AsyncStorage.setItem("access", response.data.access);
-     await AsyncStorage.setItem("refresh", response.data.refresh);
-     
-        navigation.navigate('Identify');
-    // 토큰 받고 시작하는거지 Easymenu를 말이야
+      await AsyncStorage.setItem('access', response.data.access);
+      await AsyncStorage.setItem('refresh', response.data.refresh);
+
+      navigation.navigate('Identify');
+      // 토큰 받고 시작하는거지 Easymenu를 말이야
     } catch (error) {
- 
-        // navigation.navigate('Identify');
-   
+      // navigation.navigate('Identify');
+
       console.log('😛 Error :', error);
       console.log('😛 Error :', error.message);
       //if 문 추가했음. 401에러일때만 다시 촬영
       if (error.response && error.response.status === 401) {
-        alert("얼굴 인식 실패 ...")
-      setTimeout(() => {
-        autoCaptureAndUpload();
-      }, 1000);
-      
-    }
+        alert('얼굴 인식 실패 ...');
+        setTimeout(() => {
+          autoCaptureAndUpload();
+        }, 1000);
+      }
     }
   };
 
@@ -108,7 +109,7 @@ useEffect(() => {
 
   return (
     <View style={styles.container}>
-         <View style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={{flex: 1, backgroundColor: 'white'}}>
         <View style={styles.header}>
           <Image
             style={{width: 150, height: 50, backgroundColor: 'white'}}
@@ -119,7 +120,7 @@ useEffect(() => {
       <View style={{position: 'relative', width: 400, height: 500}}>
         <View>
           <Text></Text>
-          </View>
+        </View>
         <Camera
           ref={camera}
           style={{width: 400, height: 500}}
@@ -144,7 +145,7 @@ useEffect(() => {
         onPress={handleContinue}
         width={'100%'}
         height={110}
-        backgroundColor = '#056CF2'
+        backgroundColor="#056CF2"
         textColor={'white'}
         fontSize={35}
       />
@@ -165,7 +166,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
 });
 
 export default FaceRecognition;

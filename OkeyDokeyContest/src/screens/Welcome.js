@@ -30,7 +30,7 @@ const Welcome = () => {
         await fetchData();
         if (distanceSensor) {
           clearInterval(interval);
-          navigation.navigate('FaceRecognition');
+          // navigation.navigate('FaceRecognition');
         }
       }, 1000);
     };
@@ -59,19 +59,38 @@ const Welcome = () => {
       <View
         style={{
           flex: 9,
-          justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#F5F7FB',
         }}>
         <Text
           style={{
-            fontSize: 50,
-            marginBottom: 100,
+            marginTop: 150,
+            fontSize: 70,
             fontWeight: '700',
             color: 'black',
+            zIndex: 1,
           }}>
-          음메카우 상명대점
+          음메카우
         </Text>
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: '700',
+            color: 'black',
+            zIndex: 1,
+          }}>
+          상명대점
+        </Text>
+        <Image
+          style={{
+            width: 500,
+            height: 700,
+            position: 'absolute',
+            bottom: 0,
+          }}
+          source={require('OkeyDokeyContest/assets/images/welcome.png')}
+          resizeMode="cover"
+        />
       </View>
     </SafeAreaView>
   );

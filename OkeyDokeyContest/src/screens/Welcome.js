@@ -3,10 +3,12 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useIsFocused} from '@react-navigation/native';
 
 const Welcome = () => {
   const [distanceSensor, setDistanceSensor] = useState(false);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const fetchData = async () => {
     try {
       const response = await axios.get('http://15.164.232.208/OKDK/signal/');
@@ -20,22 +22,17 @@ const Welcome = () => {
       return false;
     }
   };
-  
-  useEffect(() => {
-    navigation.navigate('FaceRecognition');
-  },[])
+
   useEffect(() => {
     let interval;
-
     const startLoop = () => {
       interval = setInterval(async () => {
-        // await fetchData();
+        await fetchData();
         if (distanceSensor) {
           clearInterval(interval);
-          // 테스트를 위해서
-          navigation.navigate('Identify');
+          navigation.navigate('FaceRecognition');
         }
-      }, 2000);
+      }, 1000);
     };
 
     const stopLoop = () => {
@@ -47,14 +44,7 @@ const Welcome = () => {
     return () => {
       stopLoop();
     };
-  }, []);
-
-  // useEffect(() => {
-  //   console.log('nav');
-  //   if (distanceSensor) {
-  //     navigation.navigate('FaceRecognition');
-  //   }
-  // }, [distanceSensor]);
+  }, [distanceSensor]);
 
   return (
     <SafeAreaView style={styles.container}>

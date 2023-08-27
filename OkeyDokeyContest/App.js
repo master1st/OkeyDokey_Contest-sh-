@@ -18,7 +18,7 @@ import Welcome from './src/screens/Welcome';
 import Identify from './src/screens/Identify';
 import Favorites from './src/screens/Favorites';
 import WebviewContainer from './src/pages/WebviewContainer';
-import FaceRecognition from './src/pages/Facerecognition';
+import FaceRecognition from './src/pages/FaceRecognition';
 const Stack = createNativeStackNavigator();
 
 const App = () => {

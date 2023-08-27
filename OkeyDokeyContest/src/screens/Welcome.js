@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useIsFocused} from '@react-navigation/native';
@@ -46,6 +46,12 @@ const Welcome = () => {
     };
   }, [distanceSensor]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setDistanceSensor(false);
+    }, []),
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
@@ -59,19 +65,38 @@ const Welcome = () => {
       <View
         style={{
           flex: 9,
-          justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: '#F5F7FB',
         }}>
         <Text
           style={{
-            fontSize: 50,
-            marginBottom: 100,
+            marginTop: 150,
+            fontSize: 70,
             fontWeight: '700',
             color: 'black',
+            zIndex: 1,
           }}>
-          음메카우 상명대점
+          음메카우
         </Text>
+        <Text
+          style={{
+            fontSize: 40,
+            fontWeight: '700',
+            color: 'black',
+            zIndex: 1,
+          }}>
+          상명대점
+        </Text>
+        <Image
+          style={{
+            width: 500,
+            height: 700,
+            position: 'absolute',
+            bottom: 0,
+          }}
+          source={require('OkeyDokeyContest/assets/images/welcome.png')}
+          resizeMode="cover"
+        />
       </View>
     </SafeAreaView>
   );

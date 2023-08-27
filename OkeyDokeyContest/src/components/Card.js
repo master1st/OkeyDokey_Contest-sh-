@@ -37,8 +37,8 @@ const Card = () => {
         requestData,
         {
           headers: {
-            // Authorization: `Bearer ${acess}`, // Access Token을 Authorization 헤더에 포함
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyOTAyMjI1LCJpYXQiOjE2OTI4MTY4MjUsImp0aSI6ImQ1NzcwZmIwYjI5YTQ4YmE5Zjg4NGZkYjM0NDk0Mjg2IiwidXNlcl9pZCI6M30.jfjBUDwNG6dRcuLXpoq1ZCFv50nmsn3NsFWlO0xH6MM`, // Access Token을 Authorization 헤더에 포함
+            Authorization: `Bearer ${access}`, // Access Token을 Authorization 헤더에 포함
+            // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyOTAyMjI1LCJpYXQiOjE2OTI4MTY4MjUsImp0aSI6ImQ1NzcwZmIwYjI5YTQ4YmE5Zjg4NGZkYjM0NDk0Mjg2IiwidXNlcl9pZCI6M30.jfjBUDwNG6dRcuLXpoq1ZCFv50nmsn3NsFWlO0xH6MM`, // Access Token을 Authorization 헤더에 포함
           },
         },
       );

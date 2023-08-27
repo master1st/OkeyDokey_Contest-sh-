@@ -1,6 +1,6 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useIsFocused} from '@react-navigation/native';
@@ -30,7 +30,7 @@ const Welcome = () => {
         await fetchData();
         if (distanceSensor) {
           clearInterval(interval);
-          // navigation.navigate('FaceRecognition');
+          navigation.navigate('FaceRecognition');
         }
       }, 1000);
     };
@@ -45,6 +45,12 @@ const Welcome = () => {
       stopLoop();
     };
   }, [distanceSensor]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setDistanceSensor(false);
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.container}>

@@ -16,7 +16,13 @@ const FaceModal = ({
   navigation,
 }) => {
   const memberCheck = () => {
+    //신원조회가 안되었을떄 이페이지로 올 수 가 없음. 즉 userData가 없으면 그냥 alert창 띄우고 몇초뒤에 Welcome 다시가야함.
+    if(userData){
     navigation.navigate('Home',userData);
+  }
+  else{
+    navigation.navigate('Home',{backoff : 'rerenderPage'});
+  }
   };
   //home으로 가서 버튼을 눌렀을때 얼굴인식 성공 데이타가 넘어온다면 즐겨찾는 메뉴로 바로 navigate
   return (

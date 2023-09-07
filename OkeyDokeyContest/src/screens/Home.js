@@ -15,7 +15,7 @@ import {addOrderNumber, setIsPack} from '../redux/slices/shoppingSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = ({route}) => {
-  const [userMode, setUserMode] = useState('easy');
+  const [userMode, setUserMode] = useState(null);
 
   const receivedData = route.params;
   const shoppings = useSelector(state => state.shopping.shoppings);
@@ -29,13 +29,19 @@ const Home = ({route}) => {
     eatin: `매장에서\n먹기`,
     takeout: '들고 가기',
   });
-  useEffect(() => {
+
+
+ useEffect(() => {
     async function fetchData() {
       const mode = await AsyncStorage.getItem('mode');
-      setUserMode(mode);
+      if (mode === 'normal') {
+        setUserMode(mode); // 'easy' 모드일 때만 초기화
+      }
     }
     fetchData();
-  }, []);
+  }, []); // 빈 배열로 설정하여 한 번만 실행
+
+
 
   const handleHere = () => {
     if (receivedData) {
@@ -44,13 +50,14 @@ const Home = ({route}) => {
       dispatch(setIsPack(false));
       dispatch(addOrderNumber());
 
-      if (userMode === 'easy') {
-        navigation.push('QCoffee', {
-          qdata: data.eatin,
-        });
-      } else {
+      if (userMode === 'normal') {
         navigation.navigate('EasyMenu', {
           whereScreen: 'Home',
+        });
+        setUserMode(null);
+      } else {
+        navigation.push('QCoffee', {
+          qdata: data.eatin,
         });
       }
     }
@@ -62,13 +69,14 @@ const Home = ({route}) => {
     } else {
       dispatch(setIsPack(true));
       dispatch(addOrderNumber());
-      if (mode === 'easy') {
-        navigation.push('QCoffee', {
-          qdata: data.takeout,
-        });
-      } else {
+      if (userMode === 'normal') {
         navigation.navigate('EasyMenu', {
           whereScreen: 'Home',
+        });
+        setUserMode(null);
+      } else {
+        navigation.push('QCoffee', {
+          qdata: data.takeout,
         });
       }
     }
@@ -102,7 +110,21 @@ const Home = ({route}) => {
             height={'90%'}
           />
         </View>
+        
         <View style={{width: '100%', marginBottom: 150}}></View>
+        <View style={{flexDirection: 'row'}}>
+          <CustomButton
+            title={'뒤로가기'}
+            onPress={() => {
+              navigation.pop();
+            }}
+            width={'100%'}
+            height={150}
+            backgroundColor={'#056CF2'}
+            textColor={'white'}
+            fontSize={50}
+          />
+        </View>
       </View>
     </View>
   );

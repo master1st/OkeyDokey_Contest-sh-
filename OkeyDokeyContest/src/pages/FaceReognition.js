@@ -5,6 +5,7 @@ import axios from 'axios';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../components/CustomButton';
+import { TouchableOpacity } from 'react-native';
 
 const FaceRecognition = ({route}) => {
   const camera = useRef(null);
@@ -20,11 +21,20 @@ const FaceRecognition = ({route}) => {
   );
   let captureTimeout;
   const [textIndex, setTextIndex] = useState(0);
+  const [key, setKey] = React.useState(0);
   const textVariations = [
-    '카메라 촬영중.',
-    '카메라 촬영중..',
-    '카메라 촬영중...',
+    '카메라 촬영중입니다 .',
+    '카메라 촬영중입니다 ..',
+    '카메라 촬영중입니다 ...',
   ];
+
+
+  useEffect(() => {
+    setShowCamera(false);
+    setKey((prevKey) => prevKey + 1);
+  }, [reRenderPage]);
+
+
   const handleContinue = () => {
     navigation.navigate('Home');
   };
@@ -52,17 +62,17 @@ const FaceRecognition = ({route}) => {
     getPermission();
   }, []);
 
-   const handleCameraInitialized = async() => {
+  const handleCameraInitialized = async () => {
     setShowCamera(true);
     try {
-      const interval = setInterval(() => {
-        setTextIndex((prevIndex) => (prevIndex + 1) % textVariations.length);
-      }, 1000); // 1초마다 텍스트 변경
+      // const interval = setInterval(() => {
+      //   setTextIndex(prevIndex => (prevIndex + 1) % textVariations.length);
+      // }, 1000); // 1초마다 텍스트 변경
 
       await autoCapture();
 
-      clearInterval(interval); // 사진 촬영 완료 후 인터벌 제거
-      setShowText(textVariations[0]); // 초기 텍스트로 변경
+      // clearInterval(interval); // 사진 촬영 완료 후 인터벌 제거
+      // setShowText(textVariations[0]); // 초기 텍스트로 변경
     } catch (err) {
       console.error(err);
     }
@@ -80,27 +90,29 @@ const FaceRecognition = ({route}) => {
         console.log('현재 카메라 Ref 없음');
         return;
       }
-  
+
       setShowText('카메라 촬영중...');
       const photo = await camera.current.takeSnapshot({});
       console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path;
-  
+
       if (!mounted.current) {
         clearTimeout(captureTimeout);
         console.log('컴포넌트가 언마운트되어 작업을 중단합니다.');
         return;
       }
-  
+
       setShowText('얼굴 인식중...');
       await sendPhotoToBackend(imageSource);
-   
     } catch (error) {
       console.log('autoCapture 에러:', error);
-  
+      navigation.navigate('FaceRecognition');
     }
   };
-  
+
+  // 카메라 재호출
+    const cameraReInit = React.useCallback(() => setKey((prevKey) => prevKey + 1), []);
+
 
   const sendPhotoToBackend = async imageSource => {
     let formdata = new FormData();
@@ -157,35 +169,46 @@ const FaceRecognition = ({route}) => {
           />
         </View>
       </View>
-      <View style={{flex: 1, backgroundColor: '#D9D9D9BF'}}>
-        <View style={styles.header}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#D9D9D9BF',
+          position: 'relative',
+          zIndex: 1,
+          height: 200,
+          top: 50,
+          right: 500,
+        }}>
+        <View style={styles.guideText}>
           <Text
             style={{
               color: '#000',
               fontFamily: 'Pretendard',
-              fontSize: 20, // 수정: 숫자 값으로 변경
+              fontSize: 40, // 수정: 숫자 값으로 변경
               fontStyle: 'normal',
               fontWeight: '700',
             }}>
             {textVariations[textIndex]}
           </Text>
-          <View
+          {/* <TouchableOpacity onPress={cameraReInit}
             style={{
               backgroundColor: '#D9D9D9',
               width: 120,
               height: 120,
-            }}></View>
+            }}>
+              <Text>카메라 재촬영</Text>
+            </TouchableOpacity> */}
         </View>
       </View>
 
       {focusPage && (
-        <View style={{position: 'relative', width: 400, height: 500}}>
+        <View style={{position: 'relative', width: 1204, height: 900}}>
           <View>
             <Text></Text>
           </View>
           <Camera
             ref={camera}
-            style={{width: 400, height: 500}}
+            style={{width: 1024, height: 1280}}
             device={device}
             isActive={showCamera}
             photo={true}
@@ -220,6 +243,7 @@ const FaceRecognition = ({route}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
+    position: 'relative',
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -227,9 +251,19 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 1,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  guideText: {
+    position: 'absolute',
+    width: 1024,
+    flex: 1,
     backgroundColor: 'rgba(217, 217, 217, 0.75)',
     flexDirection: 'row',
-    backgroundColor: 'white',
+    height: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },

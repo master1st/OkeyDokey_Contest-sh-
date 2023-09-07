@@ -76,9 +76,7 @@ const Identify = () => {
   }, []);
 
   // 본인확인된 모종의 부분이 있을거아냐 여기선 userData라고 가정.
-  const handleContinue = () => {
-    navigation.navigate('Home');
-  };
+  
 
   return (
     <SafeAreaView
@@ -133,10 +131,9 @@ const Identify = () => {
       </View>
       <CustomButton
         title={'비회원으로 계속하기'}
-        onPress={handleContinue}
         width={'100%'}
         height={110}
-        backgroundColor =  'rgba(5, 108, 242, 0.5)'
+        backgroundColor =  'rgba(5, 108, 242, 0.3)'
         textColor={'white'}
         fontSize={35}
       />

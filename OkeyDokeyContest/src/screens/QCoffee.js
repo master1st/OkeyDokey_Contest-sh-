@@ -18,12 +18,34 @@ import {resetOrderNumber} from '../redux/slices/shoppingSlice';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const QCoffee = ({navigation}) => {
+const QCoffee = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [result, setResult] = useState([]);
   const [coffeeText, setCoffeeText] = useState([]);
   const [nonCoffeeText, setNonCoffeeText] = useState([]);
-  const [userMode, setUserMode] = useState("easy")
+  const [userMode, setUserMode] = useState(null);
+  
+  const FavoriteMoveState = route.params;
+
+  useEffect(() => {
+    async function fetchData() {
+      const mode = await AsyncStorage.getItem('mode');
+        setUserMode(mode); // 'easy' 모드일 때만 초기화
+      }
+    fetchData();
+  }, []); // 빈 배열로 설정하여 한 번만 실행
+
+  
+  useEffect(() => {
+    if(userMode !== null || userMode !== undefined){
+      if(userMode === 'normal'){
+      navigation.navigate('EasyMenu', {
+        whereScreen: 'QCoffee',
+      });
+      setUserMode(null);
+    }
+    }
+  },[FavoriteMoveState, userMode])
   //userData가
   //일반메뉴 받아오기 함수
   const fetchData = async () => {
@@ -55,17 +77,20 @@ const QCoffee = ({navigation}) => {
 
   const handleCoffee = () => {
     const Coffee = coffeeText.name.replace(/\n/g, '');
+
     navigation.push('Qmilk', {
       qCoffee: Coffee,
       qCoffeeid: coffeeText.id,
     });
-  };
+    };
   const handleNonCoffee = () => {
     const nonCoffee = nonCoffeeText.name.replace(/\n/g, '');
+
     navigation.push('Qmilk', {
       qCoffee: nonCoffee,
       qCoffeeid: nonCoffeeText.id,
     });
+  
   };
   let coffeedata = nonCoffeeText.name;
   if (coffeedata) {

@@ -88,7 +88,7 @@ const EasyMenu = ({navigation, route}) => {
         setAdeList(response.data.find(item => item.name === '에이드'));
         setSmoothieList(response.data.find(item => item.name === '스무디'));
         setTeaList(response.data.find(item => item.name === '티'));
-
+        
         if (whereScreen === 'QCoffee') {
           getEasy();
         } else if (whereScreen === 'Qmilk') {
@@ -113,6 +113,7 @@ const EasyMenu = ({navigation, route}) => {
   const fetchDataEasy = () => {
     API.get(`/menu/list/${qMilkid}`)
       .then(response => {
+        console.log(response.data);
         setDrinkItem(response.data);
       })
       .catch(error => {
@@ -301,7 +302,7 @@ const EasyMenu = ({navigation, route}) => {
                 return (
                   <>
                     <Coffee
-                      key={item.length}
+                      key={item.id}
                       navigation={navigation}
                       goto={'ShoppingBasket'}
                       coffeeImageWidth={140}

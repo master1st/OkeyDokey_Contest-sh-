@@ -23,7 +23,6 @@ import {addShopping} from '../redux/slices/shoppingSlice';
 //즐겨찾는 메뉴 페이지
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
-  const [access, setAccess] = useState(null);
   const [name, setName] = useState(null);
   const [totalCoffeePrice, setTotalCoffeePrice] = useState(0);
   const [menuData, setMenuData] = useState([]);
@@ -90,24 +89,24 @@ const Favorites = () => {
   };
 
   //access token 받아오기
-  const setAccessToken = async () => {
-    await AsyncStorage.getItem('access')
-      .then(value => {
-        if (value !== null) {
-          console.log('Value retrieved:', value);
-          setAccess(value);
-          // fetchData();
-        }
-      })
-      .catch(error => console.error('Error retrieving data:', error));
-  };
+  // const setAccessToken = async () => {
+  //   await AsyncStorage.getItem('access')
+  //     .then(value => {
+  //       if (value !== null) {
+  //         console.log('Value retrieved:', value);
+  //         setAccess(value);
+  //         // fetchData();
+  //       }
+  //     })
+  //     .catch(error => console.error('Error retrieving data:', error));
+  // };
 
-  const fetchData = () => {
+  const fetchData = async() => {
+    const access = await AsyncStorage.getItem('access')
     axios
       .get('http://15.164.232.208/menu/favorite/list/', {
         headers: {
           Authorization: `Bearer ${access}`, // Access Token을 Authorization 헤더에 포함
-          // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyOTAyMjI1LCJpYXQiOjE2OTI4MTY4MjUsImp0aSI6ImQ1NzcwZmIwYjI5YTQ4YmE5Zjg4NGZkYjM0NDk0Mjg2IiwidXNlcl9pZCI6M30.jfjBUDwNG6dRcuLXpoq1ZCFv50nmsn3NsFWlO0xH6MM`, // Access Token을 Authorization 헤더에 포함
         },
       })
       .then(response => {
@@ -122,7 +121,7 @@ const Favorites = () => {
 
   useEffect(() => {
     setUserName();
-    setAccessToken();
+    // setAccessToken();
     fetchData();
   }, []);
 
@@ -242,7 +241,7 @@ const Favorites = () => {
       </View>
       <CustomButton
         title={'다른 메뉴 선택하기'}
-        onPress={() => navigation.navigate('Qcoffee')}
+        onPress={() => navigation.navigate('QCoffee' , { test: 'testing' })}
         width={'100%'}
         height={110}
         backgroundColor={'#056CF2'}

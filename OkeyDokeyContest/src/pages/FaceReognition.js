@@ -28,13 +28,6 @@ const FaceRecognition = ({route}) => {
     '카메라 촬영중입니다 ...',
   ];
 
-
-  // useEffect(() => {
-  //   setShowCamera(true);
-  //   console.log("useEffect reRenderPage");
-  // }, [reRenderPage]);
-
-
   const handleContinue = () => {
     navigation.navigate('Home');
   };
@@ -51,25 +44,16 @@ const FaceRecognition = ({route}) => {
       };
     }, []),
   );
-  useEffect(() => {
-    mounted.current = true; // 컴포넌트 마운트됨을 표시
-    return () => {
-      mounted.current = false; // 컴포넌트 언마운트됨을 표시
-    };
-  }, []);
   // useEffect(() => {
-  //   async function getPermission() {
-  //     console.log("getPermission");
-  //     const newCameraPermission = await Camera.requestCameraPermission();
-  //     console.log(`카메라 권한 ${newCameraPermission}`);
-  //   }
-  //   getPermission();
+  //   mounted.current = true; // 컴포넌트 마운트됨을 표시
+  //   return () => {
+  //     mounted.current = false; // 컴포넌트 언마운트됨을 표시
+  //   };
   // }, []);
 
   const handleCameraInitialized = async () => {
     try {
       console.log("handleCameraInitialized");
-      // setKey(true)
       setShowCamera(true);
       autoCapture();
     } catch (err) {
@@ -77,43 +61,45 @@ const FaceRecognition = ({route}) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (showCamera && focusPage) {
-  //     console.log("useEffect autoCapture");
-  //     autoCapture();
-  //   }
-  // }, [showCamera, focusPage]);
+  const Recapture = async () => {
+    try {
+      console.log("카매라 초기화 안되서 재촬영");
+      autoCapture();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const autoCapture = async () => {
     console.log("autoCapture function");
     try {
-      // console.log('key' + key)
-      // if(key !== true) {
-      //   return;
-      // }
+      if (!showCamera) { // 카메라가 활성화되어 있지 않으면 촬영 시도하지 않음
+        console.log("!showCamera에 걸림");
+        return;
+      }
       if (camera.current == null) {
         console.log('현재 카메라 Ref 없음');
         return;
       }
 
-      setShowText('카메라 촬영중...');
+     
       console.log("takeSnapShot")
       const photo = await camera.current.takeSnapshot({});
       console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path;
 
-      console.log('mounted' +!mounted.current);
-      if (!mounted.current) {
-        clearTimeout(captureTimeout);
-        console.log('컴포넌트가 언마운트되어 작업을 중단합니다.');
-        return;
-      }
+      // console.log('mounted' +!mounted.current);
+      // if (!mounted.current) {
+      //   clearTimeout(captureTimeout);
+      //   console.log('컴포넌트가 언마운트되어 작업을 중단합니다.');
+      //   return;
+      // }
 
-      setShowText('얼굴 인식중...');
+  
       await sendPhotoToBackend(imageSource);
     } catch (error) {
       console.log('autoCapture 에러:', error);
-      navigation.navigate('FaceRecognition');
+      Recapture();
     }
   };
 
@@ -156,7 +142,7 @@ const FaceRecognition = ({route}) => {
         setShowText('얼굴인식 실패...');
         captureTimeout = setTimeout(() => {
           autoCapture();
-        }, 500);
+        }, 300);
       }
       if (error.response && error.response.status === 401) {
         alert("회원가입 후 사진을 먼저 등록해주세요")

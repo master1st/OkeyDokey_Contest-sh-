@@ -5,6 +5,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {resetShopping, updateOrderNumber} from '../redux/slices/shoppingSlice';
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Card = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Card = () => {
           },
         },
       );
-      console.log(response.data);
+      console.log('2 '+ response.data);
       dispatch(updateOrderNumber(response.data.order_num));
     } catch (error) {
       console.log('[😝 error ]' + error.message);

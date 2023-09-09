@@ -122,7 +122,7 @@ const Identify = () => {
             userData={userData}
             navigation={navigation}
             headerTitle="본인확인"
-            title = "이름"
+            title = ""
             subTitle="으로 계속하시겠어요?"
             width="75%"
             height="100%"

@@ -24,9 +24,24 @@ const FaceModal = ({
     navigation.navigate('Home',{backoff : 'rerenderPage'});
   }
   };
+
+  const goWelcome = () => {
+    navigation.navigate('Welcome');
+  }
   //home으로 가서 버튼을 눌렀을때 얼굴인식 성공 데이타가 넘어온다면 즐겨찾는 메뉴로 바로 navigate
   return (
     <View style={{width: width, height: height, position: 'absolute'}}>
+      <View style={{left: '5%', top:'5%', zIndex:1}}>
+       <CustomButton
+          title={'처음으로'}
+          onPress={goWelcome}
+          width={'20%'}
+          height={40}
+          backgroundColor={'#056CF2'}
+          textColor={'white'}
+          fontSize={20}
+        />
+        </View>
       <View style={styles.main}>
         <View style={styles.header}>
           <Text style={{fontWeight: 'bold', color: 'black', fontSize: 40}}>

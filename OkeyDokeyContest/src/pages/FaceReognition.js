@@ -21,7 +21,7 @@ const FaceRecognition = ({route}) => {
   );
   let captureTimeout;
   const [textIndex, setTextIndex] = useState(0);
-  const [key, setKey] = React.useState(0);
+  const [key, setKey] = React.useState(null);
   const textVariations = [
     '카메라 촬영중입니다 .',
     '카메라 촬영중입니다 ..',
@@ -29,10 +29,10 @@ const FaceRecognition = ({route}) => {
   ];
 
 
-  useEffect(() => {
-    setShowCamera(false);
-    setKey((prevKey) => prevKey + 1);
-  }, [reRenderPage]);
+  // useEffect(() => {
+  //   setShowCamera(true);
+  //   console.log("useEffect reRenderPage");
+  // }, [reRenderPage]);
 
 
   const handleContinue = () => {
@@ -41,9 +41,12 @@ const FaceRecognition = ({route}) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log("useCallback setFocus true");
       setFocusPage(true);
 
       return () => {
+        console.log("useCallback setFocus false");
+        setShowCamera(false);
         setFocusPage(false);
       };
     }, []),
@@ -54,48 +57,52 @@ const FaceRecognition = ({route}) => {
       mounted.current = false; // 컴포넌트 언마운트됨을 표시
     };
   }, []);
-  useEffect(() => {
-    async function getPermission() {
-      const newCameraPermission = await Camera.requestCameraPermission();
-      console.log(`카메라 권한 ${newCameraPermission}`);
-    }
-    getPermission();
-  }, []);
+  // useEffect(() => {
+  //   async function getPermission() {
+  //     console.log("getPermission");
+  //     const newCameraPermission = await Camera.requestCameraPermission();
+  //     console.log(`카메라 권한 ${newCameraPermission}`);
+  //   }
+  //   getPermission();
+  // }, []);
 
   const handleCameraInitialized = async () => {
-    setShowCamera(true);
     try {
-      // const interval = setInterval(() => {
-      //   setTextIndex(prevIndex => (prevIndex + 1) % textVariations.length);
-      // }, 1000); // 1초마다 텍스트 변경
-
-      await autoCapture();
-
-      // clearInterval(interval); // 사진 촬영 완료 후 인터벌 제거
-      // setShowText(textVariations[0]); // 초기 텍스트로 변경
+      console.log("handleCameraInitialized");
+      // setKey(true)
+      setShowCamera(true);
+      autoCapture();
     } catch (err) {
       console.error(err);
     }
   };
 
-  useEffect(() => {
-    if (showCamera && focusPage) {
-      autoCapture();
-    }
-  }, [showCamera, focusPage]);
+  // useEffect(() => {
+  //   if (showCamera && focusPage) {
+  //     console.log("useEffect autoCapture");
+  //     autoCapture();
+  //   }
+  // }, [showCamera, focusPage]);
 
   const autoCapture = async () => {
+    console.log("autoCapture function");
     try {
+      // console.log('key' + key)
+      // if(key !== true) {
+      //   return;
+      // }
       if (camera.current == null) {
         console.log('현재 카메라 Ref 없음');
         return;
       }
 
       setShowText('카메라 촬영중...');
+      console.log("takeSnapShot")
       const photo = await camera.current.takeSnapshot({});
       console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path;
 
+      console.log('mounted' +!mounted.current);
       if (!mounted.current) {
         clearTimeout(captureTimeout);
         console.log('컴포넌트가 언마운트되어 작업을 중단합니다.');
@@ -111,8 +118,7 @@ const FaceRecognition = ({route}) => {
   };
 
   // 카메라 재호출
-    const cameraReInit = React.useCallback(() => setKey((prevKey) => prevKey + 1), []);
-
+  
 
   const sendPhotoToBackend = async imageSource => {
     let formdata = new FormData();
@@ -146,11 +152,14 @@ const FaceRecognition = ({route}) => {
     } catch (error) {
       console.log('😛 Error :', error);
       console.log('😛 Error :', error.message);
-      if (error.response && error.response.status === 401) {
+      if (error.response && error.response.status === 400) {
         setShowText('얼굴인식 실패...');
         captureTimeout = setTimeout(() => {
           autoCapture();
-        }, 1000);
+        }, 500);
+      }
+      if (error.response && error.response.status === 401) {
+        alert("회원가입 후 사진을 먼저 등록해주세요")
       }
     }
   };
@@ -202,7 +211,8 @@ const FaceRecognition = ({route}) => {
       </View>
 
       {focusPage && (
-        <View style={{position: 'relative', width: 1204, height: 900}}>
+        // <View style={{position: 'relative', width: 1204, height: 900}}>
+           <View style={{position: 'relative', width: 600, height: 700}}>
           <View>
             <Text></Text>
           </View>

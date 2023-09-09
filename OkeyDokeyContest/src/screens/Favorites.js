@@ -79,13 +79,14 @@ const Favorites = () => {
   };
   //username 받아오기
   const setUserName = async () => {
-    await AsyncStorage.getItem('username')
-      .then(value => {
-        if (value !== null) {
-          setName(value);
-        }
-      })
-      .catch(error => console.error('Error retrieving data:', error));
+      try{
+        const name = await AsyncStorage.getItem('nickname')
+        setName(name);
+        console.log(name);
+      }
+      catch{
+       console.log('Error retrieving data:', error);
+      }
   };
 
   //access token 받아오기
@@ -102,21 +103,22 @@ const Favorites = () => {
   // };
 
   const fetchData = async() => {
-    const access = await AsyncStorage.getItem('access')
-    axios
-      .get('http://15.164.232.208/menu/favorite/list/', {
+    try {
+      const access = await AsyncStorage.getItem('access');
+      const response = await axios.get('http://15.164.232.208/menu/favorite/list/', {
         headers: {
           Authorization: `Bearer ${access}`, // Access Token을 Authorization 헤더에 포함
         },
-      })
-      .then(response => {
-        setMenuData(response.data.OKDK);
-        console.log(response.data.OKDK);
-        // console.log(menuData);
-      })
-      .catch(error => {
-        console.error(error);
       });
+    
+      
+      setMenuData(response.data.OKDK);
+      console.log('즐겨찾기 ' + JSON.stringify(response.data));
+      console.log('즐겨찾기메뉴' + response.data.OKDK);
+
+    } catch (error) {
+      console.log('즐겨찾기메뉴 불러오기 에러' + error);
+    }
   };
 
   useEffect(() => {
@@ -239,15 +241,26 @@ const Favorites = () => {
           />
         </View>
       </View>
+      <View style={{flexDirection:'row'}}>
       <CustomButton
-        title={'다른 메뉴 선택하기'}
-        onPress={() => navigation.navigate('QCoffee' , { test: 'testing' })}
-        width={'100%'}
+        title={'뒤로가기'}
+        onPress={() =>  navigation.goBack()}
+        width={'50%'}
         height={110}
         backgroundColor={'#056CF2'}
         textColor={'white'}
         fontSize={35}
       />
+      <CustomButton
+        title={'다른 메뉴 선택하기'}
+        onPress={() => navigation.navigate('QCoffee' , { test: 'testing' })}
+        width={'50%'}
+        height={110}
+        backgroundColor={'#056CF2'}
+        textColor={'white'}
+        fontSize={35}
+      />
+      </View>
     </SafeAreaView>
   );
 };

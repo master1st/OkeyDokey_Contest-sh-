@@ -117,7 +117,7 @@ const EasyMenu = ({navigation, route}) => {
         setDrinkItem(response.data);
       })
       .catch(error => {
-        console.error(error);
+        console.log("fetchDataEasy(easymenu)에러"+ error);
       });
   };
 
@@ -300,7 +300,7 @@ const EasyMenu = ({navigation, route}) => {
             <View style={styles.midItemBox}>
               {drinkItem.map(item => {
                 return (
-                  <>
+                  
                     <Coffee
                       key={item.id}
                       navigation={navigation}
@@ -312,7 +312,7 @@ const EasyMenu = ({navigation, route}) => {
                       CoffeeName={item.name}
                       CoffeePrice={item.price}
                     />
-                  </>
+                  
                 );
               })}
             </View>
@@ -361,7 +361,7 @@ const EasyMenu = ({navigation, route}) => {
             }}>
             {category.menues.map(item => {
               return (
-                <>
+                
                   <Coffee
                     navigation={navigation}
                     key={item.id}
@@ -372,7 +372,7 @@ const EasyMenu = ({navigation, route}) => {
                     CoffeeName={item.name}
                     CoffeePrice={item.price}
                   />
-                </>
+                
               );
             })}
           </View>
@@ -403,8 +403,9 @@ const EasyMenu = ({navigation, route}) => {
                   flexDirection: 'column',
                 }}>
                 {shoppings.map(item => {
+                  console.log('MAP에 붙일거임' + item);
                   return (
-                    <View
+                    <View key={item.id}
                       style={{
                         width: '100%',
                         marginTop: 10,

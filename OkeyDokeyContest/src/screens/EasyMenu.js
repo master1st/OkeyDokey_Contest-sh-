@@ -144,6 +144,7 @@ const EasyMenu = ({navigation, route}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB', alignItems: 'center'}}>
       <View style={styles.header}>
+        
         <Image
           style={{width: 150, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}

@@ -47,6 +47,10 @@ const Qmilk = ({route, navigation}) => {
     fetchData();
   }, []);
 
+  const goWelcome = () => {
+    navigation.navigate('Welcome');
+  }
+
   const handleNonMilk = () => {
     navigation.push('EasyMenu', {
       qMilk: nonmilkText ? nonmilkText.name : null,
@@ -113,6 +117,17 @@ const Qmilk = ({route, navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#F5F7FB'}}>
       <View style={styles.header}>
+      <View style={{position:'absolute', left:50, width:500}}>
+      <CustomButton
+          title={'처음으로'}
+          onPress={goWelcome}
+          width={'20%'}
+          height={40}
+          backgroundColor={'#056CF2'}
+          textColor={'white'}
+          fontSize={20}
+        />
+        </View>
         <Image
           style={{width: 150, height: 50}}
           source={require('OkeyDokeyContest/assets/images/OkDkLogo.png')}

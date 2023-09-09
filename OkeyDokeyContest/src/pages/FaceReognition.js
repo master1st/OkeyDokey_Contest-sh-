@@ -20,13 +20,13 @@ const FaceRecognition = ({route}) => {
     '오키도키로 키오스크를 편리하게 이용하세요! ',
   );
   let captureTimeout;
-  const [textIndex, setTextIndex] = useState(0);
-  const [key, setKey] = React.useState(null);
-  const textVariations = [
-    '카메라 촬영중입니다 .',
-    '카메라 촬영중입니다 ..',
-    '카메라 촬영중입니다 ...',
-  ];
+  // const [textIndex, setTextIndex] = useState(0);
+  // const [key, setKey] = React.useState(null);
+  // const textVariations = [
+  //   '카메라 촬영중입니다 .',
+  //   '카메라 촬영중입니다 ..',
+  //   '카메라 촬영중입니다 ...',
+  // ];
 
   const handleContinue = () => {
     navigation.navigate('Home');
@@ -35,10 +35,13 @@ const FaceRecognition = ({route}) => {
   useFocusEffect(
     React.useCallback(() => {
       console.log("useCallback setFocus true");
+      setShowText("카메라 준비중...");
       setFocusPage(true);
+      
 
       return () => {
         console.log("useCallback setFocus false");
+        clearTimeout(captureTimeout);
         setShowCamera(false);
         setFocusPage(false);
       };
@@ -53,9 +56,11 @@ const FaceRecognition = ({route}) => {
 
   const handleCameraInitialized = async () => {
     try {
-      console.log("handleCameraInitialized");
       setShowCamera(true);
+      if(showCamera){
+        console.log('지금 handleCameraInitialized 함수의 showcamera값' + showCamera);
       autoCapture();
+    }
     } catch (err) {
       console.error(err);
     }
@@ -82,8 +87,8 @@ const FaceRecognition = ({route}) => {
         return;
       }
 
-     
       console.log("takeSnapShot")
+      setShowText('사진 촬영중 입니다...');
       const photo = await camera.current.takeSnapshot({});
       console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path;
@@ -95,11 +100,11 @@ const FaceRecognition = ({route}) => {
       //   return;
       // }
 
-  
       await sendPhotoToBackend(imageSource);
     } catch (error) {
       console.log('autoCapture 에러:', error);
       Recapture();
+      return;
     }
   };
 
@@ -107,6 +112,7 @@ const FaceRecognition = ({route}) => {
   
 
   const sendPhotoToBackend = async imageSource => {
+    setShowText("얼굴 인식중 입니다...");
     let formdata = new FormData();
     formdata.append('image', {
       name: 'test.jpg',
@@ -135,11 +141,12 @@ const FaceRecognition = ({route}) => {
       await AsyncStorage.setItem('refresh', response.data.refresh);
 
       navigation.navigate('Identify');
+      return;
     } catch (error) {
       console.log('😛 Error :', error);
       console.log('😛 Error :', error.message);
       if (error.response && error.response.status === 400) {
-        setShowText('얼굴인식 실패...');
+        setShowText('인식 실패... 재촬영 중');
         captureTimeout = setTimeout(() => {
           autoCapture();
         }, 300);
@@ -183,7 +190,9 @@ const FaceRecognition = ({route}) => {
               fontStyle: 'normal',
               fontWeight: '700',
             }}>
-            {textVariations[textIndex]}
+            {showText}
+
+
           </Text>
           {/* <TouchableOpacity onPress={cameraReInit}
             style={{

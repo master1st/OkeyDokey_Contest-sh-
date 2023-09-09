@@ -21,6 +21,18 @@ const OrderNum = () => {
       routes: [{name: 'Welcome'}],
     });
   };
+  
+  useEffect(() => {
+    const onBackPress = () => {
+      return true; // 뒤로가기 막음
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  }, []);
 
   return (
     <SafeAreaView

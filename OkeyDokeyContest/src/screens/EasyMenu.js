@@ -27,6 +27,7 @@ import {
 import API from '../API/api';
 import axios from 'axios';
 import QCoffee from './QCoffee';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EasyMenu = ({navigation, route}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
@@ -37,6 +38,35 @@ const EasyMenu = ({navigation, route}) => {
   const getEasy = () => {
     seteasy(!easy);
   };
+
+
+  
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
 
   const navigationQcoffee = () => {
     if (whereScreen === 'QCoffee') {

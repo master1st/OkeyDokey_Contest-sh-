@@ -31,6 +31,32 @@ const Home = ({route}) => {
   });
 
 
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
  useEffect(() => {
     async function fetchData() {
       const mode = await AsyncStorage.getItem('mode');
@@ -42,7 +68,7 @@ const Home = ({route}) => {
   }, []); // 빈 배열로 설정하여 한 번만 실행
 
   const goWelcome = () => {
-    navigation.navigate('Welcome');
+    navigation.popToTop();
   }
 
   const handleHere = () => {

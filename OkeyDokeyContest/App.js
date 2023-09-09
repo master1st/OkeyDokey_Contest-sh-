@@ -20,6 +20,7 @@ import Favorites from './src/screens/Favorites';
 import WebviewContainer from './src/pages/WebviewContainer';
 import FaceRecognition from './src/pages/FaceReognition';
 import {Camera, useCameraDevices} from 'react-native-vision-camera';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 
@@ -33,6 +34,20 @@ const App = () => {
     }
     getPermission();
   }, []);
+
+  useEffect(() => {
+    clearAsyncStorage();
+  },[]);
+
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
+    }
+  };
+  
   return (
     <NavigationContainer>
       <Provider store={store}>

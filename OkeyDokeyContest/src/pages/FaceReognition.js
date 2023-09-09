@@ -5,7 +5,7 @@ import axios from 'axios';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../components/CustomButton';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 const FaceRecognition = ({route}) => {
   const camera = useRef(null);
@@ -20,47 +20,44 @@ const FaceRecognition = ({route}) => {
     '오키도키로 키오스크를 편리하게 이용하세요! ',
   );
   let captureTimeout;
-  // const [textIndex, setTextIndex] = useState(0);
-  // const [key, setKey] = React.useState(null);
-  // const textVariations = [
-  //   '카메라 촬영중입니다 .',
-  //   '카메라 촬영중입니다 ..',
-  //   '카메라 촬영중입니다 ...',
-  // ];
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
+    await AsyncStorage.setItem("nonmember", "nonmember");
     navigation.navigate('Home');
   };
 
+  useEffect(() => {
+    clearAsyncStorage();
+  },[]);
+
   useFocusEffect(
     React.useCallback(() => {
-      console.log("useCallback setFocus true");
-      setShowText("카메라 준비중...");
+      console.log('useCallback setFocus true');
+      setShowCamera(true);
+      setShowText('카메라 준비중...');
       setFocusPage(true);
-      
 
       return () => {
-        console.log("useCallback setFocus false");
+        console.log('useCallback setFocus false');
         clearTimeout(captureTimeout);
         setShowCamera(false);
         setFocusPage(false);
       };
     }, []),
   );
-  // useEffect(() => {
-  //   mounted.current = true; // 컴포넌트 마운트됨을 표시
-  //   return () => {
-  //     mounted.current = false; // 컴포넌트 언마운트됨을 표시
-  //   };
-  // }, []);
 
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
+    }
+  };
+  
   const handleCameraInitialized = async () => {
     try {
-      setShowCamera(true);
-      if(showCamera){
-        console.log('지금 handleCameraInitialized 함수의 showcamera값' + showCamera);
       autoCapture();
-    }
     } catch (err) {
       console.error(err);
     }
@@ -68,7 +65,7 @@ const FaceRecognition = ({route}) => {
 
   const Recapture = async () => {
     try {
-      console.log("카매라 초기화 안되서 재촬영");
+      console.log('카매라 초기화 안되서 재촬영');
       autoCapture();
     } catch (err) {
       console.error(err);
@@ -76,10 +73,11 @@ const FaceRecognition = ({route}) => {
   };
 
   const autoCapture = async () => {
-    console.log("autoCapture function");
+    console.log('autoCapture function');
     try {
-      if (!showCamera) { // 카메라가 활성화되어 있지 않으면 촬영 시도하지 않음
-        console.log("!showCamera에 걸림");
+      if (!showCamera) {
+        // 카메라가 활성화되어 있지 않으면 촬영 시도하지 않음
+        console.log('!showCamera에 걸림');
         return;
       }
       if (camera.current == null) {
@@ -87,18 +85,11 @@ const FaceRecognition = ({route}) => {
         return;
       }
 
-      console.log("takeSnapShot")
+      console.log('takeSnapShot');
       setShowText('사진 촬영중 입니다...');
       const photo = await camera.current.takeSnapshot({});
       console.log(`사진촬영됐음, ${photo.path}`);
       const imageSource = photo.path;
-
-      // console.log('mounted' +!mounted.current);
-      // if (!mounted.current) {
-      //   clearTimeout(captureTimeout);
-      //   console.log('컴포넌트가 언마운트되어 작업을 중단합니다.');
-      //   return;
-      // }
 
       await sendPhotoToBackend(imageSource);
     } catch (error) {
@@ -109,10 +100,9 @@ const FaceRecognition = ({route}) => {
   };
 
   // 카메라 재호출
-  
 
   const sendPhotoToBackend = async imageSource => {
-    setShowText("얼굴 인식중 입니다...");
+    setShowText('얼굴 인식중 입니다...');
     let formdata = new FormData();
     formdata.append('image', {
       name: 'test.jpg',
@@ -152,7 +142,7 @@ const FaceRecognition = ({route}) => {
         }, 300);
       }
       if (error.response && error.response.status === 401) {
-        alert("회원가입 후 사진을 먼저 등록해주세요")
+        alert('회원가입 후 사진을 먼저 등록해주세요');
       }
     }
   };
@@ -191,8 +181,6 @@ const FaceRecognition = ({route}) => {
               fontWeight: '700',
             }}>
             {showText}
-
-
           </Text>
           {/* <TouchableOpacity onPress={cameraReInit}
             style={{
@@ -206,8 +194,8 @@ const FaceRecognition = ({route}) => {
       </View>
 
       {focusPage && (
-        // <View style={{position: 'relative', width: 1204, height: 900}}>
-           <View style={{position: 'relative', width: 600, height: 700}}>
+        <View style={{position: 'relative', width: 1204, height: 900}}>
+        {/* // <View style={{position: 'relative', width: 600, height: 700}}> */}
           <View>
             <Text></Text>
           </View>

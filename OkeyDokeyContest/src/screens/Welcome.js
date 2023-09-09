@@ -4,6 +4,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Welcome = () => {
   const [distanceSensor, setDistanceSensor] = useState(false);
@@ -22,7 +23,19 @@ const Welcome = () => {
       return false;
     }
   };
+  useEffect(() => {
+    clearAsyncStorage();
+  },[]);
 
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
+    }
+  };
+  
   useEffect(() => {
     let interval;
     const startLoop = () => {

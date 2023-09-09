@@ -50,10 +50,34 @@ const QCoffee = ({navigation, route}) => {
 
 
   const goWelcome = () => {
-    navigation.navigate('Welcome');
+    navigation.popToTop();
   }
 
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
 
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   //userData가
   //일반메뉴 받아오기 함수

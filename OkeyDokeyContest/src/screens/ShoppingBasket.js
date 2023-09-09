@@ -12,6 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
 import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ShoppingBasket = ({route, navigation}) => {
   const shoppings = useSelector(state => state.shopping.shoppings);
   const {data} = route.params;
@@ -24,6 +25,34 @@ const ShoppingBasket = ({route, navigation}) => {
     });
     setTotalPrice(newTotalPrice);
   }, [shoppings]);
+
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
 
   return (
     <SafeAreaView

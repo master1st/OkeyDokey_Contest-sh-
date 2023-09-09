@@ -29,39 +29,42 @@ const Favorites = () => {
 
   const dispatch = useDispatch();
 
-  // const [Mockdata, SetMockdata] = useState([
-  //   {
-  //     id: 1,
-  //     image: require('../../assets/images/coffee.png'),
-  //     name: '에스프레소',
-  //     price: 1000,
-  //   },
-  //   {
-  //     id: 2,
-  //     image: require('../../assets/images/coffee.png'),
-  //     name: '아메리카노',
-  //     price: 500,
-  //   },
-  //   {
-  //     id: 3,
-  //     image: require('../../assets/images/coffee.png'),
-  //     name: '아메리카노',
-  //     price: 1500,
-  //   },
-  //   {
-  //     id: 4,
-  //     image: require('../../assets/images/coffee.png'),
-  //     name: '아메리카노',
-  //     price: 2000,
-  //   },
-  // ]);
-  // const totalCoffeePrice = Mockdata.reduce(
-  //   (total, coffee) => total + coffee.price,
-  //   0,
-  // );
-  // console.log(totalCoffeePrice);
   const navigation = useNavigation();
 
+
+
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+
+        if (!accessToken || !refreshToken) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+
+
+  }, []);
+
+
+  
   const handleConfirm = () => {
     menuData.map((item, index) => {
       // console.log(item);
@@ -88,19 +91,6 @@ const Favorites = () => {
        console.log('Error retrieving data:', error);
       }
   };
-
-  //access token 받아오기
-  // const setAccessToken = async () => {
-  //   await AsyncStorage.getItem('access')
-  //     .then(value => {
-  //       if (value !== null) {
-  //         console.log('Value retrieved:', value);
-  //         setAccess(value);
-  //         // fetchData();
-  //       }
-  //     })
-  //     .catch(error => console.error('Error retrieving data:', error));
-  // };
 
   const fetchData = async() => {
     try {
@@ -170,7 +160,7 @@ const Favorites = () => {
           <View style={styles.main}>
             <View style={styles.header}>
               <Text style={{fontWeight: 'bold', color: 'black', fontSize: 40}}>
-                {name ? name : '익명'}님이 즐겨찾는 메뉴
+                {name ? name : ''}님이 즐겨찾는 메뉴
               </Text>
             </View>
             <View style={styles.mid}>

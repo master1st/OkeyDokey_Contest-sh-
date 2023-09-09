@@ -13,6 +13,7 @@ import CustomButton from '../components/CustomButton';
 import Toggle from '../components/Toggle';
 import API from '../API/api';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Qmilk = ({route, navigation}) => {
   const {qCoffee, qCoffeeid} = route.params;
@@ -21,6 +22,34 @@ const Qmilk = ({route, navigation}) => {
   const [iceItemText, setIceItemText] = useState([]);
   const [TeaItemText, setTeaItemText] = useState([]);
   const [softDrinkItemText, setSoftDrinkItemText] = useState([]);
+
+  
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
 
   const fetchData = () => {
     API.get(`/category2/list/${qCoffeeid}`)
@@ -48,7 +77,7 @@ const Qmilk = ({route, navigation}) => {
   }, []);
 
   const goWelcome = () => {
-    navigation.navigate('Welcome');
+    navigation.popToTop();
   }
 
   const handleNonMilk = () => {

@@ -12,6 +12,35 @@ const Identify = () => {
   const navigation = useNavigation();
   const [userData, setUserData] = useState(null); // 회원 정보 상태
 
+
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+
+        if (!accessToken || !refreshToken) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+
   const fetchData = async () => {
    
     const config = {
@@ -38,7 +67,7 @@ const Identify = () => {
           await fetchData();
         } catch (refreshError) {
           console.error("토큰 갱신 중 오류:", refreshError);
-          // 추가적인 오류 처리 로직 필요 (예: 사용자를 로그인 페이지로 리다이렉트)
+          navigation.popToTop();
         }
       }
     }
@@ -77,8 +106,10 @@ const Identify = () => {
 
   // 본인확인된 모종의 부분이 있을거아냐 여기선 userData라고 가정.
   
-  const handleContinue = () => {
-    navigation.navigate('Home');
+  const handleContinue = async () => {
+    // await AsyncStorage.setItem("nonmember", "nonmember");
+    // navigation.navigate('Home');
+    console.log("여기는 없는게 맞아. 비활성화");
   };
   return (
     <SafeAreaView

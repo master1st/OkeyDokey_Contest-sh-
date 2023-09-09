@@ -1,11 +1,12 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CoffeeObject from '../components/CoffeeObject';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {addShopping} from '../redux/slices/shoppingSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const OrderCheck = ({route}) => {
   const {qdata, goto} = route.params;
   const dispatch = useDispatch();
@@ -13,6 +14,34 @@ const OrderCheck = ({route}) => {
   const [ice, setIce] = useState(true);
   const [size, setSize] = useState('Tall');
   const [quantity, setquantity] = useState(1);
+
+  
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        const refreshToken = await AsyncStorage.getItem('refresh');
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if ((!accessToken || !refreshToken) && !nonmember) {
+          console.log('처음으로 화면 돌아가기');
+          navigation.popToTop();
+        }
+      } catch (error) {
+        console.error('Error while checking token:', error);
+      }
+    };
+    checkToken();
+
+    const interval = setInterval(() => {
+      checkToken();
+    }, 5000);
+  
+    // 컴포넌트 언마운트 시 타이머 정리
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
 
   const getQuantity = x => {
     setquantity(x);

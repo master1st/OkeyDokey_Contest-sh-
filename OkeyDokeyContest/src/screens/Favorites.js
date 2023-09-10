@@ -23,7 +23,8 @@ import {addShopping} from '../redux/slices/shoppingSlice';
 //즐겨찾는 메뉴 페이지
 ////얼굴인식 성공 -> 본인확인 계속하기 -> 백엔드에서 받아온 이름, 커피(이름,가격,사진)등의 데이터 GET요청
 const Favorites = () => {
-  const [name, setName] = useState(null);
+  const [access, setAccess] = useState(null);
+  const [name, setName] = useState(AsyncStorage.getItem('nickname'));
   const [totalCoffeePrice, setTotalCoffeePrice] = useState(0);
   const [menuData, setMenuData] = useState([]);
 
@@ -72,8 +73,7 @@ const Favorites = () => {
       );
     });
   };
-  //username 받아오기
-  
+
   const fetchData = async () => {
     const config = {
       headers: {

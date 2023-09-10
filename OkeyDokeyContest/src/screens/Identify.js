@@ -57,6 +57,7 @@ const Identify = () => {
           await fetchData();
         } catch (refreshError) {
           console.error('토큰 갱신 중 오류:', refreshError);
+          // 추가적인 오류 처리 로직 필요 (예: 사용자를 로그인 페이지로 리다이렉트)
         }
       }
     }

@@ -4,7 +4,7 @@ import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FaceModal from '../components/FaceModal';
 import CustomButton from '../components/CustomButton';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,7 +25,7 @@ const Identify = () => {
       } catch (error) {
         console.error('토큰 삭제 중 오류 발생:', error);
       }
-    }, 5000); // 30초(30000밀리초) 후에 실행
+    }, 300000); // 30초(30000밀리초) 후에 실행
 
     // 컴포넌트가 언마운트될 때 타이머 정리
     return () => clearTimeout(timer);
@@ -52,13 +52,11 @@ const Identify = () => {
       console.error(error);
       if (error.response && error.response.status === 401) {
         try {
-          // await refreshAccessToken();
-          console.log("fetchData 재시도");
-          navigation.popToTop();
-          // await fetchData();
+          await refreshAccessToken();
+          console.log('fetchData 재시도');
+          await fetchData();
         } catch (refreshError) {
-          console.error("토큰 갱신 중 오류:", refreshError);
-          navigation.popToTop();
+          console.error('토큰 갱신 중 오류:', refreshError);
         }
       }
     }
@@ -146,7 +144,7 @@ const Identify = () => {
             userData={userData}
             navigation={navigation}
             headerTitle="본인확인"
-            title = ""
+            title = "이름"
             subTitle="으로 계속하시겠어요?"
             width="75%"
             height="100%"
@@ -158,7 +156,7 @@ const Identify = () => {
         onPress={handleContinue}
         width={'100%'}
         height={110}
-        backgroundColor =  'rgba(5, 108, 242, 0.3)'
+        backgroundColor="rgba(5, 108, 242, 0.5)"
         textColor={'white'}
         fontSize={35}
       />

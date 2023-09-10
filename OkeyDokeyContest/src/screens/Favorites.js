@@ -129,6 +129,15 @@ const Favorites = () => {
       throw error; // 함수를 호출하는 곳에서 오류를 처리할 수 있도록 오류를 다시 던집니다.
     }
   };
+
+      AsyncStorage.setItem('access', access);
+      AsyncStorage.setItem('refresh', refresh);
+      console.log('success : refresh Access Token');
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+      throw error; // 함수를 호출하는 곳에서 오류를 처리할 수 있도록 오류를 다시 던집니다.
+    }
+  };
   useEffect(() => {
     fetchData();
   }, []);

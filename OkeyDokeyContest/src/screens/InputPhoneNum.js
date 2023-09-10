@@ -1,36 +1,35 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
 import React, {useEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const InputPhoneNum = () => {
-
+  const navigation = useNavigation();
   useEffect(() => {
-    const checkToken = async () => {
+    // 30초 뒤에 accessToken 삭제 및 페이지 이동
+    const timer = setTimeout(async () => {
       try {
-        const accessToken = await AsyncStorage.getItem('access');
-        const refreshToken = await AsyncStorage.getItem('refresh');
-        const nonmember = await AsyncStorage.getItem('nonmember');
-        if ((!accessToken || !refreshToken) && !nonmember) {
-          console.log('처음으로 화면 돌아가기');
-          navigation.popToTop();
-        }
-      } catch (error) {
-        console.error('Error while checking token:', error);
-      }
-    };
-    checkToken();
+        // AsyncStorage에서 accessToken 삭제
+        await AsyncStorage.removeItem('access');
+        console.log('accessToken이 삭제되었습니다.');
 
-    const interval = setInterval(() => {
-      checkToken();
-    }, 5000);
-  
-    // 컴포넌트 언마운트 시 타이머 정리
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+        // 페이지 이동
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if(!nonmember){
+        navigation.popToTop();
+      }
+      } catch (error) {
+        console.error('토큰 삭제 중 오류 발생:', error);
+      }
+    }, 300000); // 30초(30000밀리초) 후에 실행
+
+    // 컴포넌트가 언마운트될 때 타이머 정리
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
+
   return (
     <SafeAreaView
       style={{

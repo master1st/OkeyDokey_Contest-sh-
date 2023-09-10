@@ -1,45 +1,35 @@
 import {StyleSheet, Image, View, Text, StatusBar} from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import InputModal from '../pages/InputModal';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import FaceModal from '../components/FaceModal';
 import CustomButton from '../components/CustomButton';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Identify = () => {
-  const navigation = useNavigation();
   const [userData, setUserData] = useState(null); // 회원 정보 상태
-
+  const navigation = useNavigation();
 
   useEffect(() => {
-    const checkToken = async () => {
+    // 30초 뒤에 accessToken 삭제 및 페이지 이동
+    const timer = setTimeout(async () => {
       try {
-        const accessToken = await AsyncStorage.getItem('access');
-        const refreshToken = await AsyncStorage.getItem('refresh');
+        // AsyncStorage에서 accessToken 삭제
+        await AsyncStorage.removeItem('access');
+        console.log('accessToken이 삭제되었습니다.');
 
-        if (!accessToken || !refreshToken) {
-          console.log('처음으로 화면 돌아가기');
-          navigation.popToTop();
-        }
+        // 페이지 이동
+        navigation.popToTop();
       } catch (error) {
-        console.error('Error while checking token:', error);
+        console.error('토큰 삭제 중 오류 발생:', error);
       }
-    };
+    }, 300000); // 30초(30000밀리초) 후에 실행
 
-    checkToken();
-
-    const interval = setInterval(() => {
-      checkToken();
-    }, 5000);
-  
-    // 컴포넌트 언마운트 시 타이머 정리
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
+    // 컴포넌트가 언마운트될 때 타이머 정리
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
   const fetchData = async () => {
    
@@ -62,9 +52,10 @@ const Identify = () => {
       console.error(error);
       if (error.response && error.response.status === 401) {
         try {
-          await refreshAccessToken();
+          // await refreshAccessToken();
           console.log("fetchData 재시도");
-          await fetchData();
+          navigation.popToTop();
+          // await fetchData();
         } catch (refreshError) {
           console.error("토큰 갱신 중 오류:", refreshError);
           navigation.popToTop();

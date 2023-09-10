@@ -5,7 +5,9 @@ import axios from 'axios';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../components/CustomButton';
+import {resetShopping} from '../redux/slices/shoppingSlice';
 import {TouchableOpacity} from 'react-native';
+import { useDispatch } from 'react-redux';
 
 const FaceRecognition = ({route}) => {
   const camera = useRef(null);
@@ -20,13 +22,26 @@ const FaceRecognition = ({route}) => {
     '오키도키로 키오스크를 편리하게 이용하세요! ',
   );
   let captureTimeout;
+  const dispatch = useDispatch();
+  //AsyncStorage는 비회원일때 비워주고, 회원일때 이페이지 다시오면 비워준다.
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      console.log('AsyncStorage cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing AsyncStorage:', error);
+    }
+  };
+  
 
   const handleContinue = async () => {
+    clearAsyncStorage();
     await AsyncStorage.setItem("nonmember", "nonmember");
     navigation.navigate('Home');
   };
 
   useEffect(() => {
+    dispatch(resetShopping());
     clearAsyncStorage();
   },[]);
 
@@ -46,15 +61,6 @@ const FaceRecognition = ({route}) => {
     }, []),
   );
 
-  const clearAsyncStorage = async () => {
-    try {
-      await AsyncStorage.clear();
-      console.log('AsyncStorage cleared successfully.');
-    } catch (error) {
-      console.error('Error clearing AsyncStorage:', error);
-    }
-  };
-  
   const handleCameraInitialized = async () => {
     try {
       autoCapture();
@@ -102,6 +108,7 @@ const FaceRecognition = ({route}) => {
   // 카메라 재호출
 
   const sendPhotoToBackend = async imageSource => {
+    if(focusPage){
     setShowText('얼굴 인식중 입니다...');
     let formdata = new FormData();
     formdata.append('image', {
@@ -146,7 +153,7 @@ const FaceRecognition = ({route}) => {
       }
     }
   };
-
+}
   if (device == null) {
     return <Text>Camera not available</Text>;
   }
@@ -194,8 +201,8 @@ const FaceRecognition = ({route}) => {
       </View>
 
       {focusPage && (
-        <View style={{position: 'relative', width: 1204, height: 900}}>
-        {/* // <View style={{position: 'relative', width: 600, height: 700}}> */}
+        // <View style={{position: 'relative', width: 1204, height: 900}}>
+        <View style={{position: 'relative', width: 600, height: 700}}>
           <View>
             <Text></Text>
           </View>

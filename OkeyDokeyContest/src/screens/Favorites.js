@@ -35,33 +35,25 @@ const Favorites = () => {
 
 
   useEffect(() => {
-    const checkToken = async () => {
+    // 30초 뒤에 accessToken 삭제 및 페이지 이동
+    const timer = setTimeout(async () => {
       try {
-        const accessToken = await AsyncStorage.getItem('access');
-        const refreshToken = await AsyncStorage.getItem('refresh');
+        // AsyncStorage에서 accessToken 삭제
+        await AsyncStorage.removeItem('access');
+        console.log('accessToken이 삭제되었습니다.');
 
-        if (!accessToken || !refreshToken) {
-          console.log('처음으로 화면 돌아가기');
-          navigation.popToTop();
-        }
+        // 페이지 이동
+
+        navigation.popToTop();
       } catch (error) {
-        console.error('Error while checking token:', error);
+        console.error('토큰 삭제 중 오류 발생:', error);
       }
-    };
+    }, 300000); // 30초(30000밀리초) 후에 실행
 
-    checkToken();
-
-    const interval = setInterval(() => {
-      checkToken();
-    }, 5000);
+    // 컴포넌트가 언마운트될 때 타이머 정리
+    return () => clearTimeout(timer);
+  }, [navigation]);
   
-    // 컴포넌트 언마운트 시 타이머 정리
-    return () => {
-      clearInterval(interval);
-    };
-
-
-  }, []);
 
 
   

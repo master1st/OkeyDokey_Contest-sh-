@@ -42,30 +42,26 @@ const EasyMenu = ({navigation, route}) => {
 
   
   useEffect(() => {
-    const checkToken = async () => {
+    // 30초 뒤에 accessToken 삭제 및 페이지 이동
+    const timer = setTimeout(async () => {
       try {
-        const accessToken = await AsyncStorage.getItem('access');
-        const refreshToken = await AsyncStorage.getItem('refresh');
-        const nonmember = await AsyncStorage.getItem('nonmember');
-        if ((!accessToken || !refreshToken) && !nonmember) {
-          console.log('처음으로 화면 돌아가기');
-          navigation.popToTop();
-        }
-      } catch (error) {
-        console.error('Error while checking token:', error);
-      }
-    };
-    checkToken();
+        // AsyncStorage에서 accessToken 삭제
+        await AsyncStorage.removeItem('access');
+        console.log('accessToken이 삭제되었습니다.');
 
-    const interval = setInterval(() => {
-      checkToken();
-    }, 5000);
-  
-    // 컴포넌트 언마운트 시 타이머 정리
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+        // 페이지 이동
+        const nonmember = await AsyncStorage.getItem('nonmember');
+        if(!nonmember){
+        navigation.popToTop();
+      }
+      } catch (error) {
+        console.error('토큰 삭제 중 오류 발생:', error);
+      }
+    }, 300000); // 30초(30000밀리초) 후에 실행
+
+    // 컴포넌트가 언마운트될 때 타이머 정리
+    return () => clearTimeout(timer);
+  }, [navigation]);
 
 
   const navigationQcoffee = () => {
@@ -380,9 +376,9 @@ const EasyMenu = ({navigation, route}) => {
           }}>
           <View
             style={{
-              width: '80%',
+              width: '78%',
               flexDirection: 'row',
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: 'white',
               height: '80%',
@@ -451,7 +447,7 @@ const EasyMenu = ({navigation, route}) => {
                       <View
                         style={{
                           flexDirection: 'row',
-                          flex: 3 / 6,
+                          flex: 4 / 10,
                         }}>
                         <Text
                           style={{
@@ -475,10 +471,16 @@ const EasyMenu = ({navigation, route}) => {
                       <View
                         style={{
                           flexDirection: 'row',
-                          flex: 2 / 6,
+                          flex: 4 / 10,
                         }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              flex:1,
+                            }}>
                         <Text
                           style={{
+                            flex:1/3,
                             fontSize: 16,
                             marginRight: 10,
                             color: 'black',
@@ -488,6 +490,7 @@ const EasyMenu = ({navigation, route}) => {
                         </Text>
                         <Text
                           style={{
+                            flex:1/3,
                             fontSize: 16,
                             marginRight: 10,
                             color: 'black',
@@ -497,18 +500,20 @@ const EasyMenu = ({navigation, route}) => {
                         </Text>
                         <Text
                           style={{
+                            flex:1/3,
                             fontSize: 16,
                             color: 'black',
                             fontWeight: 'bold',
                           }}>
                           {item.quantity}잔
                         </Text>
+                        </View>
                       </View>
 
                       <View
                         style={{
                           flexDirection: 'row',
-                          flex: 1 / 6,
+                          flex: 2 / 10,
                         }}>
                         <CustomButton
                           width={20}

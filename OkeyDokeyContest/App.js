@@ -52,7 +52,7 @@ const App = () => {
     <NavigationContainer>
       <Provider store={store}>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Welcome" component={Welcome} />
+          {/* <Stack.Screen name="Welcome" component={Welcome} /> */}
           <Stack.Screen name="FaceRecognition" component={FaceRecognition} />
           <Stack.Screen name="Identify" component={Identify} />
           <Stack.Screen name="favorites" component={Favorites} />

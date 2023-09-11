@@ -119,7 +119,7 @@ const FaceRecognition = ({route}) => {
 
     try {
       const response = await axios.post(
-        'http://3.36.95.105/account/user/face/recognition/',
+        'https://www.okdkbackend.shop/account/user/face/recognition/',
         formdata,
         {
           headers: {'Content-Type': 'multipart/form-data'},
@@ -202,7 +202,7 @@ const FaceRecognition = ({route}) => {
 
       {focusPage && (
         <View style={{position: 'relative', width: 1204, height: 900}}>
-        {/* <View style={{position: 'relative', width: 600, height: 700}}> */}
+         {/* <View style={{position: 'relative', width: 600, height: 700}}> */}
           <View>
             <Text></Text>
           </View>

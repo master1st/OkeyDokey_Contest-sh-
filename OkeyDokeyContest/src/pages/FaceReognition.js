@@ -201,7 +201,6 @@ const FaceRecognition = ({route}) => {
 
       {focusPage && (
         <View style={{position: 'relative', width: 1204, height: 950}}>
-        {/* <View style={{position: 'relative', width: 600, height: 700}}>  */}
        
           <Camera
             ref={camera}
